@@ -23,4 +23,6 @@ app.get('/loginInfo', function(req, res) {
 
 //Set The Listening Port
 app.listen(80, '127.0.0.1');
+
+//Information Message 
 console.log("Server Running On http://localhost:3000"); 
