@@ -1,0 +1,23 @@
+<!-- Register Controller -->
+<div ng-controller="registerCtrl">
+    
+    <!-- Registration Form -->
+    <form action="/" id="myRegister">
+        <input type="text" id="firstName" ng-model="firstName" placeholder="First Name"><br>
+        <input type="text" id="lastName" ng-model="lastName" placeholder="Last Name"><br>
+        <input type="text" id="username" ng-model="username" placeholder="Username"><br>
+        <input type="password" id="password" ng-model="password" placeholder="Password"><br>
+        <hr>
+        <button class="btn btn-danger" ng-click="submitRegisterInfo()">Register</button>
+        <a href="#/" class="btn btn-primary">Back</a>
+    </form>
+    
+    <!-- Display The Passed Credentials [Testing] -->
+    <div ng-repeat="info in personalInfo">
+        <p>{{info.firstName}}</p>
+        <p>{{info.lastName}}</p>
+        <p>{{info.username}}</p>
+        <p>{{info.password}}</p>
+    </div>
+    
+</div>
