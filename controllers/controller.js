@@ -51,10 +51,10 @@ app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
 });
 
 //Register Controller 
-app.controller('registerCtrl', function($scope) {
+app.controller('registerCtrl', function($scope, $http) {
     $scope.submitRegisterInfo = function() {
         
-        person1 = {
+          person1 = {
             firstName: $scope.firstName,
             lastName: $scope.lastName,
             username: $scope.username,
@@ -64,6 +64,8 @@ app.controller('registerCtrl', function($scope) {
         
         var personalInfo = [person1];
         $scope.personalInfo = personalInfo;
+        
+        $http.post('/signup', $scope.personalInfo);
         
     };
     
