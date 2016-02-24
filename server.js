@@ -37,7 +37,7 @@ app.get('/loginInfo', function(req, res) {
 app.post('/signup' , function(req, res) {
     
     //Respond With The Body Passed By Controller
-    console.log(req.body)
+    console.log(req.body.username);
     
     //Insert Data Passed By Controller To DB
     db.nfcvt.insert(req.body);

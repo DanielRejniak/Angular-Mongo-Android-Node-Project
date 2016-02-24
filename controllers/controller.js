@@ -62,7 +62,7 @@ app.controller('registerCtrl', function($scope, $http) {
             
         };
         
-        var personalInfo = [person1];
+        var personalInfo = person1;
         $scope.personalInfo = personalInfo;
         
         $http.post('/signup', $scope.personalInfo);
