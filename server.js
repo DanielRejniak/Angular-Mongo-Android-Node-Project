@@ -11,27 +11,22 @@ app.use(express.static(__dirname + "/"))
 app.use(bodyParser.json());
 
 //Login
-app.get('/loginInfo', function(req, res) {
-    console.log("I recieved a GET request from controller.js ");
+app.post('/signin' , function(req, res) {
     
-    person1 = {
-        usernameInfo: 'admin',
-        passwordInfo: 'admin'
-        
-    };
+    var username = req.body.username;
+    var password = req.body.password;
     
-    db.nfcvt.find(function(err, docs) {
-        
-        //Respond With Content From The Database 
-        console.log("Response For Database");
-        console.log(docs);
-    })
-    
-    var personalInfo = [person1];
-    res.json(personalInfo);
-    
-    
+    if(username == 'admin' && password == 'admin')
+    {
+        console.log('Sucessfully Logged In');
+    }
+    else
+    {
+        console.log('Wrong Password Or Usernmae');            
+    }
 });
+    
+    
 
 //Register
 app.post('/signup' , function(req, res) {

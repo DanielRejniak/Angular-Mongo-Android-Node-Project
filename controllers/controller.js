@@ -37,18 +37,20 @@ app.config(function($routeProvider) {
 app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
     $scope.submitLoginInfo = function() {
         
-        $http.get('/loginInfo').success(function(response) {
-            console.log("I Controller.js got the data from server.js");
-            $scope.personalInfo = response;
-        });
+       user = {
+           username: $scope.username,
+           password: $scope.password
+    
+       };
         
-        if($scope.username == 'admin' && $scope.password == 'admin') {
-            
-            $rootScope.loggedIn = true;
-            $location.path('/dashboard');        
-        }
+       var userInfo = user;
+       $scope.personalInfo = userInfo;
+        
+       $http.post('/signin', $scope.personalInfo);
+        
     };
 });
+                                    
 
 //Register Controller 
 app.controller('registerCtrl', function($scope, $http) {
@@ -68,5 +70,4 @@ app.controller('registerCtrl', function($scope, $http) {
         $http.post('/signup', $scope.personalInfo);
         
     };
-    
 });
