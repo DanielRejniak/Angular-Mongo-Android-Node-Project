@@ -2,9 +2,22 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var mongojs = require('mongojs');
-var db = mongojs('nfcvt' , ['nfcvt']);
+var mongoose = require('mongoose');
 
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
+
+var User = mongoose.model('User', new Schema({
+    id: ObjectId,
+    firstName: String,
+    lastName: String,
+    username: String,
+    password: String
+
+}));
+
+//Conect To Mongo
+mongoose.connect('mongodb://localhost/nfcvt');
 
 //Use The Index Page As Staring Point
 app.use(express.static(__dirname + "/"))
@@ -13,17 +26,21 @@ app.use(bodyParser.json());
 //Login
 app.post('/signin' , function(req, res) {
     
-    var username = req.body.username;
-    var password = req.body.password;
+    User.findOne({ username: req.body.username }, function(err, user) {
 
-    var loginInfo = {username: username, password: password};
-    
+        //If No User Exists
+        if(!user) {
 
-    db.nfcvt.find(loginInfo,function(err, docs) {
+            console.log("ERROR - No Such User Exists");
+        }
+        else {
 
-           console.log(docs);
+            if(user.username == req.body.username && user.password == req.body.password) {
 
-        });
+                console.log("VERIFIED - User Credentials Valid");
+            }
+        }    
+    })
 });
     
     
@@ -31,11 +48,23 @@ app.post('/signin' , function(req, res) {
 //Register
 app.post('/signup' , function(req, res) {
     
-    //Respond With The Body Passed By Controller
-    console.log(req.body.username);
-    
-    //Insert Data Passed By Controller To DB
-    db.nfcvt.insert(req.body);
+    //Create User Object To Store Registration Info
+    var user = new User ({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    //Save To Database
+    user.save(function(err) {
+        if(err) {
+            console.log("ERROR - Cant Register The User");
+        }
+        else {
+            console.log("CREATED - User Is Now Registered");
+        }
+    });
     
 });
 
