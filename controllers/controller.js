@@ -36,17 +36,19 @@ app.config(function($routeProvider) {
 //Login Controller
 app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
     $scope.submitLoginInfo = function() {
-        
+       
+       //User Login Credentials Object 
        user = {
            username: $scope.username,
            password: $scope.password
     
        };
-        
-       var userInfo = user;
-       $scope.personalInfo = userInfo;
-        
-       $http.post('/signin', $scope.personalInfo);
+       
+       //Post The Login Credential Object To Node          
+       $http.post('/signin', user);
+
+       //Redirect To Dashboar After Verification
+       $location.path('/dashboard');
         
     };
 });
