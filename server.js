@@ -15,15 +15,15 @@ app.post('/signin' , function(req, res) {
     
     var username = req.body.username;
     var password = req.body.password;
+
+    var loginInfo = {username: username, password: password};
     
-    if(username == 'admin' && password == 'admin')
-    {
-        console.log('Sucessfully Logged In');
-    }
-    else
-    {
-        console.log('Wrong Password Or Usernmae');            
-    }
+
+    db.nfcvt.find(loginInfo,function(err, docs) {
+
+           console.log(docs);
+
+        });
 });
     
     
