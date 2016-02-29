@@ -28,16 +28,20 @@ app.post('/signin' , function(req, res) {
     
     User.findOne({ username: req.body.username }, function(err, user) {
 
+        if (err) throw err;
+
         //If No User Exists
         if(!user) {
 
             console.log("ERROR - No Such User Exists");
+            res.json({ success: false, message: 'Authentication failed. Wrong password or Username!!' });
         }
         else {
 
             if(user.username == req.body.username && user.password == req.body.password) {
 
                 console.log("VERIFIED - User Credentials Valid");
+                res.json({ success: true, message: 'Authentication successfull. You Are Now Redirected To Dashboard!!'});
             }
         }    
     })

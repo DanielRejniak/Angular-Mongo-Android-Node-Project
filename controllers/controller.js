@@ -5,17 +5,22 @@ var app = angular.module('mainApp', ['ngRoute']);
 app.config(function($routeProvider) {
    $routeProvider
    
-   .when('/', {
+   .when('/', 
+   {
        templateUrl: 'views/login_form.html'
    })
    
-   .when('/dashboard', {
+   .when('/dashboard', 
+   {
        
-       resolve: {
-           "check": function($location, $rootScope) {
+       resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
                
                //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
-               if(!$rootScope.loggedIn) {
+               if(!$rootScope.verificationPass) 
+               {
                    $location.path('/')
                }
            }
@@ -23,11 +28,13 @@ app.config(function($routeProvider) {
        templateUrl: 'views/dashboard.html'
    })
    
-   .when('/register', {
+   .when('/register', 
+   {
        templateUrl: 'views/register_form.html'
    })
    
-   .otherwise({
+   .otherwise(
+   {
        redirectTo: '/'
    });
     
@@ -45,12 +52,28 @@ app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
        };
        
        //Post The Login Credential Object To Node          
-       $http.post('/signin', user);
+       $http.post('/signin', user).then(function(response){
+          
+          //Retrieve The Validation Token Form The Server 
+          var verification = response.data.success;
+          
+          //Check If The Validation Token Is True
+          if(verification){
 
-       //Redirect To Dashboar After Verification
-       $location.path('/dashboard');
-        
-    };
+            $rootScope.verificationPass = true;
+            console.log("Verification Successfull, Redirecting To Dashboard");
+
+            //Redirect To Dashboar After Validation Is Compleate
+            $location.path('/dashboard');
+          }
+          else {
+
+            //Redirect To Login Page
+            console.log("Verification Failed");
+            $location.path('/');
+          }
+        });
+      };
 });
                                     
 
