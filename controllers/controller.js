@@ -32,6 +32,23 @@ app.config(function($routeProvider) {
    {
        templateUrl: 'views/register_form.html'
    })
+
+   .when('/control_pannel', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/control_pannel.html'
+   })
    
    .otherwise(
    {
