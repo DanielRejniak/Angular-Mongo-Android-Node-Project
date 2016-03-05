@@ -74,6 +74,14 @@ app.config(function($routeProvider) {
     
 });
 
+app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
+
+  $http.get('/getInfo').success(function(data) {
+    $scope.info = data;
+  });
+
+});
+
 //Login Controller
 app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
     $scope.submitLoginInfo = function() {
