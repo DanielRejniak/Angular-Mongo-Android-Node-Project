@@ -25,7 +25,7 @@ app.config(function($routeProvider) {
                }
            }
        },
-       templateUrl: 'views/dashboard.html'
+       templateUrl: 'views/loggedin_views/dashboard.html'
    })
    
    .when('/register', 
@@ -47,7 +47,24 @@ app.config(function($routeProvider) {
                }
            }
        },
-       templateUrl: 'views/control_pannel.html'
+       templateUrl: 'views/loggedin_views/control_pannel.html'
+   })
+
+   .when('/create_event_pannel', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/create_event_pannel.html'
    })
    
    .otherwise(
