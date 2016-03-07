@@ -1,8 +1,17 @@
 <br>
 
 <div ng-controller="dashboardCtrl">
-<h1>Welcome {{info.firstName}}</h1>
+<h1>Welcome, {{userInfo.firstName}}</h1>
 <hr>
 <a href="#/" class="btn btn-danger"><span class="glyphicon glyphicon-off"></span> Log Out</a>
 <a href="#/control_pannel" class="btn btn-warning"><span class="glyphicon glyphicon-cog"></span> Control Pannel</a>
+
+<h1>Events In Your Area</h1>
+<hr>
+<div ng-repeat="eventInfo in events">
+Event Name : {{eventInfo.eventName}} Created by : {{eventInfo.eventCreatedBy}}
+</div>
+</div>
+<hr>
+
 </div>

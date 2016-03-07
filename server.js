@@ -17,6 +17,17 @@ var User = mongoose.model('User', new Schema({
 
 }));
 
+var Event = mongoose.model('Event', new Schema({
+    id: ObjectId,
+    eventName: String,
+    eventLocation: String,
+    eventDate: String,
+    eventAvailableTickets: String,
+    eventCreatedBy: String,
+    eventPublic: String
+
+}));
+
 //Conect To Mongo
 mongoose.connect('mongodb://localhost/nfcvt');
 
@@ -34,11 +45,49 @@ app.use(sessions({
 
 }));
 
-app.get('/getInfo', function(req, res) {
+//Get User Info For Dashboard
+app.get('/getUserInfo', function(req, res) {
 
     //console.log(req.session.user.firstName);
 
     res.json(req.session.user);
+
+});
+
+//Get Event Info For Dashboard
+app.get('/getPublicEventInfo', function(req, res) {
+
+    Event.find({ eventPublic: "true"}, function(err, events)  {
+       
+    res.json(events);
+
+    });
+
+});
+
+//Create Event
+app.post('/createEvent', function(req, res) {
+
+    
+    //Create Event Object To Store Event Info
+    var event = new Event ({
+        eventName: req.body.eventName,
+        eventLocation: req.body.eventLocation,
+        eventDate: req.body.eventDate,
+        eventAvailableTickets: req.body.eventAvailableTickets,
+        eventCreatedBy: req.session.user.firstName,
+        eventPublic: "true"
+    });
+
+    //Save To Database
+    event.save(function(err) {
+        if(err) {
+            console.log("ERROR: Failed To Create Event");
+        }
+        else {
+            console.log("CREATED: Event Added To DB");
+        }
+    });
 
 });
 
@@ -53,15 +102,15 @@ app.post('/signin' , function(req, res) {
         //If No User Exists
         if(!user) {
 
-            console.log("ERROR - No Such User Exists");
+            console.log("VERIFIED: Failed");
             res.json({ success: false, message: 'Authentication failed. Wrong password or Username!!' });
         }
         else {
 
             if(user.username == req.body.username && user.password == req.body.password) {
 
-                console.log("VERIFIED - User Credentials Valid");
-                console.log("SAVING - Saving user data to the cookie");
+                console.log("VERIFIED: User Credentials");
+                console.log("CREATED: User Session");
                 req.session.user = user;
                 res.json({ success: true, message: 'Authentication successfull. You Are Now Redirected To Dashboard!!'});
             }
@@ -85,10 +134,10 @@ app.post('/signup' , function(req, res) {
     //Save To Database
     user.save(function(err) {
         if(err) {
-            console.log("ERROR - Cant Register The User");
+            console.log("ERROR: Can't Register User");
         }
         else {
-            console.log("CREATED - User Is Now Registered");
+            console.log("CREATED: User Is Now Registered");
         }
     });
     

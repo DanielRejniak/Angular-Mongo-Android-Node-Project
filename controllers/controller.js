@@ -74,13 +74,41 @@ app.config(function($routeProvider) {
     
 });
 
+//Dashboard Controller
 app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 
-  $http.get('/getInfo').success(function(data) {
-    $scope.info = data;
+  //Get User Info
+  $http.get('/getUserInfo').success(function(data) {
+    $scope.userInfo = data;
+  });
+
+  //Display Public Events 
+  $http.get('/getPublicEventInfo').success(function(data) {
+    //console.log(data);
+    $scope.events = data;
   });
 
 });
+
+//Event Creator Controller
+app.controller('eventCreatorCtrl', function($scope, $location, $rootScope, $http) {
+  $scope.createEvent = function() {
+
+        event = {
+
+            eventName: $scope.eventName,
+            eventLocation: $scope.eventLocation,
+            eventDate: $scope.eventDate,
+            eventAvailableTickets: $scope.eventAvailableTickets
+        }
+
+        var eventObject = event;
+        $scope.eventInfo = eventObject;
+
+        $http.post('/createEvent', $scope.eventInfo);
+  };
+
+}); 
 
 //Login Controller
 app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
