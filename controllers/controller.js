@@ -66,6 +66,24 @@ app.config(function($routeProvider) {
        },
        templateUrl: 'views/loggedin_views/create_event_pannel.html'
    })
+
+   .when('/eventViewer', 
+   {
+       
+       resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/eventViewer.html'
+   })
    
    .otherwise(
    {
@@ -77,17 +95,16 @@ app.config(function($routeProvider) {
 //Dashboard Controller
 app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 
-  //Get User Info
-  $http.get('/getUserInfo').success(function(data) {
-    $scope.userInfo = data;
-  });
+      //Get User Info
+      $http.get('/getUserInfo').success(function(data) {
+        $scope.userInfo = data;
+      });
 
-  //Display Public Events 
-  $http.get('/getPublicEventInfo').success(function(data) {
-    //console.log(data);
-    $scope.events = data;
-  });
-
+      //Display Public Events 
+      $http.get('/getPublicEventInfo').success(function(data) {
+        //console.log(data);
+        $scope.events = data;
+      });
 });
 
 //Event Creator Controller
@@ -105,7 +122,19 @@ app.controller('eventCreatorCtrl', function($scope, $location, $rootScope, $http
         var eventObject = event;
         $scope.eventInfo = eventObject;
 
-        $http.post('/createEvent', $scope.eventInfo);
+        $http.post('/createEvent', $scope.eventInfo).then(function(err){
+
+            if(err) {
+                
+
+            }
+            else {
+
+                  //When Event Is Created Successfuly Redirect
+                  console.log("Error - Can't Create Event");
+                  $location.path('/dashboard');
+            }
+        });
   };
 
 }); 
@@ -162,7 +191,7 @@ app.controller('registerCtrl', function($scope, $http) {
         var personalInfo = person1;
         $scope.personalInfo = personalInfo;
         
-        $http.post('/signup', $scope.personalInfo);
+        $http.post('/createUser', $scope.personalInfo);
         
     };
 });

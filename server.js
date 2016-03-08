@@ -68,9 +68,9 @@ app.get('/getPublicEventInfo', function(req, res) {
 //Create Event
 app.post('/createEvent', function(req, res) {
 
-    
     //Create Event Object To Store Event Info
     var event = new Event ({
+
         eventName: req.body.eventName,
         eventLocation: req.body.eventLocation,
         eventDate: req.body.eventDate,
@@ -121,7 +121,7 @@ app.post('/signin' , function(req, res) {
     
 
 //Register
-app.post('/signup' , function(req, res) {
+app.post('/createUser' , function(req, res) {
     
     //Create User Object To Store Registration Info
     var user = new User ({
