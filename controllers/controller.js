@@ -67,6 +67,23 @@ app.config(function($routeProvider) {
        templateUrl: 'views/loggedin_views/create_event_pannel.html'
    })
 
+   .when('/ticketWallet', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/ticketWallet.html'
+   })
+
    .when('/eventViewer', 
    {
        
@@ -105,6 +122,12 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
         //console.log(data);
         $scope.events = data;
       });
+});
+
+//Event Viewer Controller
+app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http) {
+
+      console.log("Get Info About The Event");
 });
 
 //Event Creator Controller
