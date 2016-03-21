@@ -1,3 +1,15 @@
+/******* Port & Database Setup *******
+
+Set The Correct Port Number &
+Database Configuration Before Running 
+
+********* Localhost Profile *********/
+
+var usePort = 3000;
+var useDb = 'mongodb://localhost/nfcvt';
+
+/*************************************/
+
 //Set The Modules To Be Used
 var express = require('express');
 var app = express();
@@ -29,7 +41,7 @@ var Event = mongoose.model('Event', new Schema({
 }));
 
 //Conect To Mongo
-mongoose.connect('mongodb://localhost/nfcvt');
+mongoose.connect(useDb);
 
 //Use The Index Page As Staring Point
 app.use(express.static(__dirname + "/"));
@@ -144,7 +156,7 @@ app.post('/createUser' , function(req, res) {
 });
 
 //Set The Listening Port
-app.listen(3000);
+app.listen(usePort);
 
 //Information Message 
-console.log("Server Running On http://localhost:3000"); 
+console.log("Server Running, Using Port: " + usePort);
