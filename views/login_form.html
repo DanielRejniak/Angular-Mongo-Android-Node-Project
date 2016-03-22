@@ -1,19 +1,90 @@
-<br>
-
 <!-- Loggin Controller -->
 <div ng-controller="loginCtrl">
     
-    <!-- Loggin Form -->
+    <!-- Background Image -->
+    <div id="headerwrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h1>NFCVT<br>
+                    Wireles Ticketing System</h1>
+
+                    <!-- Loggin Form -->
     <form action="/" id="myLogin">
-        <input type="text" id="username" ng-model="username" placeholder="Username"><br>
-        <input type="password" id="password" ng-model="password" placeholder="Password"><br>
-        <hr>
-        <button type="button" class="btn btn-primary" ng-click="submitLoginInfo()"><span class="glyphicon glyphicon-user"></span> Login</button>
-        <a href="#/register" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> Register</a>
-    </form>
-    
-    <div ng-repeat="info in personalInfo">
-        <p>{{info.username}}</p>
-        <p>{{info.password}}</p>
+        <input type="text" id="username" ng-model="username" placeholder="Username" style="width: 50%"><br>
+        <input type="password" id="password" ng-model="password" placeholder="Password" style="width: 50%"><br>
+        <br>
+        <button type="button" class="btn btn-primary" ng-click="submitLoginInfo()" style="width: 24.5%"><span class="glyphicon glyphicon-user"></span> Login</button>
+        <a href="#/register" class="btn btn-success" style="width: 24.5%"><span class="glyphicon glyphicon-pencil"></span> Register</a>
+    </form>                
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="container">
+        <div class="row mt centered">
+            <div class="col-lg-6 col-lg-offset-3">
+                <h1>What Is NFCVT ?</h1>
+                <h3>We allow users to join, create and manage events. Tickets are distributed electronicaly and are utalised through NFC </h3>
+            </div>
+        </div><!-- /row -->
+        
+        <div class="row mt centered">
+            <div class="col-lg-3">
+                <img src="views/css/images/ser01.png" width="180" alt="">
+                <h4>Events</h4>
+                <p>By registering you will be able to obtain tickets to events near you</p>
+            </div><!--/col-lg-4 -->
+
+            <div class="col-lg-3">
+                <img src="views/css/images/ser02.png" width="180" alt="">
+                <h4>Utalise Tickets</h4>
+                <p>Tickets are stored in electronic wallet and are utalised through mobile app when you arive to event</p>
+
+            </div><!--/col-lg-4 -->
+
+            <div class="col-lg-3">
+                <img src="views/css/images/ser03.png" width="180" alt="">
+                <h4>Create Events</h4>
+                <p>Every registered user can also host their own event and distrubute tickets</p>
+
+            </div><!--/col-lg-4 -->
+
+            <div class="col-lg-3">
+                <img src="views/css/images/ser04.png" width="180" alt="">
+                <h4>Manage Events</h4>
+                <p>Once you created event you can track every ticket related to it</p>
+
+            </div><!--/col-lg-4 -->
+        </div><!-- /row -->
+
+
+    </div><!-- /container -->
+
+    
+
+    <footer id="footer" class="clearfix">
+      <div id="footer-widgets">
+
+        <div class="container">
+
+        </div> <!-- end #footer-wrapper -->
+
+        </div> <!-- end .container -->
+      </div> <!-- end #footer-widgets -->
+
+      <div id="sub-floor">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 copyright">
+             Copy right NFCVT © 2016
+            </div>
+            <div class="col-md-4 col-md-offset-4 attribution">
+             Founder <a target="_blank" href="#">Daniel Rejniak</a>
+            </div>
+          </div> <!-- end .row -->
+        </div>
+      </div>
+    </footer>
 </div>    

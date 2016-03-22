@@ -1,0 +1,20 @@
+<br>
+<h1>Admin Event Creator Pannel</h1>
+<hr>
+
+<!-- Event Creator Controller -->
+<div ng-controller="eventCreatorCtrl">
+    
+    <!-- Registration Form -->
+    <form action="/" id="myRegister">
+        <input type="text" id="eventName" ng-model="eventName" placeholder="Event Name" style="width: 40%"><br>
+        <input type="text" id="eventLocation" ng-model="eventLocation" placeholder="Event Location" style="width: 40%"><br>
+        <input type="text" id="eventDate" ng-model="eventDate" placeholder="Event Data" style="width: 40%"><br>
+        <input type="text" id="eventAvailableTickets" ng-model="eventAvailableTickets" placeholder="Amount Of Tickets" style="width: 40%"><br>
+        <textarea class="form-control" rows="5" id="comment" style="width: 40%" placeholder="Event Description"></textarea>
+        <hr>
+        <a href="#/control_pannel" class="btn btn-primary">Back</a>
+        <button class="btn btn-success" ng-click="createEvent()" style="width: 20%"><span class="glyphicon glyphicon-save-file"></span> Submit Event</button>
+    </form>
+    
+</div>
