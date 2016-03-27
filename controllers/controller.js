@@ -33,6 +33,11 @@ app.config(function($routeProvider) {
        templateUrl: 'views/register_form.html'
    })
 
+   .when('/login', 
+   {
+       templateUrl: 'views/login.html'
+   })
+
    .when('/control_pannel', 
    {
       resolve: 
@@ -122,6 +127,11 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
         //console.log(data);
         $scope.events = data;
       });
+
+      $scope.findEvent = function() {
+
+          console.log("Hello event viewer")
+      };
 });
 
 //Event Viewer Controller
@@ -200,21 +210,32 @@ app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
                                     
 
 //Register Controller 
-app.controller('registerCtrl', function($scope, $http) {
+app.controller('registerCtrl', function($scope, $http, $location) {
     $scope.submitRegisterInfo = function() {
+
+        if($scope.password != $scope.password_confirm)
+        {
+            console.log("Error : Passwords Dont Match ");
+            $location.path('/');
+
+        }
+        else
+        {
         
           person1 = {
-            firstName: $scope.firstName,
-            lastName: $scope.lastName,
-            username: $scope.username,
-            password: $scope.password
+          firstName: $scope.firstName,
+          lastName: $scope.lastName,
+          username: $scope.username,
+          password: $scope.password
             
-        };
+          };
         
-        var personalInfo = person1;
-        $scope.personalInfo = personalInfo;
+          var personalInfo = person1;
+          $scope.personalInfo = personalInfo;
         
-        $http.post('/createUser', $scope.personalInfo);
+          $http.post('/createUser', $scope.personalInfo);
+          $location.path('/');
+        }  
         
     };
 });

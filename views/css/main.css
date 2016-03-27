@@ -12,7 +12,7 @@
 }
 
 body {
-  background-color: #f2f2f2;
+  background-color: #ffffff;
     font-family: 'Lato', sans-serif;
     font-weight: 300;
     font-size: 16px;
@@ -26,11 +26,11 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Lato', sans-serif;
     font-weight: 300;
-    color: #333;
+    color: #3DC495;
 }
 
 h1 {
-	font-size: 40px;
+	font-size: 60px;
 }
 
 h3 {
