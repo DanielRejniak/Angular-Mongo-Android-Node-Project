@@ -16,7 +16,11 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var sessions = require('client-sessions');
+var url = require('url');
+var http = require('http');
 
+
+//MongoDB Schema
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
@@ -61,7 +65,6 @@ app.use(sessions({
 app.get('/getUserInfo', function(req, res) {
 
     //console.log(req.session.user.firstName);
-
     res.json(req.session.user);
 
 });
@@ -75,6 +78,12 @@ app.get('/getPublicEventInfo', function(req, res) {
 
     });
 
+});
+
+http.get('/test', function(req, res) {
+
+    var parsed = url.parse(req.url);
+    console.log(parsed);
 });
 
 //Create Event
@@ -107,6 +116,7 @@ app.post('/createEvent', function(req, res) {
 //Login
 app.post('/signin' , function(req, res) {
     
+
     User.findOne({ username: req.body.username }, function(err, user) {
 
         if (err) throw err;
@@ -153,6 +163,36 @@ app.post('/createUser' , function(req, res) {
         }
     });
     
+});
+
+app.get('/signinUrl', function(req, res) {
+
+    //Retrieve The Parameters Passed In The Url
+    var username = req.query.username;
+    var password = req.query.password;
+
+
+    User.findOne({ username: username}, function(err, user) {
+
+        if (err) throw err;
+
+        //If No User Exists
+        if(!user) {
+
+            console.log("VERIFIED: Failed");
+            res.json({ success: false, message: 'Authentication failed. Wrong password or Username!!' });
+        }
+        else {
+
+            if(user.username == username && user.password == password) {
+
+                console.log("VERIFIED: User Credentials");
+                console.log("CREATED: User Session");
+                req.session.user = user;
+                res.json({ success: true, message: 'Authentication successfull. You Are Now Redirected To Dashboard!!'});
+            }
+        }    
+    })
 });
 
 //Set The Listening Port
