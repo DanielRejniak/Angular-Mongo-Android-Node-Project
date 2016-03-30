@@ -38,9 +38,18 @@ var Event = mongoose.model('Event', new Schema({
     eventName: String,
     eventLocation: String,
     eventDate: String,
-    eventAvailableTickets: String,
+    eventAvailableTickets: Number,
     eventCreatedBy: String,
     eventPublic: String
+
+}));
+
+var Ticket = mongoose.model('Ticket', new Schema({
+    id: ObjectId,
+    ticketId: String,
+    ticketOwnerFirstName: String,
+    ticketOwnerLastName: String,
+    ticketForEvent: String
 
 }));
 
@@ -69,6 +78,17 @@ app.get('/getUserInfo', function(req, res) {
 
 });
 
+//Get All The Tickets That Bellng To User
+app.get('/getAllMyTickets', function(req, res) {
+
+    Ticket.find({ ticketOwnerFirstName: req.session.user.firstName}, function(err, tickets)  {
+       
+    res.json(tickets);
+
+    });
+
+});
+
 //Get Event Info For Dashboard
 app.get('/getPublicEventInfo', function(req, res) {
 
@@ -78,6 +98,29 @@ app.get('/getPublicEventInfo', function(req, res) {
 
     });
 
+});
+
+//Create Event
+app.post('/createTicket', function(req, res) {
+
+        console.log(req.body.ticketInfo);
+
+        var ticketId = new Ticket ({
+            ticketId: req.body.ticketId,
+            ticketOwnerFirstName: req.body.ticketOwnerFirstName,
+            ticketOwnerLastName: req.body.ticketOwnerLastName,
+            ticketForEvent: req.body.ticketForEvent
+        });
+
+        //Save To Database
+        ticketId.save(function(err) {
+        if(err) {
+            console.log("ERROR: Failed To Create Ticket");
+        }
+        else {
+            console.log("CREATED: Ticket Added To DB");
+        }
+    });
 });
 
 //Create Event

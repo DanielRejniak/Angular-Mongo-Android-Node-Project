@@ -114,12 +114,22 @@ app.config(function($routeProvider) {
     
 });
 
+//Ticket Wallet Controller
+app.controller('ticketWalletCtrl', function($scope, $location, $rootScope, $http) {
+
+    //Get User Info Once They Are Logged In
+      $http.get('/getAllMyTickets').success(function(data) {
+        $rootScope.tickets = data;
+      });
+      
+});
+
 //Dashboard Controller
 app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 
       //Get User Info Once They Are Logged In
       $http.get('/getUserInfo').success(function(data) {
-        $scope.userInfo = data;
+        $rootScope.userInfo = data;
       });
 
       //Display Public Events Once The User IS Loged In
@@ -159,6 +169,28 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http) {
 
       console.log(eventView);
+
+      //When User Clicks Get Ticket
+      $scope.getTicket = function(event) {
+
+          console.log("Get This Ticket");
+          var eventNameConcat = $scope.eventViewInfo.eventName.split(' ').join('');
+          var userNameConcat = $scope.userInfo.firstName + $scope.userInfo.lastName;
+          var ticketId = eventNameConcat + userNameConcat;
+          console.log(ticketId);
+
+          ticketID = {
+
+            ticketId: ticketId,
+            ticketOwnerFirstName: $scope.userInfo.firstName,
+            ticketOwnerLastName: $scope.userInfo.lastName,
+            ticketForEvent: eventNameConcat
+          };
+
+          $scope.ticketInfo = ticketID;
+          $http.post('/createTicket', $scope.ticketInfo);
+
+      };
 });
 
 //Event Creator Controller

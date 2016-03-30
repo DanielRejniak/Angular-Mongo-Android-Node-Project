@@ -1,17 +1,15 @@
 <div class="container">
-<div ng-controller="eventViewerCtrl">
-<h1>Welcome To Your Electronic Ticket Wallet</h1>
+<div ng-controller="ticketWalletCtrl">
+<h2>Electronic Ticket Wallet</h2>
 <hr>
 <a href="#/dashboard" class="btn btn-danger"><span class="glyphicon glyphicon-menu-left"></span> Bact To Dashboard</a>
 
-
-<h1>My Tickets</h1>
+<h2>Your Tickets</h2>
 <hr>
-	<strong>Event 		: </strong> 
-	<strong>Location 	: </strong>
-	<strong>Date 		: </strong>  
-	
+<div ng-repeat="ticket in tickets track by $index">
+<strong>Event Name  :  </strong>{{ticket.ticketForEvent}} <a class="pull-right"><span class="glyphicon glyphicon-search"></span> View Event</a>
 <hr>
+</div>
 
 </div>
 </div>
