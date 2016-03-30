@@ -70,6 +70,10 @@ app.use(sessions({
 
 }));
 
+//****************************************//
+//************* WEB MODULES **************//
+//****************************************//
+
 //Get User Info For Dashboard
 app.get('/getUserInfo', function(req, res) {
 
@@ -171,6 +175,7 @@ app.post('/signin' , function(req, res) {
                 console.log("VERIFIED: User Credentials");
                 console.log("CREATED: User Session");
                 req.session.user = user;
+                console.log(req.session.user);
                 res.json({ success: true, message: 'Authentication successfull. You Are Now Redirected To Dashboard!!'});
             }
         }    
@@ -202,6 +207,12 @@ app.post('/createUser' , function(req, res) {
     
 });
 
+//****************************************//
+//********** ANDROID MODULES *************//
+//****************************************//
+
+
+//Android Module To Sign In
 app.get('/signinUrl', function(req, res) {
 
     //Retrieve The Parameters Passed In The Url
@@ -226,7 +237,8 @@ app.get('/signinUrl', function(req, res) {
                 console.log("VERIFIED: User Credentials");
                 console.log("CREATED: User Session");
                 req.session.user = user;
-                res.json({ success: true, message: 'Authentication successfull. You Are Now Redirected To Dashboard!!'});
+                console.log(req.session.user);
+                res.json({ verification: true, firstName: req.session.user.firstName, lastName: req.session.user.lastName, username: req.session.user.username});
             }
         }    
     })
