@@ -1,15 +1,15 @@
 <div ng-controller="dashboardCtrl">
 <div class="container">
-<h1>Welcome, {{userInfo.firstName}}</h1>
+<h2>Welcome, {{userInfo.firstName}}</h2>
 <hr>
 <a href="#/" class="btn btn-danger"><span class="glyphicon glyphicon-off"></span> Log Out</a>
 <a href="#/control_pannel" class="btn btn-success"><span class="glyphicon glyphicon-cog"></span> Control Pannel</a>
 <a href="#/ticketWallet" class="btn btn-primary"><span class="glyphicon glyphicon-tags"></span>  Ticket Wallet</a>
 
-<h1>Events In Your Area</h1>
+<h2>Events In Your Area</h2>
 <hr>
-<div ng-repeat="eventInfo in events">
-<strong>Event Name  :  </strong>{{eventInfo.eventName}} <strong>Location  :  </strong> {{eventInfo.eventLocation}}  <strong>Amount Of Tickets Left  :  </strong>{{eventInfo.eventAvailableTickets}} <a ng-click="findEvent()" class="pull-right"><span class="glyphicon glyphicon-search"></span> View Event</a>
+<div ng-repeat="eventInfo in events track by $index">
+<strong>Event Name  :  </strong>{{eventInfo.eventName}} <strong>Location  :  </strong> {{eventInfo.eventLocation}}  <strong>Amount Of Tickets Left  :  </strong>{{eventInfo.eventAvailableTickets}} <a ng-click="findEvent($index)" class="pull-right"><span class="glyphicon glyphicon-search"></span> View Event</a>
 <hr>
 </div>
 </div>

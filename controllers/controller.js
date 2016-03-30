@@ -117,27 +117,48 @@ app.config(function($routeProvider) {
 //Dashboard Controller
 app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 
-      //Get User Info
+      //Get User Info Once They Are Logged In
       $http.get('/getUserInfo').success(function(data) {
         $scope.userInfo = data;
       });
 
-      //Display Public Events 
+      //Display Public Events Once The User IS Loged In
       $http.get('/getPublicEventInfo').success(function(data) {
         //console.log(data);
         $scope.events = data;
       });
 
-      $scope.findEvent = function() {
+      //When User Clicks ViewEvent Extract Info And Open Event Viewer
+      $scope.findEvent = function(event) {
 
-          console.log("Hello event viewer")
+          //Place The View To Scope
+          $scope.eventView = $scope.events[event];
+          console.log($scope.events[event]);
+        
+          //Create Object Of The View
+          eventView = {
+            eventName: $scope.eventView.eventName,
+            eventDate: $scope.eventView.eventDate,
+            eventLocation: $scope.eventView.eventLocation,
+            eventCreatedBy: $scope.eventView.eventCreatedBy,
+            eventTickets: $scope.eventView.eventAvailableTickets
+          };
+
+          //Put The Event Info Into Global Scope So Its Visible By Event View Page
+          $rootScope.eventViewInfo = eventView;
+
+          //Relocate To Event View Page
+          $location.path('/eventViewer');
+
+        
+
       };
 });
 
 //Event Viewer Controller
 app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http) {
 
-      console.log("Get Info About The Event");
+      console.log(eventView);
 });
 
 //Event Creator Controller

@@ -17,7 +17,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var sessions = require('client-sessions');
 var url = require('url');
-var http = require('http');
+//var http = require('http');
 
 
 //MongoDB Schema
@@ -78,12 +78,6 @@ app.get('/getPublicEventInfo', function(req, res) {
 
     });
 
-});
-
-http.get('/test', function(req, res) {
-
-    var parsed = url.parse(req.url);
-    console.log(parsed);
 });
 
 //Create Event
