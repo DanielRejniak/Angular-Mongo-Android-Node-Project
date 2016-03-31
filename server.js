@@ -244,6 +244,29 @@ app.get('/signinUrl', function(req, res) {
     })
 });
 
+//
+app.post('/createUserUrl' , function(req, res) {
+    
+    //Create User Object To Store Registration Info
+    var user = new User ({
+        firstName: req.query.firstName;
+        lastName: req.query.lastName;
+        username: req.query.username,
+        password: req.query.password
+    });
+
+    //Save To Database
+    user.save(function(err) {
+        if(err) {
+            console.log("ERROR: Can't Register User From Mobile Device");
+        }
+        else {
+            console.log("CREATED: User Is Now Registered From Mobile Device");
+        }
+    });
+    
+});
+
 //Set The Listening Port
 app.listen(usePort);
 
