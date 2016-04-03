@@ -228,7 +228,7 @@ app.get('/signinUrl', function(req, res) {
         if(!user) {
 
             console.log("VERIFIED: Failed");
-            res.json({ success: false, message: 'Authentication failed. Wrong password or Username!!' });
+            res.json({ verification: false, message: 'Authentication failed. Wrong password or Username!!' });
         }
         else {
 
