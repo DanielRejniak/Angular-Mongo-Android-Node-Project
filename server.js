@@ -96,9 +96,19 @@ app.get('/getAllMyTickets', function(req, res) {
 //Get Event Info For Dashboard
 app.get('/getPublicEventInfo', function(req, res) {
 
-    Event.find({ eventPublic: "true"}, function(err, events)  {
-       
+    Event.find({ eventPublic: "true"}, function(err, events)  {   
     res.json(events);
+
+    });
+
+});
+
+//Count Events Of The Currently Logged In User
+app.get('/countMyEvents', function(req, res) {
+
+    Event.count({ eventCreatedBy: req.session.user.firstName}, function(err, count)  { 
+    console.log(count);
+    res.json(count);
 
     });
 
@@ -212,7 +222,7 @@ app.post('/createUser' , function(req, res) {
 //****************************************//
 
 
-//Android Module To Sign In
+//Android Module For User Sign In
 app.get('/signinUrl', function(req, res) {
 
     //Retrieve The Parameters Passed In The Url
@@ -244,13 +254,13 @@ app.get('/signinUrl', function(req, res) {
     })
 });
 
-//
+//Android Module For Android Register
 app.post('/createUserUrl' , function(req, res) {
     
     //Create User Object To Store Registration Info
     var user = new User ({
-        firstName: req.query.firstName;
-        lastName: req.query.lastName;
+        firstName: req.query.firstName,
+        lastName: req.query.lastName,
         username: req.query.username,
         password: req.query.password
     });
@@ -264,6 +274,13 @@ app.post('/createUserUrl' , function(req, res) {
             console.log("CREATED: User Is Now Registered From Mobile Device");
         }
     });
+    
+});
+
+//Android Module To Utalise The Ticket From Wallet
+app.post('/useTicketUrl' , function(req, res) {
+    
+    
     
 });
 

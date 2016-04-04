@@ -7,7 +7,7 @@ app.config(function($routeProvider) {
    
    .when('/', 
    {
-       templateUrl: 'views/login_form.html'
+       templateUrl: 'views/public_views/login_form.html'
    })
    
    .when('/dashboard', 
@@ -30,12 +30,12 @@ app.config(function($routeProvider) {
    
    .when('/register', 
    {
-       templateUrl: 'views/register_form.html'
+       templateUrl: 'views/public_views/register_form.html'
    })
 
    .when('/login', 
    {
-       templateUrl: 'views/login.html'
+       templateUrl: 'views/public_views/login.html'
    })
 
    .when('/control_pannel', 
@@ -291,4 +291,16 @@ app.controller('registerCtrl', function($scope, $http, $location) {
         }  
         
     };
+});
+
+//Control Pannel Controller 
+app.controller('controlPannelCtrl', function($scope, $http, $location) {
+
+    //Count The Amount Of Events Created By Current User
+      $http.get('/countMyEvents').success(function(data) {
+        $scope.test = data;
+        console.log("Hello");
+        //console.log(myEventInfo);
+      });
+    
 });
