@@ -278,11 +278,25 @@ app.post('/createUserUrl' , function(req, res) {
 });
 
 //Android Module To Utalise The Ticket From Wallet
-app.post('/useTicketUrl' , function(req, res) {
+app.get('/useTicketUrl' , function(req, res) {
     
-    
-    
-});
+    //Retrieve The Parameters Passed In The Url
+    var firstName = req.query.firstName;
+    var lastName = req.query.lastName;
+    var eventName = req.query.eventName;
+
+    Ticket.remove({ ticketOwnerFirstName: firstName, ticketOwnerLastName: lastName, ticketForEvent: eventName}, function(err) {
+        if (!err) {
+            console.log("Ticket Sucessfully Checked In");
+            res.json({ verification: true, message: 'Authentication Passed. Ticket Checked In!!' });
+        }
+        else {
+            console.log("Failed To Check In Ticket");
+        }
+    });
+
+    //useTicketUrl?firstName=Daniel&lastName=Rejniak&eventName=DCUExpoPresentation
+});    
 
 //Set The Listening Port
 app.listen(usePort);

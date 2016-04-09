@@ -1,6 +1,23 @@
+<!-- Fixed navbar -->
+<div id="navigation" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><b>NFCVT | Create Event</b></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/"><strong>Logout</strong></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
 <div class="container">
-<h2>Admin Event Creator Pannel</h2>
-<hr>
+<br>
 
 <!-- Event Creator Controller -->
 <div ng-controller="eventCreatorCtrl">
@@ -9,7 +26,10 @@
     <form action="/" id="myRegister">
         <input type="text" id="eventName" ng-model="eventName" placeholder="Event Name" style="width: 40%"><br>
         <input type="text" id="eventLocation" ng-model="eventLocation" placeholder="Event Location" style="width: 40%"><br>
-        <input type="text" id="eventDate" ng-model="eventDate" placeholder="Event Data" style="width: 40%"><br>
+        <!-- <input type="text" id="eventDate" ng-model="eventDate" placeholder="Event Data" style="width: 40%"><br> -->
+        <h4>Standard date-picker</h4>
+        <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
+
         <input type="text" id="eventAvailableTickets" ng-model="eventAvailableTickets" placeholder="Amount Of Tickets" style="width: 40%"><br>
         <textarea class="form-control" rows="5" id="comment" style="width: 40%" placeholder="Event Description"></textarea>
         <hr>
