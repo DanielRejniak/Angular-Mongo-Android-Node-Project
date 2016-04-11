@@ -40,7 +40,8 @@ var Event = mongoose.model('Event', new Schema({
     eventDate: String,
     eventAvailableTickets: Number,
     eventCreatedBy: String,
-    eventPublic: String
+    eventPublic: String,
+    eventActivation: Boolean
 
 }));
 
@@ -114,6 +115,27 @@ app.get('/countMyEvents', function(req, res) {
 
 });
 
+//Display Evets Created By Logged In User
+app.post('/getEventGuest', function(req, res) {
+
+    console.log(req.body.eventName.split(' ').join(''));
+    Ticket.find({ ticketForEvent: req.body.eventName.split(' ').join('')}, function(err, tickets)  { 
+    res.json(tickets);
+
+    });
+
+});
+
+//Display Guests For Current Event
+app.get('/displayMyEvents', function(req, res) {
+
+    Event.find({ eventCreatedBy: req.session.user.firstName}, function(err, events)  { 
+    res.json(events);
+
+    });
+
+});
+
 //Create Event
 app.post('/createTicket', function(req, res) {
 
@@ -148,7 +170,8 @@ app.post('/createEvent', function(req, res) {
         eventDate: req.body.eventDate,
         eventAvailableTickets: req.body.eventAvailableTickets,
         eventCreatedBy: req.session.user.firstName,
-        eventPublic: "true"
+        eventPublic: "true",
+        eventActivation: false
     });
 
     //Save To Database
@@ -296,6 +319,7 @@ app.get('/useTicketUrl' , function(req, res) {
     });
 
     //useTicketUrl?firstName=Daniel&lastName=Rejniak&eventName=DCUExpoPresentation
+    
 });    
 
 //Set The Listening Port

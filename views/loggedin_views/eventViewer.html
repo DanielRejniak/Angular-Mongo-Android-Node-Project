@@ -1,7 +1,25 @@
+<div ng-controller="dashboardCtrl">
+<!-- Fixed navbar -->
+<div id="navigation" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><b>NFCVT | {{eventViewInfo.eventName}}</b></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/"><strong>Logout</strong></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
 <div class="container">
 <div ng-controller="eventViewerCtrl">
-<h2>Event : {{eventViewInfo.eventName}}</h2>
-<hr>
 <a href="#/dashboard" class="btn btn-danger"><span class="glyphicon glyphicon-menu-left"></span> Bact To Dashboard</a>
 <button class="btn btn-success" ng-click="getTicket()"><span class="glyphicon glyphicon-shoping-cart"></span> Get Ticket</button>
 <a href="#/dashboard" class="btn btn-primary"><span class="glyphicon glyphicon-user"></span> Contact Organiser</a>

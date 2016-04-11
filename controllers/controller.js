@@ -72,6 +72,23 @@ app.config(function($routeProvider) {
        templateUrl: 'views/loggedin_views/create_event_pannel.html'
    })
 
+   .when('/manageEvent', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/manageEvents.html'
+   })
+
    .when('/ticketWallet', 
    {
       resolve: 
@@ -118,9 +135,9 @@ app.config(function($routeProvider) {
 app.controller('ticketWalletCtrl', function($scope, $location, $rootScope, $http) {
 
     //Get User Info Once They Are Logged In
-      $http.get('/getAllMyTickets').success(function(data) {
-        $rootScope.tickets = data;
-      });
+    $http.get('/getAllMyTickets').success(function(data) {
+      $rootScope.tickets = data;
+    });
       
 });
 
@@ -157,12 +174,27 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
           //Put The Event Info Into Global Scope So Its Visible By Event View Page
           $rootScope.eventViewInfo = eventView;
 
-          //Relocate To Event View Page
+          //Relocate To Event View Pages
           $location.path('/eventViewer');
 
         
 
       };
+});
+
+//Manage Event Controller
+app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http) {
+
+  
+
+  //console.log(event);
+
+   //Find All Tickets That Belong To The Event
+   $http.post('/getEventGuest', $rootScope.manageEventView).success(function(data) {
+        $scope.tickets = data;
+        //console.log($rootScope.eventView.eventName);
+    });
+
 });
 
 //Event Viewer Controller
@@ -294,13 +326,25 @@ app.controller('registerCtrl', function($scope, $http, $location) {
 });
 
 //Control Pannel Controller 
-app.controller('controlPannelCtrl', function($scope, $http, $location) {
+app.controller('controlPannelCtrl', function($scope, $http, $location, $rootScope) {
 
-    //Count The Amount Of Events Created By Current User
-      $http.get('/countMyEvents').success(function(data) {
-        $scope.test = data;
-        console.log("Hello");
-        //console.log(myEventInfo);
-      });
+  //Count The Amount Of Events Created By Current User
+  $http.get('/countMyEvents').success(function(data) {
+    $scope.test = data;
+  });
+
+  //Display Event That Belong To Logged In User
+  $http.get('/displayMyEvents').success(function(data) {
+    $scope.events = data;
+  });
+
+  $scope.manageEvent = function(event) {
+  
+      //Place The View To Scope
+      $rootScope.manageEventView = $scope.events[event];
+      
+      //Relocate To Event Manage Page
+      $location.path('/manageEvent');
+  }; 
     
 });

@@ -70,6 +70,28 @@
                 </div>
             </div>
         </div>
-
+       
+        <h2>My Events</h2>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Attendance</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="eventInfo in events track by $index">
+                <tr>
+                    <td>{{eventInfo.eventName}}</td>
+                    <td>{{eventInfo.eventLocation}}</td>
+                    <td>Not Active</td>
+                    <td>0/10</td>
+                    <td><a class="btn btn-default" ng-click="manageEvent($index)">Manage</a></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

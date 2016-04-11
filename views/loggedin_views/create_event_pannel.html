@@ -26,12 +26,14 @@
     <form action="/" id="myRegister">
         <input type="text" id="eventName" ng-model="eventName" placeholder="Event Name" style="width: 40%"><br>
         <input type="text" id="eventLocation" ng-model="eventLocation" placeholder="Event Location" style="width: 40%"><br>
-        <!-- <input type="text" id="eventDate" ng-model="eventDate" placeholder="Event Data" style="width: 40%"><br> -->
-        <h4>Standard date-picker</h4>
-        <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
-
+        <input type="text" id="eventDate" ng-model="eventDate" placeholder="Event Data" style="width: 40%"><br>
         <input type="text" id="eventAvailableTickets" ng-model="eventAvailableTickets" placeholder="Amount Of Tickets" style="width: 40%"><br>
         <textarea class="form-control" rows="5" id="comment" style="width: 40%" placeholder="Event Description"></textarea>
+  <label for="sel1">By Default Set To </label>
+  <select class="form-control" id="sel1">
+    <option>Inactive (Recomended)</option>
+    <option>Active</option>
+  </select>
         <hr>
         <a href="#/control_pannel" class="btn btn-primary">Back</a>
         <button type="submit" class="btn btn-success" ng-click="createEvent()" style="width: 20%"><span class="glyphicon glyphicon-save-file"></span> Submit Event</button>

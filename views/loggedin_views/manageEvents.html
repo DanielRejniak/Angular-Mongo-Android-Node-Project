@@ -1,0 +1,61 @@
+<!-- Fixed navbar -->
+<div id="navigation" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><b>NFCVT | Manage Event</b></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/"><strong>Logout</strong></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+<div ng-controller="manageEventCtrl">
+    <br>
+    <a href="#/control_pannel" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Bact To Control Pannel</a>
+    <a href="#/control_pannel" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Remove Event</a>
+    <hr>
+    <div class="alert alert-info">
+        <strong>Status</strong> Event Is Currently Public
+    </div>
+    <hr>
+    
+    <h3>Total Attendance</h3>
+    
+    <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+  aria-valuemin="0" aria-valuemax="100" style="width:10%">
+    1/10 Attendance
+        </div>
+    </div>
+    <hr>
+    <h3>Guests</h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="ticket in tickets track by $index">
+            <tr>
+                <td>{{ticket.ticketOwnerFirstName}}</td>
+                <td>{{ticket.ticketOwnerLastName}}</td>
+                <td>Checked In</span></td>
+                <td><a class="btn btn-default" ng-click="manageEvent($index)">Ban</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
