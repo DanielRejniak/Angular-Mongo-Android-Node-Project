@@ -26,8 +26,19 @@
 <h2>Events In Your Area</h2>
 <hr>
 <div ng-repeat="eventInfo in events track by $index">
-<strong>Event Name  :  </strong>{{eventInfo.eventName}} <strong>Location  :  </strong> {{eventInfo.eventLocation}} <a class="btn btn-success pull-right" ng-click="findEvent($index)">{{eventInfo.eventAvailableTickets}} Tickets Left View Now</a>
-<hr>
+
+<!-- Thumbnail To Hold The Event Info --> 
+<div class="col-xs-18 col-sm-6 col-md-3">
+    <div class="thumbnail">
+        <img src="http://placehold.it/500x300" alt="">
+        <div class="caption">
+            <h4><strong>{{eventInfo.eventName}}</strong><p> {{eventInfo.eventLocation}}</p></h4>
+            <h5>{{eventInfo.eventAvailableTickets}} tickets avaialble</h5>
+            <p>....</p>
+            <p><a class="btn btn-success btn-xs" ng-click="findEvent($index)" role="button" style="width:100%">View</a></p>
+        </div>
+    </div>
+</div>
 </div>
 </div>
 

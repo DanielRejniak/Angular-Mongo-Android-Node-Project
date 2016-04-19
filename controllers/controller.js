@@ -195,6 +195,12 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
         //console.log($rootScope.eventView.eventName);
     });
 
+   //Remove The Event The Event 
+   $scope.manageEventRemove = function() {
+
+      console.log($scope.tickets);
+   };
+
 });
 
 //Event Viewer Controller

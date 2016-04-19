@@ -320,6 +320,21 @@ app.get('/useTicketUrl' , function(req, res) {
 
     //useTicketUrl?firstName=Daniel&lastName=Rejniak&eventName=DCUExpoPresentation
     
+});
+
+//Android Module Get All Tickets That Bellng To User
+app.get('/getAllMyTicketsUrl', function(req, res) {
+
+    var firstName = req.query.firstName;
+    Ticket.find({ ticketOwnerFirstName: firstName}, function(err, tickets)  {
+       
+    res.json(tickets);
+
+    //Sample Url To Retrieve User Ticekts
+    //getAllMyTicketsUrl?firstName=Daniel    
+
+    });
+
 });    
 
 //Set The Listening Port
