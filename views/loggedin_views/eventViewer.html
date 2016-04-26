@@ -1,4 +1,3 @@
-<div ng-controller="dashboardCtrl">
 <!-- Fixed navbar -->
 <div id="navigation" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -20,6 +19,7 @@
 
 <div class="container">
 <div ng-controller="eventViewerCtrl">
+<br>
 <a href="#/dashboard" class="btn btn-danger"><span class="glyphicon glyphicon-menu-left"></span> Bact To Dashboard</a>
 <button class="btn btn-success" ng-click="getTicket()"><span class="glyphicon glyphicon-shoping-cart"></span> Get Ticket</button>
 <a href="#/dashboard" class="btn btn-primary"><span class="glyphicon glyphicon-user"></span> Contact Organiser</a>
@@ -34,7 +34,7 @@
 	<hr>
 	<strong>Event Tickets Left : </strong> {{eventViewInfo.eventTickets}}
 	<hr>
-	<strong>Event Description </strong>
+	<strong>Event Description : </strong> {{eventViewInfo.eventDescription}}
 <hr>
 
 </div>

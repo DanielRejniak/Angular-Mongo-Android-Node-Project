@@ -168,7 +168,8 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
             eventDate: $scope.eventView.eventDate,
             eventLocation: $scope.eventView.eventLocation,
             eventCreatedBy: $scope.eventView.eventCreatedBy,
-            eventTickets: $scope.eventView.eventAvailableTickets
+            eventTickets: $scope.eventView.eventAvailableTickets,
+            eventDescription: $scope.eventView.eventDescription
           };
 
           //Put The Event Info Into Global Scope So Its Visible By Event View Page
@@ -240,7 +241,8 @@ app.controller('eventCreatorCtrl', function($scope, $location, $rootScope, $http
             eventName: $scope.eventName,
             eventLocation: $scope.eventLocation,
             eventDate: $scope.eventDate,
-            eventAvailableTickets: $scope.eventAvailableTickets
+            eventAvailableTickets: $scope.eventAvailableTickets,
+            eventDescription: $scope.eventDescription
         }
 
         var eventObject = event;

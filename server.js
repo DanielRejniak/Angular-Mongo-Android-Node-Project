@@ -40,6 +40,7 @@ var Event = mongoose.model('Event', new Schema({
     eventDate: String,
     eventAvailableTickets: Number,
     eventCreatedBy: String,
+    eventDescription: String,
     eventPublic: String,
     eventActivation: Boolean
 
@@ -170,6 +171,7 @@ app.post('/createEvent', function(req, res) {
         eventDate: req.body.eventDate,
         eventAvailableTickets: req.body.eventAvailableTickets,
         eventCreatedBy: req.session.user.firstName,
+        eventDescription: req.body.eventDescription,
         eventPublic: "true",
         eventActivation: false
     });
@@ -336,7 +338,8 @@ app.get('/getAllMyTicketsUrl', function(req, res) {
 
     });
 
-});    
+}); 
+
 
 //Set The Listening Port
 app.listen(usePort);
