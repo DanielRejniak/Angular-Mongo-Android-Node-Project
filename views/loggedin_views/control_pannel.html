@@ -42,7 +42,7 @@
                     <h1 class="panel-title text-center">Active Events</h1>
                 </div>
                 <div class="panel-body text-center">                        
-                    <strong>0</strong>
+                    <strong>{{test1}}</strong>
                 </div>
             </div>
         </div>
@@ -87,7 +87,7 @@
                 <tr>
                     <td>{{eventInfo.eventName}}</td>
                     <td>{{eventInfo.eventLocation}}</td>
-                    <td>Not Active</td>
+                    <td>{{eventInfo.eventActivation}}</td>
                     <td>0/10</td>
                     <td><a class="btn btn-default" ng-click="manageEvent($index)">Manage</a></td>
                 </tr>

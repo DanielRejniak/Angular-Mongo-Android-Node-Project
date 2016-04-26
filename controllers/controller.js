@@ -196,10 +196,22 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
         //console.log($rootScope.eventView.eventName);
     });
 
-   //Remove The Event The Event 
-   $scope.manageEventRemove = function() {
+   //Activate Event
+   $scope.activateEvent = function() {
 
-      console.log($scope.tickets);
+      $http.post('/activateEvent', $rootScope.manageEventView).success(function(data) {
+        $scope.tickets = data;
+        //console.log($rootScope.eventView.eventName);
+      });
+   };
+
+   //Deactivate Event 
+   $scope.deactivateEvent = function() {
+
+      $http.post('/deactivateEvent', $rootScope.manageEventView).success(function(data) {
+        $scope.tickets = data;
+        //console.log($rootScope.eventView.eventName);
+      });
    };
 
 });
@@ -339,6 +351,11 @@ app.controller('controlPannelCtrl', function($scope, $http, $location, $rootScop
   //Count The Amount Of Events Created By Current User
   $http.get('/countMyEvents').success(function(data) {
     $scope.test = data;
+  });
+
+  //Count The Amount Of Active Events Created By Current User
+  $http.get('/countMyActiveEvents').success(function(data) {
+    $scope.test1 = data;
   });
 
   //Display Event That Belong To Logged In User

@@ -98,7 +98,7 @@ app.get('/getAllMyTickets', function(req, res) {
 //Get Event Info For Dashboard
 app.get('/getPublicEventInfo', function(req, res) {
 
-    Event.find({ eventPublic: "true"}, function(err, events)  {   
+    Event.find({ eventPublic: "true", eventActivation: true}, function(err, events)  {   
     res.json(events);
 
     });
@@ -109,12 +109,25 @@ app.get('/getPublicEventInfo', function(req, res) {
 app.get('/countMyEvents', function(req, res) {
 
     Event.count({ eventCreatedBy: req.session.user.firstName}, function(err, count)  { 
-    console.log(count);
+    console.log("Count My Events : " +count);
     res.json(count);
 
     });
 
 });
+
+//Count Events Of The Currently Logged In User
+app.get('/countMyActiveEvents', function(req, res) {
+
+    Event.count({ eventCreatedBy: req.session.user.firstName, eventActivation: true}, function(err, count)  { 
+    console.log("Count Active Events : " +count);
+    res.json(count);
+
+    });
+
+});
+
+
 
 //Display Evets Created By Logged In User
 app.post('/getEventGuest', function(req, res) {
@@ -123,6 +136,26 @@ app.post('/getEventGuest', function(req, res) {
     Ticket.find({ ticketForEvent: req.body.eventName.split(' ').join('')}, function(err, tickets)  { 
     res.json(tickets);
 
+    });
+
+});
+
+//Activate The Event
+app.post('/activateEvent', function(req, res) {
+
+    Event.update({ eventName: req.body.eventName}, {$set: { "eventActivation": true }}, function(err, tickets)  { 
+    //res.json(tickets);
+    console.log("Event Activated");
+    });
+
+});
+
+//Activate The Event
+app.post('/deactivateEvent', function(req, res) {
+
+    Event.update({ eventName: req.body.eventName}, {$set: { "eventActivation": false }}, function(err, tickets)  { 
+    //res.json(tickets);
+    console.log("Event Deactivated");
     });
 
 });
