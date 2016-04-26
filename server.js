@@ -314,7 +314,8 @@ app.get('/useTicketUrl' , function(req, res) {
             res.json({ verification: true, message: 'Authentication Passed. Ticket Checked In!!' });
         }
         else {
-            console.log("Failed To Check In Ticket");
+            console.log("Ticket Not Checked In");
+            res.json({ verification: false, message: 'Authentication Failed. Ticket Not Checked In!!' });
         }
     });
 
