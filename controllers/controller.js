@@ -219,7 +219,7 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
 //Event Viewer Controller
 app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http) {
 
-      console.log(eventView);
+      //console.log(eventView);
 
       //When User Clicks Get Ticket
       $scope.getTicket = function(event) {
@@ -228,8 +228,7 @@ app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http)
           var eventNameConcat = $scope.eventViewInfo.eventName.split(' ').join('');
           var userNameConcat = $scope.userInfo.firstName + $scope.userInfo.lastName;
           var ticketId = eventNameConcat + userNameConcat;
-          console.log(ticketId);
-
+          
           ticketID = {
 
             ticketId: ticketId,

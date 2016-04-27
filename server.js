@@ -39,6 +39,7 @@ var Event = mongoose.model('Event', new Schema({
     eventLocation: String,
     eventDate: String,
     eventAvailableTickets: Number,
+    eventAttendance: Number,
     eventCreatedBy: String,
     eventDescription: String,
     eventPublic: String,
@@ -127,8 +128,6 @@ app.get('/countMyActiveEvents', function(req, res) {
 
 });
 
-
-
 //Display Evets Created By Logged In User
 app.post('/getEventGuest', function(req, res) {
 
@@ -173,8 +172,6 @@ app.get('/displayMyEvents', function(req, res) {
 //Create Event
 app.post('/createTicket', function(req, res) {
 
-        console.log(req.body.ticketInfo);
-
         var ticketId = new Ticket ({
             ticketId: req.body.ticketId,
             ticketOwnerFirstName: req.body.ticketOwnerFirstName,
@@ -182,16 +179,34 @@ app.post('/createTicket', function(req, res) {
             ticketForEvent: req.body.ticketForEvent
         });
 
+        console.log(req.body.ticketForEvent);
+
+
         //Save To Database
         ticketId.save(function(err) {
-        if(err) {
-            console.log("ERROR: Failed To Create Ticket");
-        }
-        else {
-            console.log("CREATED: Ticket Added To DB");
-        }
-    });
-});
+            
+            if(err) {
+                console.log("ERROR: Failed To Create Ticket");
+            }
+            else 
+            {
+                console.log("CREATED: Ticket Added To DB");
+
+                //Count All The Tickets For This Event
+                Ticket.count({ ticketForEvent: req.body.ticketForEvent }, function(err, count)  { 
+                console.log("Count Attendance For Event : " +count);
+                
+                    //Update The Evnet Information With The New Ticket
+                    Event.update({ eventName: req.body.ticketForEvent}, {$set: { "eventAttendance": count }}, function(err, tickets)  { 
+                        
+                        //Message
+                        console.log("Event " +req.body.ticketForEvent+ " Attendance Updatet To " +count);
+                    });    
+
+                });
+            }
+        });
+    });    
 
 //Create Event
 app.post('/createEvent', function(req, res) {
@@ -199,10 +214,11 @@ app.post('/createEvent', function(req, res) {
     //Create Event Object To Store Event Info
     var event = new Event ({
 
-        eventName: req.body.eventName,
+        eventName: req.body.eventName.split(' ').join(''),
         eventLocation: req.body.eventLocation,
         eventDate: req.body.eventDate,
         eventAvailableTickets: req.body.eventAvailableTickets,
+        eventAttendance: 0,
         eventCreatedBy: req.session.user.firstName,
         eventDescription: req.body.eventDescription,
         eventPublic: "true",
@@ -372,7 +388,6 @@ app.get('/getAllMyTicketsUrl', function(req, res) {
     });
 
 }); 
-
 
 //Set The Listening Port
 app.listen(usePort);

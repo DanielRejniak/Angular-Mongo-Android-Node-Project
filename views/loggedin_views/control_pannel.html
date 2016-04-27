@@ -51,7 +51,7 @@
          <div class="col-xs-6 col-md-3">  
             <div class="panel status panel-warning">
                 <div class="panel-heading">
-                    <h1 class="panel-title text-center">Messages</h1>
+                    <h1 class="panel-title text-center">Total Messages</h1>
                 </div>
                 <div class="panel-body text-center">                        
                     <strong>0</strong>
@@ -79,7 +79,10 @@
                     <th>Name</th>
                     <th>Location</th>
                     <th>Status</th>
-                    <th>Attendance</th>
+                    <th>Date</th>
+                    <th>Expected Attendance</th>
+                    <th>Actual Attendance</th>
+                    <th>Messages</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -88,7 +91,10 @@
                     <td>{{eventInfo.eventName}}</td>
                     <td>{{eventInfo.eventLocation}}</td>
                     <td>{{eventInfo.eventActivation}}</td>
-                    <td>0/10</td>
+                    <td>26/05/2016</td>
+                    <td>{{eventInfo.eventAttendance}}/{{eventInfo.eventAvailableTickets}}</td>
+                    <td>1/{{eventInfo.eventAvailableTickets}}</td>
+                    <td>0</td>
                     <td><a class="btn btn-default" ng-click="manageEvent($index)">Manage</a></td>
                 </tr>
             </tbody>
