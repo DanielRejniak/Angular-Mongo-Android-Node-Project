@@ -22,16 +22,51 @@
 <br>
 <a href="#/control_pannel" class="btn btn-success"><span class="glyphicon glyphicon-cog"></span>Event Manager Pannel</a>
 <a href="#/ticketWallet" class="btn btn-primary"><span class="glyphicon glyphicon-tags"></span>  Ticket Wallet</a>
-<a href="#/dashboard" class="btn btn-primary"><span class="glyphicon glyphicon-tags"></span> Messages</a>
+<a href="#/userInbox" class="btn btn-primary"><span class="badge">0</span> Messages</a>
 
-<h2>Events In Your Area</h2>
 <hr>
+
+<row>
+        <div class="col-xs-4 col-sm-4">
+            <select class="form-control" id="sel1" style="width:30%">
+                <option>-- Country Any --</option>
+                <option>Ireland</option>
+                <option>United Kingdom</option>
+                <option>Uk</option>
+            </select>
+        </div>
+        <div class="col-xs-4 col-sm-4">
+            <select class="form-control" id="sel2" style="width:30%">
+                <option>-- Location Any --</option>
+                <option>Dublin</option>
+                <option>Wexford</option>
+            </select>
+        </div>
+        <div class="col-xs-6 col-sm-4">
+            <select class="form-control" id="sel3" style="width:30%">
+            <option>-- Category Any --</option>
+            <option>Sport</option>
+            <option>Music</option>
+            <option>Bussines</option>
+            <option>Presentations & Conference</option>
+            <option>Food & Drink</option>
+            <option>Party</option>
+            <option>Travel & Turism</option>
+            <option>Hobbies</option>
+            <option>Helth</option>
+            <option>Other</option>
+            </select>
+        </div>
+</row>
+<br>
+<hr>
+
 <div ng-repeat="eventInfo in events track by $index">
 
 <!-- Thumbnail To Hold The Event Info --> 
 <div class="col-xs-18 col-sm-6 col-md-3">
     <div class="thumbnail">
-        <img src="http://placehold.it/500x300" alt="">
+        <img  ng-src="{{eventInfo.eventImageUrl}}" alt="">
         <div class="caption">
             <h4><strong>{{eventInfo.eventName}}</strong><p>{{eventInfo.eventLocation}}</p></h4>
             <h5>{{eventInfo.eventAvailableTickets - eventInfo.eventAttendance}} Tickets Left</h5>

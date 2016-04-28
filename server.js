@@ -37,6 +37,7 @@ var Event = mongoose.model('Event', new Schema({
     id: ObjectId,
     eventName: String,
     eventLocation: String,
+    eventImageUrl: String,
     eventDate: String,
     eventAvailableTickets: Number,
     eventAttendance: Number,
@@ -53,6 +54,18 @@ var Ticket = mongoose.model('Ticket', new Schema({
     ticketOwnerFirstName: String,
     ticketOwnerLastName: String,
     ticketForEvent: String
+
+}));
+
+var Message = mongoose.model('Message', new Schema({
+    id: ObjectId,
+    eventName: String,
+    eventOrganiser: String,
+    message: String,
+    firstNameFrom: String,
+    lastNameFrom: String,
+    firstNameTo: String,
+    lastNameTo: String
 
 }));
 
@@ -84,6 +97,60 @@ app.get('/getUserInfo', function(req, res) {
     res.json(req.session.user);
 
 });
+
+//Send User Message
+app.post('/sendUserMessage', function(req, res) {
+
+    var message = new Message ({
+
+            eventName: req.body.eventName,
+            eventOrganiser: req.body.eventOrganiser,
+            message: req.body.message,
+            firstNameFrom: req.session.user.firstName,
+            lastNameFrom: req.session.user.lastName,
+            firstNameTo: null,
+            lastNameTo: null
+
+        });
+
+    //Send Message
+    message.save(function(err) {
+        if(err) {
+            console.log("ERROR: Failed To Send Message");
+        }
+        else {
+            console.log("CREATED: Message Sent");
+        }
+    });
+
+});
+
+//Send Admin Message
+app.post('/sendAdminMessage', function(req, res) {
+
+    var message = new Message ({
+
+            eventName: req.body.eventName,
+            eventOrganiser: null,
+            message: req.body.message,
+            firstNameFrom: req.session.user.firstName,
+            lastNameFrom: req.session.user.lastName,
+            firstNameTo: req.body.firstNameTo,
+            lastNameTo: req.body.lastNameTo
+
+        });
+
+    //Send Message
+    message.save(function(err) {
+        if(err) {
+            console.log("ERROR: Failed To Send Message");
+        }
+        else {
+            console.log("CREATED: Message Sent");
+        }
+    });
+
+}); 
 
 //Get All The Tickets That Bellng To User
 app.get('/getAllMyTickets', function(req, res) {
@@ -117,11 +184,23 @@ app.get('/countMyEvents', function(req, res) {
 
 });
 
-//Count Events Of The Currently Logged In User
+//Count Events Of The Currently Logged In User That Are Active
 app.get('/countMyActiveEvents', function(req, res) {
 
     Event.count({ eventCreatedBy: req.session.user.firstName, eventActivation: true}, function(err, count)  { 
     console.log("Count Active Events : " +count);
+    res.json(count);
+
+    });
+
+});
+
+
+//Count Events Messages Relating To The User
+app.get('/countMyMessages', function(req, res) {
+
+    Message.count({ eventOrganiser: req.session.user.firstName}, function(err, count)  { 
+    console.log("Count My Messages : " +count);
     res.json(count);
 
     });
@@ -149,6 +228,34 @@ app.post('/activateEvent', function(req, res) {
 
 });
 
+//Remove Admin Message
+app.post('/removeAdminMessage', function(req, res) {
+
+    Message.remove({ eventName: req.body.eventName, eventOrganiser: req.body.eventOrganiser, message: req.body.message}, function(err) {
+        if (!err) {
+            console.log("Message Was Sucessfully Removed");
+        }
+        else {
+            console.log("Message Was Not Removed");
+        }
+    });
+
+});
+
+//Remove Admin Message
+app.post('/removeUserMessage', function(req, res) {
+
+    Message.remove({ eventName: req.body.eventName, eventOrganiser: req.body.eventOrganiser, message: req.body.message}, function(err) {
+        if (!err) {
+            console.log("Message Was Sucessfully Removed");
+        }
+        else {
+            console.log("Message Was Not Removed");
+        }
+    });
+
+});
+
 //Activate The Event
 app.post('/deactivateEvent', function(req, res) {
 
@@ -159,11 +266,33 @@ app.post('/deactivateEvent', function(req, res) {
 
 });
 
+
 //Display Guests For Current Event
 app.get('/displayMyEvents', function(req, res) {
 
     Event.find({ eventCreatedBy: req.session.user.firstName}, function(err, events)  { 
     res.json(events);
+
+    });
+
+});
+
+//Display All Messages Belonging To Admin
+app.get('/displayAdminMessages', function(req, res) {
+
+    Message.find({ eventOrganiser: req.session.user.firstName}, function(err, messages)  { 
+    res.json(messages);
+
+    });
+
+});
+
+
+//Display All Messages Belonging To User
+app.get('/displayUserMessages', function(req, res) {
+
+    Message.find({ firstNameTo: req.session.user.firstName, lastNameTo: req.session.user.lastName}, function(err, messages)  { 
+    res.json(messages);
 
     });
 
@@ -216,6 +345,7 @@ app.post('/createEvent', function(req, res) {
 
         eventName: req.body.eventName.split(' ').join(''),
         eventLocation: req.body.eventLocation,
+        eventImageUrl: req.body.eventImageUrl,
         eventDate: req.body.eventDate,
         eventAvailableTickets: req.body.eventAvailableTickets,
         eventAttendance: 0,

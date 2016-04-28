@@ -21,10 +21,11 @@
         <br>
         <a href="#/dashboard" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Back</a>
         <a href="#/create_event_pannel" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create Event</a>
+        <a href="#/inbox_message" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Messages</a>
         <hr>
 
         <!-- Total Events -->
-         <div class="col-xs-6 col-md-3">  
+         <div class="col-xs-6 col-md-4">  
             <div class="panel status panel-primary">
                 <div class="panel-heading">
                     <h1 class="panel-title text-center">Created Events</h1>
@@ -36,7 +37,7 @@
         </div>
 
         <!-- Crrently Active Events -->
-         <div class="col-xs-6 col-md-3">  
+         <div class="col-xs-6 col-md-4">  
             <div class="panel status panel-success">
                 <div class="panel-heading">
                     <h1 class="panel-title text-center">Active Events</h1>
@@ -48,25 +49,13 @@
         </div>
 
         <!-- Messages -->
-         <div class="col-xs-6 col-md-3">  
+         <div class="col-xs-6 col-md-4">  
             <div class="panel status panel-warning">
                 <div class="panel-heading">
                     <h1 class="panel-title text-center">Total Messages</h1>
                 </div>
                 <div class="panel-body text-center">                        
-                    <strong>0</strong>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reports -->
-         <div class="col-xs-6 col-md-3">  
-            <div class="panel status panel-danger">
-                <div class="panel-heading">
-                    <h1 class="panel-title text-center">Reoprts</h1>
-                </div>
-                <div class="panel-body text-center">                        
-                    <strong>10</strong>
+                    <strong>{{test2}}</strong>
                 </div>
             </div>
         </div>
@@ -80,9 +69,8 @@
                     <th>Location</th>
                     <th>Status</th>
                     <th>Date</th>
-                    <th>Expected Attendance</th>
-                    <th>Actual Attendance</th>
-                    <th>Messages</th>
+                    <th>Tickets Sold</th>
+                    <th>Checked In</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -90,12 +78,11 @@
                 <tr>
                     <td>{{eventInfo.eventName}}</td>
                     <td>{{eventInfo.eventLocation}}</td>
-                    <td>{{eventInfo.eventActivation}}</td>
+                    <td><strong>{{eventInfo.eventActivation}}</strong></td>
                     <td>26/05/2016</td>
                     <td>{{eventInfo.eventAttendance}}/{{eventInfo.eventAvailableTickets}}</td>
-                    <td>1/{{eventInfo.eventAvailableTickets}}</td>
-                    <td>0</td>
-                    <td><a class="btn btn-default" ng-click="manageEvent($index)">Manage</a></td>
+                    <td>0/{{eventInfo.eventAvailableTickets}}</td>
+                    <td><a class="btn btn-success" ng-click="manageEvent($index)">Manage</a></td>
                 </tr>
             </tbody>
         </table>

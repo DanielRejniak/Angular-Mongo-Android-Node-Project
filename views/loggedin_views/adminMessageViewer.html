@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><b>NFCVT | Wallet</b></a>
+            <a class="navbar-brand" href="#"><b>NFCVT | Message Viewer</b></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -16,16 +16,24 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
+
 <div class="container">
-<div ng-controller="ticketWalletCtrl">
+<div ng-controller="adminInboxCtrl">
 <br>
 <a href="#/dashboard" class="btn btn-danger"><span class="glyphicon glyphicon-menu-left"></span> Bact To Dashboard</a>
-
-<h2>Your Tickets</h2>
 <hr>
-<div ng-repeat="ticket in tickets track by $index">
-<strong>Event Name  :  </strong>{{ticket.ticketForEvent}} <a class="btn btn-danger pull-right">Cancel Ticket</a>
-<hr>
+<div class="alert alert-info">
+        <strong>From : </strong>{{currentAdminMessage.eventOrganiser}}<br>
+        <strong>About : </strong> {{currentAdminMessage.eventName}}<hr>
+        <strong>Message</strong><br><br>
+        {{currentAdminMessage.message}}
+        <br>
 </div>
+<hr>
+    <h2>Reply</h2>
+    <hr>
+    <input type="text" id="adminMessage" ng-model="adminMessage" placeholder="Message Here" style="width: 100%">
+    <hr>
+    <button type="submit" class="btn btn-success" ng-click="sendAdminMessage()" style="width: 100%"><span class="glyphicon glyphicon-save-file"></span>Reply</button>
 </div>
 </div>

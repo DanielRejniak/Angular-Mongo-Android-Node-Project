@@ -48,14 +48,16 @@
                 <th>Last Name</th>
                 <th>Status</th>
                 <th>Action</th>
+                <th>Message</th>
             </tr>
         </thead>
         <tbody ng-repeat="ticket in tickets track by $index">
             <tr>
                 <td>{{ticket.ticketOwnerFirstName}}</td>
                 <td>{{ticket.ticketOwnerLastName}}</td>
-                <td>Checked In</span></td>
-                <td><a class="btn btn-default" ng-click="manageEvent($index)">Ban</a></td>
+                <td>-</span></td>
+                <td><a class="btn btn-danger" ng-click="manageEvent($index)">Ban</a></td>
+                <td><a class="btn btn-primary" ng-click="manageEvent($index)">Contact</a></td>
             </tr>
         </tbody>
     </table>

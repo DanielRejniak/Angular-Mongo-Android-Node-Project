@@ -55,6 +55,91 @@ app.config(function($routeProvider) {
        templateUrl: 'views/loggedin_views/control_pannel.html'
    })
 
+   .when('/inbox_message', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/inbox_message.html'
+   })
+
+   .when('/adminMessageViewer', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/adminMessageViewer.html'
+   })
+
+   .when('/messageViewer', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/messageViewer.html'
+   })
+
+   .when('/create_message', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/create_message.html'
+   })
+
+   .when('/userInbox', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/userInbox.html'
+   })
+
    .when('/create_event_pannel', 
    {
       resolve: 
@@ -141,6 +226,99 @@ app.controller('ticketWalletCtrl', function($scope, $location, $rootScope, $http
       
 });
 
+//Get Admin Messages 
+app.controller('adminInboxCtrl', function($scope, $location, $rootScope, $http) {
+
+    //Get User Info Once They Are Logged In
+    $http.get('/displayAdminMessages').success(function(data) {
+      $rootScope.messages = data;
+    });
+      
+    $scope.getAdminMessage = function(message)
+    {
+        //Fetch The Admin Message For Message Viewer
+        console.log("View");
+        //console.log($scope.messages[message]);
+
+        $rootScope.currentAdminMessage = $scope.messages[message];
+        $location.path('/adminMessageViewer');
+    }  
+
+    $scope.removeAdminMessage = function(message)
+    {
+        //Remove Admin Message 
+        console.log("Remove");
+        //console.log($scope.messages[message]);
+
+        $http.post('/removeAdminMessage', $scope.messages[message]).success(function(data) {
+        $scope.testy = data;
+        //console.log($rootScope.eventView.eventName);
+        //Relocate To Event View Pages
+        
+        });
+    }
+
+    $scope.sendAdminMessage = function(event) {
+
+        messageBody = {
+            eventName: $rootScope.currentAdminMessage.eventName,
+            firstNameTo: $scope.currentAdminMessage.firstNameFrom,
+            lastNameTo: $scope.currentAdminMessage.lastNameFrom,
+            message: $scope.adminMessage
+        }
+
+        $scope.adminMessage = messageBody;
+        $http.post('/sendAdminMessage', $scope.adminMessage);
+      };
+
+
+});
+
+//Get User Messages 
+app.controller('userInboxCtrl', function($scope, $location, $rootScope, $http) {
+
+    //Fetch All The Messages Related To The User
+    $http.get('/displayUserMessages').success(function(data) {
+      $rootScope.messages = data;
+    });
+
+    $scope.findUserMessage = function(message)
+    {
+        //Fetch The Current Message Info
+        $rootScope.currentMessage = $scope.messages[message];
+
+        console.log($scope.currentMessage);
+
+        //Relocate To Event View Pages
+        $location.path('/messageViewer');
+    }
+
+    $scope.sendMessage = function()
+    {
+        console.log($scope.messageViewerMessage);
+
+        console.log("Message : " + $scope.messageViewerMessage + " Event " + $rootScope.currentMessage.eventName);
+
+        //Message Content $scope.messageViewerMessage
+        //Message For Event $rootScope.currentMessage.eventName 
+
+    }
+
+    $scope.removeUserMessage = function(message)
+    {
+        console.log("Remove");
+        console.log($scope.messages[message]);
+
+        $http.post('/removeUserMessage', $scope.messages[message]).success(function(data) {
+        $scope.testy = data;
+        //console.log($rootScope.eventView.eventName);
+        //Relocate To Event View Pages
+        
+        });
+    }
+  
+});
+
 //Dashboard Controller
 app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 
@@ -185,10 +363,6 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 
 //Manage Event Controller
 app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http) {
-
-  
-
-  //console.log(event);
 
    //Find All Tickets That Belong To The Event
    $http.post('/getEventGuest', $rootScope.manageEventView).success(function(data) {
@@ -241,6 +415,19 @@ app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http)
           $http.post('/createTicket', $scope.ticketInfo);
 
       };
+
+      $scope.sendUserMessage = function(event) {
+
+        message = {
+
+            eventName: $scope.eventViewInfo.eventName,
+            eventOrganiser: $scope.eventViewInfo.eventCreatedBy,
+            message: $scope.eventMessage
+        };
+
+        $scope.messages = message;
+        $http.post('/sendUserMessage', $scope.messages);
+      };
 });
 
 //Event Creator Controller
@@ -253,7 +440,8 @@ app.controller('eventCreatorCtrl', function($scope, $location, $rootScope, $http
             eventLocation: $scope.eventLocation,
             eventDate: $scope.eventDate,
             eventAvailableTickets: $scope.eventAvailableTickets,
-            eventDescription: $scope.eventDescription
+            eventDescription: $scope.eventDescription,
+            eventImageUrl: $scope.eventImageUrl 
         }
 
         var eventObject = event;
@@ -357,10 +545,19 @@ app.controller('controlPannelCtrl', function($scope, $http, $location, $rootScop
     $scope.test1 = data;
   });
 
+  //Count The Amount Of Messages
+  $http.get('/countMyMessages').success(function(data) {
+    $scope.test2 = data;
+  });
+
   //Display Event That Belong To Logged In User
   $http.get('/displayMyEvents').success(function(data) {
     $scope.events = data;
   });
+
+ 
+
+  
 
   $scope.manageEvent = function(event) {
   

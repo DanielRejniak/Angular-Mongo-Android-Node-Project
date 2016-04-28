@@ -1,0 +1,50 @@
+<!-- Fixed navbar -->
+<div id="navigation" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><b>NFCVT | Inbox</b></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/"><strong>Logout</strong></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+<div ng-controller="userInboxCtrl">
+<br>
+<a href="#/dashboard" class="btn btn-danger"><span class="glyphicon glyphicon-menu-left"></span> Bact To Dashboard</a>
+<hr>
+<div class="alert alert-info">
+        <strong>Note</strong> Bellow are all the messages that have been sent to you by users regarding your events. 
+</div>
+<hr>
+	<h2>Inbox</h2>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>About</th>
+                    <th>Action</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="message in messages track by $index">
+                <tr>
+                    <td>{{message.firstNameFrom}}, {{message.lastNameFrom}}</td>
+                    <td>{{message.eventName}}</td>
+                    <td><a class="btn btn-danger" ng-click="removeUserMessage($index)">Remove</a></td>
+                    <td><a class="btn btn-success" ng-click="findUserMessage($index)">View</a></td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+</div>
