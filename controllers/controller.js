@@ -297,7 +297,18 @@ app.controller('userInboxCtrl', function($scope, $location, $rootScope, $http) {
     {
         console.log($scope.messageViewerMessage);
 
-        console.log("Message : " + $scope.messageViewerMessage + " Event " + $rootScope.currentMessage.eventName);
+        //console.log("Message : " + $scope.messageViewerMessage + " Event " + $rootScope.currentMessage.eventName);
+
+        messageBody = {
+
+          message: $scope.messageViewerMessage,
+          event: $rootScope.currentMessage.eventName,
+          firstNameTo: $rootScope.currentMessage.firstNameFrom,
+          lastNameTo: $rootScope.currentMessage.lastNameFrom,
+        }
+
+        $scope.userReply = messageBody;
+        $http.post('/sendUserReply', $scope.userReply);
 
         //Message Content $scope.messageViewerMessage
         //Message For Event $rootScope.currentMessage.eventName 
@@ -331,6 +342,7 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
       $http.get('/getPublicEventInfo').success(function(data) {
         //console.log(data);
         $scope.events = data;
+        console.log($scope.events);
       });
 
       //When User Clicks ViewEvent Extract Info And Open Event Viewer
@@ -338,6 +350,8 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 
           //Place The View To Scope
           $scope.eventView = $scope.events[event];
+          //console.log($scope.eventView.eventCreatedByFirstName);
+          //console.log($scope.eventView.eventCreatedByLastName);
           console.log($scope.events[event]);
         
           //Create Object Of The View
@@ -345,10 +359,15 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
             eventName: $scope.eventView.eventName,
             eventDate: $scope.eventView.eventDate,
             eventLocation: $scope.eventView.eventLocation,
-            eventCreatedBy: $scope.eventView.eventCreatedBy,
+            eventCreatedByFirstName: $scope.eventView.eventCreatedByFirstName,
+            eventCreatedByLastName: $scope.eventView.eventCreatedByLastName,
             eventTickets: $scope.eventView.eventAvailableTickets,
-            eventDescription: $scope.eventView.eventDescription
+            eventDescription: $scope.eventView.eventDescription,
+            eventLocationCountry: $scope.eventView.eventLocationCountry,
+            eventLocationArea: $scope.eventView.eventLocationArea
           };
+
+          console.log(eventView);
 
           //Put The Event Info Into Global Scope So Its Visible By Event View Page
           $rootScope.eventViewInfo = eventView;
@@ -421,7 +440,8 @@ app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http)
         message = {
 
             eventName: $scope.eventViewInfo.eventName,
-            eventOrganiser: $scope.eventViewInfo.eventCreatedBy,
+            eventOrganiserFirstName: $scope.eventViewInfo.eventCreatedByFirstName,
+            eventOrganiserLastName: $scope.eventViewInfo.eventCreatedByLastName,
             message: $scope.eventMessage
         };
 
@@ -441,7 +461,12 @@ app.controller('eventCreatorCtrl', function($scope, $location, $rootScope, $http
             eventDate: $scope.eventDate,
             eventAvailableTickets: $scope.eventAvailableTickets,
             eventDescription: $scope.eventDescription,
-            eventImageUrl: $scope.eventImageUrl 
+            eventImageUrl: $scope.eventImageUrl,
+            eventLocationCountry: $scope.eventLocationCountry,
+            eventLocationArea: $scope.eventLocationArea,
+            eventCategory: $scope.eventCategory,
+            eventStartTime: $scope.eventStartTime,
+            eventFinishTime: $scope.eventFinishTime
         }
 
         var eventObject = event;

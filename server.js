@@ -36,15 +36,20 @@ var User = mongoose.model('User', new Schema({
 var Event = mongoose.model('Event', new Schema({
     id: ObjectId,
     eventName: String,
-    eventLocation: String,
     eventImageUrl: String,
     eventDate: String,
     eventAvailableTickets: Number,
     eventAttendance: Number,
-    eventCreatedBy: String,
+    eventCreatedByFirstName: String,
+    eventCreatedByLastName: String,
     eventDescription: String,
     eventPublic: String,
-    eventActivation: Boolean
+    eventActivation: Boolean,
+    eventLocationCountry: String,
+    eventLocationArea: String,
+    eventCategory: String,
+    eventStartTime: String,
+    eventFinishTime: String
 
 }));
 
@@ -108,8 +113,8 @@ app.post('/sendUserMessage', function(req, res) {
             message: req.body.message,
             firstNameFrom: req.session.user.firstName,
             lastNameFrom: req.session.user.lastName,
-            firstNameTo: null,
-            lastNameTo: null
+            firstNameTo: req.body.eventOrganiserFirstName,
+            lastNameTo: req.body.eventOrganiserLastName
 
         });
 
@@ -152,6 +157,36 @@ app.post('/sendAdminMessage', function(req, res) {
 
 }); 
 
+//Send User Replu
+app.post('/sendUserReply', function(req, res) {
+
+    console.log(req.body);
+
+    var message = new Message ({
+
+        eventName: req.body.event,
+        eventOrganiser: null,
+        message: req.body.message,
+        firstNameFrom: req.session.user.firstName,
+        lastNameFrom: req.session.user.lastName,
+        firstNameTo: req.body.firstNameTo,
+        lastNameTo: req.body.lastNameTo
+    });
+
+    console.log(message);
+
+    //Send Message
+    message.save(function(err) {
+        if(err) {
+            console.log("ERROR: Failed To Send Message");
+        }
+        else {
+            console.log("CREATED: Message Sent");
+        }
+    });
+
+}); 
+
 //Get All The Tickets That Bellng To User
 app.get('/getAllMyTickets', function(req, res) {
 
@@ -176,7 +211,7 @@ app.get('/getPublicEventInfo', function(req, res) {
 //Count Events Of The Currently Logged In User
 app.get('/countMyEvents', function(req, res) {
 
-    Event.count({ eventCreatedBy: req.session.user.firstName}, function(err, count)  { 
+    Event.count({ eventCreatedByFirstName: req.session.user.firstName}, function(err, count)  { 
     console.log("Count My Events : " +count);
     res.json(count);
 
@@ -187,7 +222,7 @@ app.get('/countMyEvents', function(req, res) {
 //Count Events Of The Currently Logged In User That Are Active
 app.get('/countMyActiveEvents', function(req, res) {
 
-    Event.count({ eventCreatedBy: req.session.user.firstName, eventActivation: true}, function(err, count)  { 
+    Event.count({ eventCreatedByFirstName: req.session.user.firstName, eventActivation: true}, function(err, count)  { 
     console.log("Count Active Events : " +count);
     res.json(count);
 
@@ -199,7 +234,7 @@ app.get('/countMyActiveEvents', function(req, res) {
 //Count Events Messages Relating To The User
 app.get('/countMyMessages', function(req, res) {
 
-    Message.count({ eventOrganiser: req.session.user.firstName}, function(err, count)  { 
+    Message.count({ firstNameTo: req.session.user.firstName, lastNameTo: req.session.user.lastName}, function(err, count)  { 
     console.log("Count My Messages : " +count);
     res.json(count);
 
@@ -270,7 +305,7 @@ app.post('/deactivateEvent', function(req, res) {
 //Display Guests For Current Event
 app.get('/displayMyEvents', function(req, res) {
 
-    Event.find({ eventCreatedBy: req.session.user.firstName}, function(err, events)  { 
+    Event.find({ eventCreatedByFirstName: req.session.user.firstName }, function(err, events)  { 
     res.json(events);
 
     });
@@ -280,7 +315,8 @@ app.get('/displayMyEvents', function(req, res) {
 //Display All Messages Belonging To Admin
 app.get('/displayAdminMessages', function(req, res) {
 
-    Message.find({ eventOrganiser: req.session.user.firstName}, function(err, messages)  { 
+
+    Message.find({ firstNameTo: req.session.user.firstName, lastNameTo: req.session.user.lastName}, function(err, messages)  { 
     res.json(messages);
 
     });
@@ -344,16 +380,24 @@ app.post('/createEvent', function(req, res) {
     var event = new Event ({
 
         eventName: req.body.eventName.split(' ').join(''),
-        eventLocation: req.body.eventLocation,
         eventImageUrl: req.body.eventImageUrl,
         eventDate: req.body.eventDate,
         eventAvailableTickets: req.body.eventAvailableTickets,
         eventAttendance: 0,
-        eventCreatedBy: req.session.user.firstName,
+        eventCreatedByFirstName: req.session.user.firstName,
+        eventCreatedByLastName: req.session.user.lastName,
         eventDescription: req.body.eventDescription,
         eventPublic: "true",
-        eventActivation: false
+        eventActivation: false,
+        eventLocationCountry: req.body.eventLocationCountry,
+        eventLocationArea: req.body.eventLocationArea,
+        eventCategory: req.body.eventCategory,
+        eventStartTime: req.body.eventStartTime,
+        eventFinishTime: req.body.eventFinishTime
+
     });
+
+    console.log(event);
 
     //Save To Database
     event.save(function(err) {

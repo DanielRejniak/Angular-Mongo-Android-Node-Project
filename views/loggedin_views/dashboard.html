@@ -19,62 +19,30 @@
 </div>
 
 <div class="container">
-<br>
-<a href="#/control_pannel" class="btn btn-success"><span class="glyphicon glyphicon-cog"></span>Event Manager Pannel</a>
-<a href="#/ticketWallet" class="btn btn-primary"><span class="glyphicon glyphicon-tags"></span>  Ticket Wallet</a>
-<a href="#/userInbox" class="btn btn-primary"><span class="badge">0</span> Messages</a>
+    <br>
+    <a href="#/control_pannel" class="btn btn-success"><span class="glyphicon glyphicon-cog"></span>Event Manager Pannel</a>
+    <a href="#/ticketWallet" class="btn btn-primary"><span class="glyphicon glyphicon-tags"></span>  Ticket Wallet</a>
+    <a href="#/userInbox" class="btn btn-primary"><span class="badge">0</span> Messages</a>
 
-<hr>
+    <hr>
+        <p><input type="text" ng-model="test"></p>
+        {{test}}
+    <hr>
 
-<row>
-        <div class="col-xs-4 col-sm-4">
-            <select class="form-control" id="sel1" style="width:30%">
-                <option>-- Country Any --</option>
-                <option>Ireland</option>
-                <option>United Kingdom</option>
-                <option>Uk</option>
-            </select>
-        </div>
-        <div class="col-xs-4 col-sm-4">
-            <select class="form-control" id="sel2" style="width:30%">
-                <option>-- Location Any --</option>
-                <option>Dublin</option>
-                <option>Wexford</option>
-            </select>
-        </div>
-        <div class="col-xs-6 col-sm-4">
-            <select class="form-control" id="sel3" style="width:30%">
-            <option>-- Category Any --</option>
-            <option>Sport</option>
-            <option>Music</option>
-            <option>Bussines</option>
-            <option>Presentations & Conference</option>
-            <option>Food & Drink</option>
-            <option>Party</option>
-            <option>Travel & Turism</option>
-            <option>Hobbies</option>
-            <option>Helth</option>
-            <option>Other</option>
-            </select>
-        </div>
-</row>
-<br>
-<hr>
-
-<div ng-repeat="eventInfo in events track by $index">
-
-<!-- Thumbnail To Hold The Event Info --> 
-<div class="col-xs-18 col-sm-6 col-md-3">
-    <div class="thumbnail">
-        <img  ng-src="{{eventInfo.eventImageUrl}}" alt="">
-        <div class="caption">
-            <h4><strong>{{eventInfo.eventName}}</strong><p>{{eventInfo.eventLocation}}</p></h4>
-            <h5>{{eventInfo.eventAvailableTickets - eventInfo.eventAttendance}} Tickets Left</h5>
-            <p><a class="btn btn-success btn-xs" ng-click="findEvent($index)" role="button" style="width:100%">View</a></p>
+    <!--<div ng-repeat="eventInfo in events track by $index | filter : test">-->
+        <div ng-repeat="eventInfo in events track by $index">
+        <!-- Thumbnail To Hold The Event Info --> 
+        <div class="col-xs-18 col-sm-6 col-md-3">
+            <div class="thumbnail">
+                <img  ng-src="{{eventInfo.eventImageUrl}}" alt="">
+                <div class="caption">
+                    <h4><strong>{{eventInfo.eventName}}</strong><p>{{eventInfo.eventLocation}}</p></h4>
+                    <h5>{{eventInfo.eventAvailableTickets - eventInfo.eventAttendance}} Tickets Left</h5>
+                    <p><a class="btn btn-success btn-xs" ng-click="findEvent($index)" role="button" style="width:100%">View</a></p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 </div>
 
 </div>

@@ -77,7 +77,7 @@
             <tbody ng-repeat="eventInfo in events track by $index">
                 <tr>
                     <td>{{eventInfo.eventName}}</td>
-                    <td>{{eventInfo.eventLocation}}</td>
+                    <td>{{eventInfo.eventLocationCountry}}, {{eventInfo.eventLocationArea}}</td>
                     <td><strong>{{eventInfo.eventActivation}}</strong></td>
                     <td>26/05/2016</td>
                     <td>{{eventInfo.eventAttendance}}/{{eventInfo.eventAvailableTickets}}</td>
