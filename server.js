@@ -40,6 +40,7 @@ var Event = mongoose.model('Event', new Schema({
     eventDate: String,
     eventAvailableTickets: Number,
     eventAttendance: Number,
+    eventCheckedInCount: Number,
     eventCreatedByFirstName: String,
     eventCreatedByLastName: String,
     eventDescription: String,
@@ -58,7 +59,8 @@ var Ticket = mongoose.model('Ticket', new Schema({
     ticketId: String,
     ticketOwnerFirstName: String,
     ticketOwnerLastName: String,
-    ticketForEvent: String
+    ticketForEvent: String,
+    ticketStatus: String
 
 }));
 
@@ -249,6 +251,8 @@ app.post('/getEventGuest', function(req, res) {
     Ticket.find({ ticketForEvent: req.body.eventName.split(' ').join('')}, function(err, tickets)  { 
     res.json(tickets);
 
+    console.log(tickets);
+
     });
 
 });
@@ -301,6 +305,15 @@ app.post('/deactivateEvent', function(req, res) {
 
 });
 
+//Ban User From The Event
+app.post('/banUser', function(req, res) {
+
+    Ticket.update({ ticketId: req.body.ticketId}, {$set: { "ticketStatus": "Banned" }}, function(err, tickets)  { 
+    //res.json(tickets);
+    //console.log("banUser");
+    //console.log(req.body.ticketId);
+    });
+});    
 
 //Display Guests For Current Event
 app.get('/displayMyEvents', function(req, res) {
@@ -341,7 +354,8 @@ app.post('/createTicket', function(req, res) {
             ticketId: req.body.ticketId,
             ticketOwnerFirstName: req.body.ticketOwnerFirstName,
             ticketOwnerLastName: req.body.ticketOwnerLastName,
-            ticketForEvent: req.body.ticketForEvent
+            ticketForEvent: req.body.ticketForEvent,
+            ticketStatus: "Not Checked In"
         });
 
         console.log(req.body.ticketForEvent);
@@ -384,6 +398,7 @@ app.post('/createEvent', function(req, res) {
         eventDate: req.body.eventDate,
         eventAvailableTickets: req.body.eventAvailableTickets,
         eventAttendance: 0,
+        eventCheckedInCount: 0,
         eventCreatedByFirstName: req.session.user.firstName,
         eventCreatedByLastName: req.session.user.lastName,
         eventDescription: req.body.eventDescription,
@@ -533,7 +548,19 @@ app.get('/useTicketUrl' , function(req, res) {
     var lastName = req.query.lastName;
     var eventName = req.query.eventName;
 
-    Ticket.remove({ ticketOwnerFirstName: firstName, ticketOwnerLastName: lastName, ticketForEvent: eventName}, function(err) {
+    /*Ticket.remove({ ticketOwnerFirstName: firstName, ticketOwnerLastName: lastName, ticketForEvent: eventName}, function(err) {
+        if (!err) {
+            console.log("Ticket Sucessfully Checked In");
+            res.json({ verification: true, message: 'Authentication Passed. Ticket Checked In!!' });
+        }
+        else {
+            console.log("Ticket Not Checked In");
+            res.json({ verification: false, message: 'Authentication Failed. Ticket Not Checked In!!' });
+        }
+    }); */
+
+    //Check In The User
+    Ticket.update({ ticketOwnerFirstName: firstName , ticketOwnerLastName: lastName, ticketForEvent: eventName}, {$set: { "ticketStatus": "Checked In" }}, function(err)  { 
         if (!err) {
             console.log("Ticket Sucessfully Checked In");
             res.json({ verification: true, message: 'Authentication Passed. Ticket Checked In!!' });
@@ -544,6 +571,14 @@ app.get('/useTicketUrl' , function(req, res) {
         }
     });
 
+    //Count All Checked In Users & Update Count
+    Ticket.count({ ticketForEvent: eventName }, function(err, count)  { 
+                
+        //Update The Evnet Information With The New Ticket
+        Event.update({ eventName: eventName}, {$set: { "eventCheckedInCount": count }}, function(err, tickets)  { 
+            
+        });
+    });    
     //useTicketUrl?firstName=Daniel&lastName=Rejniak&eventName=DCUExpoPresentation
     
 });

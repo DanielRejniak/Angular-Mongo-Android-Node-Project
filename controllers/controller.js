@@ -342,7 +342,6 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
       $http.get('/getPublicEventInfo').success(function(data) {
         //console.log(data);
         $scope.events = data;
-        console.log($scope.events);
       });
 
       //When User Clicks ViewEvent Extract Info And Open Event Viewer
@@ -393,7 +392,7 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
    $scope.activateEvent = function() {
 
       $http.post('/activateEvent', $rootScope.manageEventView).success(function(data) {
-        $scope.tickets = data;
+        //$scope.tickets = data;
         //console.log($rootScope.eventView.eventName);
       });
    };
@@ -402,11 +401,22 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
    $scope.deactivateEvent = function() {
 
       $http.post('/deactivateEvent', $rootScope.manageEventView).success(function(data) {
-        $scope.tickets = data;
+        //$scope.tickets = data;
         //console.log($rootScope.eventView.eventName);
       });
    };
 
+   $scope.banUser = function(ticket) {
+
+      
+      $scope.ticket = $scope.tickets[ticket];
+      //console.log($scope.ticket);
+
+      $http.post('/banUser',  $scope.ticket).success(function(data) {
+        $scope.tickets = data;
+        //console.log($rootScope.eventView.eventName);
+      });
+   };
 });
 
 //Event Viewer Controller
