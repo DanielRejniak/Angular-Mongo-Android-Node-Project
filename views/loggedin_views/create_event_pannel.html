@@ -1,44 +1,93 @@
-<!-- Fixed navbar -->
-<div id="navigation" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><b>NFCVT | Create Event</b></a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/"><strong>Logout</strong></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</div>
-<div class="container">
-<br>
+<!--Navigation-->
+ <div class="navbar-fixed ">
+    <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#/" id="logo-container" class="brand-logo">NFCVT</a>
+            <ul class="right hide-on-med-and-down">
 
+                    <li><a class="red-text text-darken-2" href="#/">
+                        <i class="material-icons left">settings_power</i>Logout</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+</div>
+
+<div class="container">
 <!-- Event Creator Controller -->
 <div ng-controller="eventCreatorCtrl">
     
     <!-- Registration Form -->
-    <form id="myRegister">
-        <input type="text" id="eventName" ng-model="eventName" placeholder="Event Name" style="width: 40%"><br>
-        <input type="text" id="eventLocationCountry" ng-model="eventLocationCountry" placeholder="Event Location Country" style="width: 40%"><br>
-        <input type="text" id="eventLocationArea" ng-model="eventLocationArea" placeholder="Event Location Area" style="width: 40%"><br>
-        <input type="text" id="eventStartTime" ng-model="eventStartTime" placeholder="Event Start Time" style="width: 40%"><br>
-        <input type="text" id="eventFinishTime" ng-model="eventFinishTime" placeholder="Event Finish Time" style="width: 40%"><br>
-        <input type="text" id="eventCategory" ng-model="eventCategory" placeholder="Event Category" style="width: 40%"><br>
-        <input type="text" id="eventDate" ng-model="eventDate" placeholder="Event Data" style="width: 40%"><br>
-        <input type="text" id="eventAvailableTickets" ng-model="eventAvailableTickets" placeholder="Amount Of Tickets" style="width: 40%"><br>
-        <input type="text" id="eventDescription" ng-model="eventDescription" placeholder="Description" style="width: 40%"><br>
-        <input type="text" id="eventImageUrl" ng-model="eventImageUrl" placeholder="Image Url" style="width: 40%"><br>
+    <form class="col s12" id="myRegister">
 
-        <hr>
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="text" id="eventName" ng-model="eventName">
+                 <label for="eventName">Event Naem</label>
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="input-field col s6">
+              <input id="eventLocationCountry" ng-model="eventLocationCountry" type="text">
+              <label for="eventLocationCountry">Event Country</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="eventLocationArea" ng-model="eventLocationArea" type="text">
+                <label for="eventLocationArea">Event Area</label>
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="input-field col s6">
+              <input id="eventStartTime" ng-model="eventStartTime" type="text">
+              <label for="eventStartTime">Event Start Time</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="eventFinishTime" ng-model="eventFinishTime" type="text">
+                <label for="eventFinishTime">Event Finish Time</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+              <input id="eventCategory" ng-model="eventCategory" type="text">
+              <label for="eventCategory">Event Category</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="eventDate" ng-model="eventDate" type="text">
+                <label for="eventDate">Event Date</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+              <input id="eventAvailableTickets" ng-model="eventAvailableTickets" type="text">
+              <label for="eventAvailableTickets">Amount Of Tickets</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="eventImageUrl" ng-model="eventImageUrl" type="text">
+                <label for="eventImageUrl">Image URL</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="eventDescription" ng-model="eventDescription" class="materialize-textarea"></textarea>
+                <label for="eventDescription">Event Description</label>
+            </div>
+        </div>
         
-        <a href="#/control_pannel" class="btn btn-primary">Back</a>
-        <button type="submit" class="btn btn-success" ng-click="createEvent()" style="width: 20%"><span class="glyphicon glyphicon-save-file"></span> Submit Event</button>
+        <div class="row">
+            <div class="input-field col s12">
+                 <button class="btn waves-effect waves-light" type="submit" style="display: block; width: 100%;" ng-click="createEvent()">Create Event</button>
+            </div>
+        </div>
+
     </form>
     
 </div>

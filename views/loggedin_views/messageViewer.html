@@ -1,39 +1,45 @@
-<!-- Fixed navbar -->
-<div id="navigation" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><b>NFCVT | Message Viewer</b></a>
+<!--Navigation-->
+ <div class="navbar-fixed ">
+    <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
+            <ul class="right hide-on-med-and-down">
+
+                    <li><a class="red-text text-darken-2" href="#/">
+                        <i class="material-icons left">settings_power</i>Logout</a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/"><strong>Logout</strong></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
+
+    </nav>
 </div>
 
 <div class="container">
 <div ng-controller="userInboxCtrl">
 <br>
-<a href="#/dashboard" class="btn btn-danger"><span class="glyphicon glyphicon-menu-left"></span> Bact To Dashboard</a>
-<hr>
-<div class="alert alert-info">
-        <strong>From : </strong>{{currentMessage.firstNameFrom}}, {{currentMessage.lastNameFrom}}<br>
-        <strong>About : </strong> {{currentMessage.eventName}}<hr>
-        <strong>Message</strong><br><br>
-        {{currentMessage.message}}
-        <br>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel teal">
+            <span class="white-text">
+            <strong>From : </strong>{{currentMessage.firstNameFrom}}, {{currentMessage.lastNameFrom}}<br>
+            <strong>About : </strong> {{currentMessage.eventName}}<hr>
+            <strong>Message</strong><br><br>
+            {{currentMessage.message}}
+          </span>
+        </div>
+    </div>
 </div>
-<hr>
-    <h2>Reply</h2>
-    <hr>
-	<input type="text" id="messageViewerMessage" ng-model="messageViewerMessage" placeholder="Message Here" style="width: 100%">
-    <hr>
-    <button type="submit" class="btn btn-success" ng-click="sendMessage()" style="width: 100%"><span class="glyphicon glyphicon-save-file"></span>Reply</button>
+
+<div class="input-field col s12">
+  <textarea id="messageViewerMessage" ng-model="messageViewerMessage" class="materialize-textarea"></textarea>
+  <label for="textarea1">Reply Message Here</label>
+</div>
+
+<button type="submit" class="btn btn-success" ng-click="sendMessage()" style="width: 100%"><span class="glyphicon glyphicon-save-file"></span>Send</button>
+
 </div>
 </div>

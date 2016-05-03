@@ -1,54 +1,83 @@
-<!-- Fixed navbar -->
-<div id="navigation" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><b>NFCVT | Manage Event</b></a>
+<!--Navigation-->
+ <div class="navbar-fixed ">
+    <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
+            <ul class="right hide-on-med-and-down">
+
+                    <li><a class="red-text text-darken-2" href="#/">
+                        <i class="material-icons left">settings_power</i>Logout</a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/"><strong>Logout</strong></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
+
+    </nav>
 </div>
 
 <div class="container">
 <div ng-controller="manageEventCtrl">
-    <br>
-    <a href="#/control_pannel" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Bact To Control Pannel</a>
-    <a class="btn btn-danger" ng-click="manageEventRemove()"><span class="glyphicon glyphicon-remove-circle"></span> Remove Event</a>
-    <a class="btn btn-success" ng-click="activateEvent()">Activate Event</a>
-    <a class="btn btn-danger" ng-click="deactivateEvent()">Deactivate Event</a>
-    <hr>
-    <div class="alert alert-info">
-        <strong>Status</strong> Event Is Currently Public
-    </div>
-    <hr>
     
-    <h3>Total Attendance</h3>
+    <div class="row">
+
+          <div class="col s6">
+            <div class="card-panel light-blue darken-3">
+              <span class="white-text">
+              <h5>Tickets Bought</h5>
+              <hr>
+              <h5>20</h5>
+              </span>
+            </div>
+          </div>
+
+          <div class="col s6">
+            <div class="card-panel light-blue darken-3">
+              <span class="white-text">
+              <h5>Checked In</h5>
+              <hr>
+              <h5>10</h5>
+              </span>
+            </div>
+          </div>
+
+          <!--<div class="col s4">
+            <div class="card-panel light-blue darken-3">
+              <div class="row">
+                <a class="btn btn-danger" ng-click="manageEventRemove()"><span class="glyphicon glyphicon-remove-circle"></span> Remove Event</a>
+              </div>
+              <div class="row">
+                <a class="btn btn-success" ng-click="activateEvent()">Activate Event</a>
+              </div>
+              <div class="row">
+                <a class="btn btn-danger" ng-click="deactivateEvent()">Deactivate Event</a>
+              </div>
+            </div>
+          </div>-->
+    </div>      
     
     <div class="progress">
-        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-  aria-valuemin="0" aria-valuemax="100" style="width:50%">
-    1/10 Attendance
+      <div class="determinate" style="width: 70%"></div>
+  </div>
+        
+    <div class="row">
+    <div class="col s12">
+        <div class="card-panel teal">
+            <span class="white-text">
+                <h6 class="center-align">Guest List</h6>
+          </span>
         </div>
     </div>
-    <hr>
-    <h3>Guests</h3>
-    <hr>
+    </div>
     <table class="table">
         <thead>
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Status</th>
-                <th>Action</th>
-                <th>Action</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody ng-repeat="ticket in tickets track by $index">
@@ -56,8 +85,8 @@
                 <td>{{ticket.ticketOwnerFirstName}}</td>
                 <td>{{ticket.ticketOwnerLastName}}</td>
                 <td>{{ticket.ticketStatus}}</span></td>
-                <td><a class="btn btn-danger" ng-click="banUser($index)">Ban</a></td>
-                <td><a class="btn btn-primary" ng-click="banUser($index)">Request Entry</a></td>
+                <td class="right-align"><a class="btn btn-danger red" ng-click="banUser($index)">Ban</a></td>
+                <td class="right-align"><a class="btn btn-primary blue" ng-click="banUser($index)">Request Entry</a></td>
             </tr>
         </tbody>
     </table>

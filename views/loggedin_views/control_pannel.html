@@ -1,66 +1,66 @@
-<!-- Fixed navbar -->
-<div id="navigation" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><b>NFCVT | Admin Control Pannel</b></a>
+<!--Navigation-->
+ <div class="navbar-fixed ">
+    <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
+            <ul class="right hide-on-med-and-down">
+
+                    <li><a class="red-text text-darken-2" href="#/">
+                        <i class="material-icons left">settings_power</i>Logout</a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/"><strong>Logout</strong></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
+
+    </nav>
 </div>
+
+
 <div class="container">
         <div ng-controller="controlPannelCtrl">
-        <br>
+        <!-- <br>
         <a href="#/dashboard" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Back</a>
         <a href="#/create_event_pannel" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create Event</a>
         <a href="#/inbox_message" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Messages</a>
-        <hr>
+        <hr> -->  
 
         <!-- Total Events -->
-         <div class="col-xs-6 col-md-4">  
-            <div class="panel status panel-primary">
-                <div class="panel-heading">
-                    <h1 class="panel-title text-center">Created Events</h1>
-                </div>
-                <div class="panel-body text-center">                        
-                    <strong>{{test}}</strong>
-                </div>
+        <div class="row">
+
+          <div class="col s4">
+            <div class="card-panel light-blue darken-3">
+              <span class="white-text">
+              <h5>Created Events</h5>
+              <hr>
+              <h5>{{test}}</h5>
+              </span>
             </div>
+          </div>
+
+          <div class="col s4">
+            <div class="card-panel light-blue darken-3">
+              <span class="white-text">
+              <h5>Active Events</h5>
+              <hr>
+              <h5>{{test1}}</h5>
+              </span>
+            </div>
+          </div>
+
+           <div href="#/inbox_message" class="col s4">
+            <div class="card-panel light-blue darken-3">
+              <span class="white-text">
+              <h5>Notifications</h5>
+              <hr>
+              <h5>{{test2}}</h5>
+              </span>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Crrently Active Events -->
-         <div class="col-xs-6 col-md-4">  
-            <div class="panel status panel-success">
-                <div class="panel-heading">
-                    <h1 class="panel-title text-center">Active Events</h1>
-                </div>
-                <div class="panel-body text-center">                        
-                    <strong>{{test1}}</strong>
-                </div>
-            </div>
-        </div>
-
-        <!-- Messages -->
-         <div class="col-xs-6 col-md-4">  
-            <div class="panel status panel-warning">
-                <div class="panel-heading">
-                    <h1 class="panel-title text-center">Total Messages</h1>
-                </div>
-                <div class="panel-body text-center">                        
-                    <strong>{{test2}}</strong>
-                </div>
-            </div>
-        </div>
-       
-        <h2>My Events</h2>
         <hr>
         <table class="table">
             <thead>
@@ -71,7 +71,7 @@
                     <th>Date</th>
                     <th>Tickets Sold</th>
                     <th>Checked In</th>
-                    <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody ng-repeat="eventInfo in events track by $index">
@@ -82,9 +82,11 @@
                     <td>26/05/2016</td>
                     <td>{{eventInfo.eventAttendance}}/{{eventInfo.eventAvailableTickets}}</td>
                     <td>{{eventInfo.eventCheckedInCount}}/{{eventInfo.eventAvailableTickets}}</td>
-                    <td><a class="btn btn-success" ng-click="manageEvent($index)">Manage</a></td>
+                    <td class="right-align"><a class="btn btn-success" ng-click="manageEvent($index)">Manage</a></td>
                 </tr>
             </tbody>
         </table>
+
+
     </div>
 </div>

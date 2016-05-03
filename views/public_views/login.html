@@ -1,51 +1,43 @@
-<!-- Fixed navbar -->
-<div id="navigation" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#/"><b>NFCVT | Login</b></a>
+<!--Navigation-->
+ <div class="navbar-fixed ">
+    <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#/" id="logo-container" class="brand-logo">NFCVT</a>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
+    </nav>
 </div>
 
+<div class="container">
 <!-- Register Controller -->
 <div ng-controller="loginCtrl">
-<div id="footerwrap">
-        <div class="container">
-            <div class="col-lg-4">
-            </div>
-            <div class="col-lg-4 text-center">
-                <h3>NFCVT Login</h3>
-                <br>
-                <form role="form" id="myLogin"> 
-                  <div class="form-group">
-                    <input type="text" id="username" ng-model="username" class="form-control" placeholder="Email">
-                  </div>
-                  <div class="form-group">
-                    <input type="password" id="password" ng-model="password" class="form-control" placeholder="Password">
-                  </div>
-                  <hr>
-                  <button type="submit" class="btn btn-large btn-success" style="width:100%" ng-click="submitLoginInfo()">LOGIN</button>
-                </form>
-            </div>
-            <div class="col-lg-4">
-            </div>
-        </div>
-    </div>
+<div class="row" style="padding-top: 5%; ">
+ 
+    <form class="col s12" id="myLogin">
+      <div class="row">
 
-    <div id="c">
-        <div class="container">
-            <p>Made By Daniel Rejniak</p>
-        
+        <!-- Email Input Field -->
+        <div class="input-field col s6 offset-s3">
+             <input type="text" id="username" ng-model="username">
+             <label for="username">Email</label>
         </div>
-    </div>
+
+        <!-- Password Input Field -->
+        <div class="input-field col s6 offset-s3">
+            <input type="password" id="password" ng-model="password">
+            <label for="password">Password</label>
+        </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="row">
+            <div class="input-field col col s6 offset-s3">
+                <button class="btn waves-effect waves-light" type="submit" style="display: block; width: 100%;" ng-click="submitLoginInfo()">Login</button>
+            </div>
+        </div>
+
+    </form>
+        
+</div>
 </div>

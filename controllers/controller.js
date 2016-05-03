@@ -363,7 +363,8 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
             eventTickets: $scope.eventView.eventAvailableTickets,
             eventDescription: $scope.eventView.eventDescription,
             eventLocationCountry: $scope.eventView.eventLocationCountry,
-            eventLocationArea: $scope.eventView.eventLocationArea
+            eventLocationArea: $scope.eventView.eventLocationArea,
+            eventImageUrl: $scope.eventView.eventImageUrl
           };
 
           console.log(eventView);

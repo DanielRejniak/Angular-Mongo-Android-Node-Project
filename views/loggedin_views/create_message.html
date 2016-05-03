@@ -1,35 +1,41 @@
-<!-- Fixed navbar -->
-<div id="navigation" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><b>NFCVT | {{eventViewInfo.eventName}} - Contact Organiser</b></a>
+<!--Navigation-->
+ <div class="navbar-fixed ">
+    <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
+            <ul class="right hide-on-med-and-down">
+
+                    <li><a class="red-text text-darken-2" href="#/">
+                        <i class="material-icons left">settings_power</i>Logout</a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/"><strong>Logout</strong></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
+
+    </nav>
 </div>
+
 
 <div class="container">
 <div ng-controller="eventViewerCtrl">
+
 <br>
-<a href="#/eventViewer" class="btn btn-danger"><span class="glyphicon glyphicon-menu-left"></span> Bact To Event</a>
-<hr>
-<div class="alert alert-info">
-        <strong>Note</strong> This message will be delivered to organiser resposnible for <strong>{{eventViewInfo.eventName}} .</strong>The organiser will contact you soon regarding your query. Thanks you
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel teal">
+            <span class="white-text">Note. There is no need to supply your personal information and event name. All your personal inforamtion along with event your queryin will be feched and passed on to the organiser for easy communication.
+          </span>
+        </div>
+    </div>
 </div>
-<hr>
-	<input type="text" id="eventMessage" ng-model="eventMessage" placeholder="Message Here" style="width: 50%">
-    <hr>
-    <button type="submit" class="btn btn-success" ng-click="sendUserMessage()" style="width: 50%"><span class="glyphicon glyphicon-save-file"></span> Send Message</button>
-<hr>
+    <div class="input-field col s12">
+          <textarea id="eventMessage" ng-model="eventMessage" class="materialize-textarea"></textarea>
+          <label for="textarea1">Message</label>
+    </div>
+
+    <button type="submit" class="btn btn-success" ng-click="sendUserMessage()" style="width: 100%"><span class="glyphicon glyphicon-save-file"></span>Send Message</button>
 
 </div>
 </div>

@@ -1,41 +1,60 @@
-<!-- Fixed navbar -->
-<div id="navigation" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><b>NFCVT | {{eventViewInfo.eventName}}</b></a>
+<!--Navigation-->
+ <div class="navbar-fixed ">
+    <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
+            <ul class="right hide-on-med-and-down">
+
+                    <li><a class="red-text text-darken-2" href="#/">
+                        <i class="material-icons left">settings_power</i>Logout</a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/"><strong>Logout</strong></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
+
+    </nav>
 </div>
 
 <div class="container">
 <div ng-controller="eventViewerCtrl">
 <br>
-<a href="#/dashboard" class="btn btn-danger"><span class="glyphicon glyphicon-menu-left"></span> Bact To Dashboard</a>
-<button class="btn btn-success" ng-click="getTicket()"><span class="glyphicon glyphicon-shoping-cart"></span> Get Ticket</button>
-<a href="#/create_message" class="btn btn-primary"><span class="glyphicon glyphicon-user"></span> Contact Organiser</a>
 
-<h2>Event Info</h2>
+
+<div class="row">
+  <div class="col s4">
+          <img class="responsive-img" ng-src="{{eventViewInfo.eventImageUrl}}">
+  </div>
+  <div class="col s8">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">{{eventViewInfo.eventName}} | {{eventViewInfo.eventLocationCountry}}, {{eventViewInfo.eventLocationArea}}</span>
+              <p></p>
+            </div>
+            <div class="card-action">
+              <a ng-click="getTicket()">Get Ticket</a>
+              <a href="#/create_message">Contact Organiser</a>
+            </div>
+          </div>
+  </div>
+</div>
 <hr>
-	<strong>Event Location : </strong> {{eventViewInfo.eventLocationCountry}}, {{eventViewInfo.eventLocationArea}} 
-	<hr>
-	<strong>Event Date : </strong> {{eventViewInfo.eventDate}}
-	<hr>
-	<strong>Event Organised By : </strong> {{eventViewInfo.eventCreatedByFirstName}}, {{eventViewInfo.eventCreatedByLastName}}
-	<hr>
-	<strong>Event Tickets Left : </strong> {{eventViewInfo.eventTickets}} 
-	<hr>
-	<strong>Event Description : </strong> {{eventViewInfo.eventDescription}}
-<hr>
+        
+<div class="row">
+      <div class="col s12">
+          <div class="card-panel">
+            <span class="blue-text text-darken-2">
+                <strong>Date : </strong>{{eventViewInfo.eventDate}}<br>
+                <strong>Event Organised By : </strong>{{eventViewInfo.eventCreatedByFirstName}}, {{eventViewInfo.eventCreatedByLastName}}<br>
+                <strong>Event Tickets Left : </strong> {{eventViewInfo.eventTickets}}<br>
+                <strong>Description : </strong> {{eventViewInfo.eventDescription}}
+            </span>
+          </div>
+      </div>      
+</div>
+
+
 
 </div>
 </div>
