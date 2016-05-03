@@ -598,6 +598,25 @@ app.get('/getAllMyTicketsUrl', function(req, res) {
 
 }); 
 
+//Android Module Get Information About Event
+app.get('/viewEventUrl', function(req, res) {
+
+    var firstName = req.query.firstName;
+    var lastName = req.query.lastName;
+    var eventName = req.query.eventName;
+    vat eventLocationCountry = req.query.eventLocationCountry;
+
+    Event.find({ eventName: eventName, eventLocationCountry: eventLocationCountry}, function(err, event)  {
+       
+    res.json(event);
+
+    //Sample Url To Retrieve User Ticekts
+    //viewEventUrl?firstName=Daniel&lastName=Rejniak&eventName=..&eventLocationCountry=...    
+
+    });
+
+}); 
+
 //Set The Listening Port
 app.listen(usePort);
 
