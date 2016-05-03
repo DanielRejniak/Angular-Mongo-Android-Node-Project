@@ -560,7 +560,7 @@ app.get('/useTicketUrl' , function(req, res) {
     }); */
 
     //Check In The User
-    Ticket.update({ ticketOwnerFirstName: firstName , ticketOwnerLastName: lastName}, {$set: { "ticketStatus": "Checked In" }}, function(err)  { 
+    Ticket.update({ ticketOwnerFirstName: firstName , ticketOwnerLastName: lastName, ticketStatus: "Not Checked In"}, {$set: { "ticketStatus": "Checked In" }}, function(err)  { 
         if (!err) {
             console.log("Ticket Sucessfully Checked In");
             res.json({ verification: true, message: 'Authentication Passed. Ticket Checked In!!' });
