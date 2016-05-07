@@ -217,6 +217,26 @@ app.config(function($routeProvider) {
 });
 
 //Ticket Wallet Controller
+app.controller('feedbackCtrl', function($scope, $location, $rootScope, $http) {
+
+    $scope.submitFeedback = function() {
+    
+      feedback = {
+        name: $scope.name,
+        email: $scope.email,
+        message: $scope.message
+      }
+
+      $scope.userFeedback = feedback;
+      $http.post('/sendUserFeedback', $scope.userFeedback);
+
+      var $toastContent = $('<span>Thank You For Your Feedback</span>');
+      Materialize.toast($toastContent, 3000);
+
+    }
+});
+
+//Ticket Wallet Controller
 app.controller('ticketWalletCtrl', function($scope, $location, $rootScope, $http) {
 
     //Get User Info Once They Are Logged In
@@ -392,18 +412,22 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
    //Activate Event
    $scope.activateEvent = function() {
 
+      var $toastContent = $('<span>Event Activated</span>');
+      Materialize.toast($toastContent, 3000);
+
       $http.post('/activateEvent', $rootScope.manageEventView).success(function(data) {
-        //$scope.tickets = data;
-        //console.log($rootScope.eventView.eventName);
+
       });
    };
 
    //Deactivate Event 
    $scope.deactivateEvent = function() {
 
+      var $toastContent = $('<span>Event Deactivated</span>');
+      Materialize.toast($toastContent, 3000);
+
       $http.post('/deactivateEvent', $rootScope.manageEventView).success(function(data) {
-        //$scope.tickets = data;
-        //console.log($rootScope.eventView.eventName);
+          
       });
    };
 
@@ -443,6 +467,11 @@ app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http)
 
           $scope.ticketInfo = ticketID;
           $http.post('/createTicket', $scope.ticketInfo);
+
+           var $toastContent = $('<span>Ticket Added To Wallet</span>');
+           Materialize.toast($toastContent, 3000);
+
+           $location.path('/dashboard');
 
       };
 
@@ -530,7 +559,9 @@ app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
 
             //Redirect To Login Page
             console.log("Verification Failed");
-            $location.path('/');
+
+            var $toastContent = $('<span>Wrong Email or Password</span>');
+           Materialize.toast($toastContent, 3000);
           }
         });
       };
@@ -562,6 +593,10 @@ app.controller('registerCtrl', function($scope, $http, $location) {
           $scope.personalInfo = personalInfo;
         
           $http.post('/createUser', $scope.personalInfo);
+
+          var $toastContent = $('<span>User Registered</span>');
+          Materialize.toast($toastContent, 3000);
+
           $location.path('/');
         }  
         

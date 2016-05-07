@@ -16,6 +16,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var sessions = require('client-sessions');
+var sendgrid  = require('sendgrid')('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');
 var url = require('url');
 //var http = require('http');
 
@@ -102,6 +103,28 @@ app.get('/getUserInfo', function(req, res) {
 
     //console.log(req.session.user.firstName);
     res.json(req.session.user);
+
+});
+
+app.post('/sendUserFeedback', function(req, res) {
+
+    console.log(req.body.name);
+    console.log(req.body.email)
+    console.log(req.body.message);
+
+    sendgrid.send({
+        
+        to:       'daniel.rejniak@gmail.com',
+        from:     req.body.email,
+        subject:  'NFCVT User Feedback',
+        text:     req.body.message
+
+    }, function(err, json) 
+
+    {
+        if (err) { return console.error(err); }
+        console.log(json);
+    });
 
 });
 
@@ -604,7 +627,7 @@ app.get('/viewEventUrl', function(req, res) {
     var firstName = req.query.firstName;
     var lastName = req.query.lastName;
     var eventName = req.query.eventName;
-    vat eventLocationCountry = req.query.eventLocationCountry;
+    var eventLocationCountry = req.query.eventLocationCountry;
 
     Event.find({ eventName: eventName, eventLocationCountry: eventLocationCountry}, function(err, event)  {
        
