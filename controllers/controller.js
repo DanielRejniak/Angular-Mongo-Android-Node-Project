@@ -367,8 +367,10 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
       //When User Clicks ViewEvent Extract Info And Open Event Viewer
       $scope.findEvent = function(event) {
 
+          console.log("Index = " +event);
+
           //Place The View To Scope
-          $scope.eventView = $scope.events[event];
+          $scope.eventView = $scope.result[event];
           //console.log($scope.eventView.eventCreatedByFirstName);
           //console.log($scope.eventView.eventCreatedByLastName);
           console.log($scope.events[event]);
@@ -466,10 +468,23 @@ app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http)
           };
 
           $scope.ticketInfo = ticketID;
-          $http.post('/createTicket', $scope.ticketInfo);
+          $http.post('/createTicket', $scope.ticketInfo).then(function(response) {
 
-           var $toastContent = $('<span>Ticket Added To Wallet</span>');
-           Materialize.toast($toastContent, 3000);
+              var createdStatus = response.data.created;
+              var existStatus = response.data.exists;
+
+              if(createdStatus == true)
+              {
+                  var $toastContent = $('<span>Ticket Added To Wallet</span>');
+                  Materialize.toast($toastContent, 3000);
+              }
+
+              if(existStatus == true)
+              {
+                  var $toastContent = $('<span>Ticket Already In Wallet</span>');
+                  Materialize.toast($toastContent, 3000);
+              }
+          });
 
            $location.path('/dashboard');
 
@@ -512,10 +527,14 @@ app.controller('eventCreatorCtrl', function($scope, $location, $rootScope, $http
         var eventObject = event;
         $scope.eventInfo = eventObject;
 
-        $http.post('/createEvent', $scope.eventInfo).then(function(err){
+        $http.post('/createEvent', $scope.eventInfo).success(function(err){
 
-            if(err) {
+            if(!err) {
                 
+                var $toastContent = $('<span>Event Created</span>');
+                Materialize.toast($toastContent, 3000);
+
+                $location.path('/control_pannel');
 
             }
             else {

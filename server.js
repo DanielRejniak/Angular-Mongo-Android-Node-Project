@@ -383,28 +383,43 @@ app.post('/createTicket', function(req, res) {
 
         console.log(req.body.ticketForEvent);
 
-
-        //Save To Database
-        ticketId.save(function(err) {
-            
-            if(err) {
-                console.log("ERROR: Failed To Create Ticket");
-            }
-            else 
+        //Check If Ticket Already Exists In The Database
+        Ticket.findOne({ ticketOwnerFirstName: req.body.ticketOwnerFirstName, ticketOwnerLastName: req.body.ticketOwnerLastName, ticketForEvent: req.body.ticketForEvent}, function(err, ticket)
+        {
+            if(ticket != null)
             {
-                console.log("CREATED: Ticket Added To DB");
+                console.log("Ticekt Exists");
+                res.json({ created: false, exists: true });
 
-                //Count All The Tickets For This Event
-                Ticket.count({ ticketForEvent: req.body.ticketForEvent }, function(err, count)  { 
-                console.log("Count Attendance For Event : " +count);
-                
-                    //Update The Evnet Information With The New Ticket
-                    Event.update({ eventName: req.body.ticketForEvent}, {$set: { "eventAttendance": count }}, function(err, tickets)  { 
+            }
+            else
+            {
+                console.log("Ticket Created");
+                res.json({ created: true, exists: false });
+
+                //Save To Database
+                ticketId.save(function(err) {
+        
+                    if(err) {
+                        console.log("ERROR: Failed To Create Ticket");
+                    }
+                    else 
+                    {
                         
-                        //Message
-                        console.log("Event " +req.body.ticketForEvent+ " Attendance Updatet To " +count);
-                    });    
+                    //Count All The Tickets For This Event
+                    Ticket.count({ ticketForEvent: req.body.ticketForEvent }, function(err, count)  { 
+                        
+                        console.log("Count Attendance For Event : " +count);
+                    
+                        //Update The Evnet Information With The New Ticket
+                        Event.update({ eventName: req.body.ticketForEvent}, {$set: { "eventAttendance": count }}, function(err, tickets)  { 
+                            
+                            //Message
+                            console.log("Event " +req.body.ticketForEvent+ " Attendance Updatet To " +count);
+                        });    
 
+                        });
+                    }
                 });
             }
         });
