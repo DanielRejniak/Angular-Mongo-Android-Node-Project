@@ -55,6 +55,23 @@ app.config(function($routeProvider) {
        templateUrl: 'views/loggedin_views/control_pannel.html'
    })
 
+   .when('/test', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/test.html'
+   })
+
    .when('/inbox_message', 
    {
       resolve: 
