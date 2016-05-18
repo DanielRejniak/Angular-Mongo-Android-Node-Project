@@ -18,51 +18,40 @@
 </div>
 
 <div class="container">
-<div ng-controller="manageEventCtrl">
+  <div ng-controller="manageEventCtrl">
     
+    <!-- Button Controll Row -->
     <div class="row">
 
-          <div class="col s6">
-            <div class="card-panel light-blue darken-3">
-              <span class="white-text">
-              <h5>Tickets Bought</h5>
-              <hr>
-              <h5>20</h5>
-              </span>
-            </div>
-          </div>
+      <div class="col s6">
+        <div class="card-panel light-blue darken-3">
+          <span class="white-text">
+            <h5>Tickets Bought</h5>
+            <hr>
+            <h5>{{manageEventView.eventAttendance}}</h5>
+          </span>
+        </div>
+      </div>
 
-          <div class="col s6">
-            <div class="card-panel light-blue darken-3">
-              <span class="white-text">
-              <h5>Checked In</h5>
-              <hr>
-              <h5>10</h5>
-              </span>
-            </div>
-          </div>
+      <div class="col s6">
+        <div class="card-panel light-blue darken-3">
+          <span class="white-text">
+            <h5>Checked In</h5>
+            <hr>
+            <h5>{{manageEventView.eventCheckedInCount}}</h5>
+          </span>
+        </div>
+      </div>
 
-          <!--<div class="col s4">
-            <div class="card-panel light-blue darken-3">
-              <div class="row">
-                <a class="btn btn-danger" ng-click="manageEventRemove()"><span class="glyphicon glyphicon-remove-circle"></span> Remove Event</a>
-              </div>
-              <div class="row">
-                <a class="btn btn-success" ng-click="activateEvent()">Activate Event</a>
-              </div>
-              <div class="row">
-                <a class="btn btn-danger" ng-click="deactivateEvent()">Deactivate Event</a>
-              </div>
-            </div>
-          </div>-->
-    </div>      
+    </div>
+    <!-- End Of Button Control Row -->      
     
     <div class="row">
     <div class="col s4">
       <a class="waves-effect waves-light btn green" style="width:100%" ng-click="activateEvent()"><i class="material-icons left">done</i>Activate</a>
     </div>
       <div class="col s4">
-      <a class="waves-effect waves-light btn" style="width:100%"><i class="material-icons left">delete</i>Remove</a>
+      <a class="waves-effect waves-light btn" style="width:100%" ng-click="removeEvent()"><i class="material-icons left">delete</i>Remove</a>
     </div>
       <div class="col s4">
       <a class="waves-effect waves-light btn red" style="width:100%" ng-click="deactivateEvent()"><i class="material-icons left">https</i>Deactivate</a>
@@ -87,6 +76,7 @@
                 <th>Status</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody ng-repeat="ticket in tickets track by $index">
@@ -95,9 +85,18 @@
                 <td>{{ticket.ticketOwnerLastName}}</td>
                 <td>{{ticket.ticketStatus}}</span></td>
                 <td class="right-align"><a class="btn btn-danger red" ng-click="banUser($index)">Ban</a></td>
-                <td class="right-align"><a class="btn btn-primary blue" ng-click="banUser($index)">Request Entry</a></td>
+                <td class="right-align"><a class="btn btn-primary blue" ng-click="manualEntryForm(ticket)">Request Entry</a></td>
+                <td class="right-align"><a class="btn btn-primary blue" ng-click="manualEntryForm(ticket)">Message</a></td>
             </tr>
         </tbody>
     </table>
+    </div>
+    </div>
 </div>
+
+<div class="fixed-action-btn vertical click-to-toggle">
+    <a class="btn-floating btn-large red" href="#/eventSettingsPannel">
+      <i class="material-icons">settings</i>
+    </a>
+  </div>
 </div>

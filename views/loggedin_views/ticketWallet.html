@@ -32,7 +32,7 @@
                 <tr>
                     <td>{{ticket.ticketForEvent}}</td>
                     <th class="center-align">{{ticket.ticketStatus}}</th>
-                    <td><a class="btn btn-danger pull-right">Cancel Ticket</a></td>
+                    <td><a class="btn btn-danger pull-right"  ng-click="removeUserTicket(ticket)">Cancel Ticket</a></td>
                 </tr>
             </tbody>
         </table>

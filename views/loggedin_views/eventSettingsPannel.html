@@ -1,0 +1,94 @@
+<!--Navigation-->
+ <div class="navbar-fixed ">
+    <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
+            <ul class="right hide-on-med-and-down">
+
+                    <li><a class="red-text text-darken-2" href="#/">
+                        <i class="material-icons left">settings_power</i>Logout</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+</div>
+
+<div class="container">
+<div ng-controller="manageEventCtrl">
+
+<!-- Registration Form -->
+    <form class="col s12" id="myRegister">
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input value='{{eventNameUpdate}}' id="eventName" type="text" ng-model="eventNameUpdate">
+                <label class="active" for="eventName">Event Name</label>
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="input-field col s6">
+              <input value='{{eventLocationCountryUpdate}}'id="eventLocationCountry" type="text" ng-model="eventLocationCountryUpdate">
+              <label class="active" for="eventLocationCountry">Event Country</label>
+            </div>
+
+            <div class="input-field col s6">
+                <input value='{{eventLocationAreaUpdate}}' id="eventLocationArea" ng-model="eventLocationAreaUpdate" type="text">
+                <label class="active" for="eventLocationArea">Event Area</label>
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="input-field col s6">
+              <input  value='{{eventStartTimeUpdate}}' id="eventStartTime" ng-model="eventStartTimeUpdate" type="text">
+              <label class="active" for="eventStartTime">Event Start Time</label>
+            </div>
+            <div class="input-field col s6">
+                <input value='{{eventFinishTimeUpdate}}' id="eventFinishTime" ng-model="eventFinishTimeUpdate" type="text">
+                <label class="active" for="eventFinishTime">Event Finish Time</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+              <input value='{{eventCategoryUpdate}}' id="eventCategory" ng-model="eventCategoryUpdate" type="text">
+              <label class="active" for="eventCategory">Event Category</label>
+            </div>
+
+            <div class="input-field col s6">
+                <input value='{{eventDateUpdate}}' id="eventDate" ng-model="eventDateUpdate" type="text">
+                <label class="active" for="eventDate">Event Date</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+              <input value='{{eventAvailableTicketsUpdate}}' id="eventAvailableTickets" ng-model="eventAvailableTicketsUpdate" type="text">
+              <label class="active" for="eventAvailableTickets">Amount Of Tickets</label>
+            </div>
+            <div class="input-field col s6">
+                <input value='{{eventImageUrlUpdate}}' id="eventImageUrl" ng-model="eventImageUrlUpdate" type="text">
+                <label class="active" for="eventImageUrl">Image Url</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea value='{{eventDescriptionUpdate}}' id="eventDescription" ng-model="eventDescriptionUpdate" class="materialize-textarea"></textarea>
+                <label class="active" for="eventDescription">Event Description</label>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="input-field col s12">
+                 <button class="btn waves-effect waves-light" type="submit" style="display: block; width: 100%;" ng-click="updateEventInfo()">Apply Changes</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>

@@ -123,6 +123,23 @@ app.config(function($routeProvider) {
        templateUrl: 'views/loggedin_views/messageViewer.html'
    })
 
+   .when('/eventSettingsPannel', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/eventSettingsPannel.html'
+   })
+
    .when('/create_message', 
    {
       resolve: 
@@ -155,6 +172,23 @@ app.config(function($routeProvider) {
            }
        },
        templateUrl: 'views/loggedin_views/userInbox.html'
+   })
+
+   .when('/manualEntryForm', 
+   {
+      resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/manualEntryForm.html'
    })
 
    .when('/create_event_pannel', 
@@ -256,10 +290,31 @@ app.controller('feedbackCtrl', function($scope, $location, $rootScope, $http) {
 //Ticket Wallet Controller
 app.controller('ticketWalletCtrl', function($scope, $location, $rootScope, $http) {
 
-    //Get User Info Once They Are Logged In
-    $http.get('/getAllMyTickets').success(function(data) {
-      $rootScope.tickets = data;
-    });
+    
+    $scope.loadData = function () {
+    
+      //Get User Info Once They Are Logged In
+      $http.get('/getAllMyTickets').success(function(data) {
+        $rootScope.tickets = data;
+      });
+    }; 
+
+    //Load The Tickets
+    $scope.loadData();
+ 
+    //Remove User Ticket 
+    $scope.removeUserTicket= function(ticket) {
+
+        console.log(ticket);
+
+        $http.post('/removeUserTicket', ticket);
+
+        //Refresh The Scope
+        $scope.loadData();
+
+        var $toastContent = $('<span>Ticket Removed</span>');
+        Materialize.toast($toastContent, 3000);
+    };
       
 });
 
@@ -422,6 +477,19 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
 //Manage Event Controller
 app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http) {
 
+   //Set Scope Value For Update
+    $scope.eventNameUpdate = $rootScope.manageEventView.eventName;
+    $scope.eventLocationCountryUpdate = $rootScope.manageEventView.eventLocationCountry;
+    $scope.eventLocationAreaUpdate = $rootScope.manageEventView.eventLocationArea;
+    $scope.eventStartTimeUpdate = $rootScope.manageEventView.eventStartTime;
+    $scope.eventFinishTimeUpdate = $rootScope.manageEventView.eventFinishTime;
+    $scope.eventCategoryUpdate = $rootScope.manageEventView.eventCategory;
+    $scope.eventDateUpdate = $rootScope.manageEventView.eventDate;
+    $scope.eventAvailableTicketsUpdate = $rootScope.manageEventView.eventAvailableTickets;
+    $scope.eventImageUrlUpdate = $rootScope.manageEventView.eventImageUrl;
+    $scope.eventDescriptionUpdate = $rootScope.manageEventView.eventDescription;
+
+
    //Find All Tickets That Belong To The Event
    $http.post('/getEventGuest', $rootScope.manageEventView).success(function(data) {
         $scope.tickets = data;
@@ -450,6 +518,19 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
       });
    };
 
+
+   //Deactivate Event 
+   $scope.removeEvent = function() {
+
+      //Remove The Event
+      var $toastContent = $('<span>Event Removed</span>');
+      Materialize.toast($toastContent, 3000); 
+
+      $http.post('/removeEvent', $rootScope.manageEventView);
+
+      //Remove All The Tickets
+   };
+
    $scope.banUser = function(ticket) {
 
       
@@ -460,6 +541,57 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
         $scope.tickets = data;
         //console.log($rootScope.eventView.eventName);
       });
+   };
+
+   //Manual Entry Form
+   $scope.manualEntryForm = function(ticket) {
+
+      //Relocate To Event View Pages
+      $rootScope.ticketOwnerDetails = ticket;
+
+      console.log($rootScope.ticketOwnerDetails);
+      $location.path('/manualEntryForm');
+      
+   };
+
+   //Manual Entry Form
+   $scope.requestEntry = function() {
+
+      var $toastContent = $('<span>Requesting Entry</span>');
+      Materialize.toast($toastContent, 3000);
+      
+      console.log($rootScope.ticketOwnerDetails.ticketId);
+      console.log($scope.code);
+   };
+
+   //Update The Event Information
+   $scope.updateEventInfo = function() {
+
+      updatedEventInfo = {
+
+        eventNameOriginal: $rootScope.manageEventView.eventName,
+        eventName: $scope.eventNameUpdate,
+        eventCountryLocation: $scope.eventLocationCountryUpdate,
+        eventAreaLocation: $scope.eventLocationAreaUpdate,
+        eventDate: $scope.eventDateUpdate,
+        eventAvailableTickets: $scope.eventAvailableTicketsUpdate,
+        eventDescription: $scope.eventDescriptionUpdate,
+        eventImageUrl: $scope.eventImageUrlUpdate,
+        eventLocationCountry: $scope.eventLocationCountryUpdate,
+        eventLocationArea: $scope.eventLocationAreaUpdate,
+        eventCategory: $scope.eventCategoryUpdate,
+        eventStartTime: $scope.eventStartTimeUpdate,
+        eventFinishTime: $scope.eventFinishTimeUpdate
+      };
+     
+      $http.post('/updateEvent',updatedEventInfo);
+
+      var $toastContent = $('<span>Applying Changes</span>');
+      Materialize.toast($toastContent, 3000);
+
+      var $toastContent = $('<span>Event Updated</span>');
+      Materialize.toast($toastContent, 3000);
+
    };
 });
 
@@ -502,8 +634,6 @@ app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http)
                   Materialize.toast($toastContent, 3000);
               }
           });
-
-           $location.path('/dashboard');
 
       };
 

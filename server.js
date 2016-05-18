@@ -106,6 +106,90 @@ app.get('/getUserInfo', function(req, res) {
 
 });
 
+//Update The Event Information
+app.post('/updateEvent', function(req, res) {
+
+    Event.update(
+
+        { eventName: req.body.eventNameOriginal}, 
+            {$set: 
+                { 
+                    "eventName": req.body.eventName, 
+                    "eventDate": req.body.eventDate,
+                    "eventImageUrl": req.body.eventImageUrl,
+                    "eventAvailableTickets": req.body.eventAvailableTickets,
+                    "eventDescription": req.body.eventDescription,
+                    "eventLocationCountry": req.body.eventLocationCountry,
+                    "eventLocationArea": req.body.eventLocationArea,
+                    "eventCategory": req.body.eventCategory,
+                    "eventStartTime": req.body.eventStartTime,
+                    "eventFinishTime": req.body.eventFinishTime
+            }
+        }, 
+
+        function(err, tickets)  { 
+        
+            //res.json(tickets);
+            if(!err)
+            {
+                console.log("Event Has Been Modified");
+            }
+            else
+            {
+                console.log("Event Has Not Been Modified");
+            }
+            
+        }
+    );    
+
+});
+
+//Remove User Ticket
+app.post('/removeUserTicket', function(req, res) {
+
+    console.log(req.body);
+
+    Ticket.remove({ 
+
+        ticketId: req.body.ticketId,
+        ticketOwnerFirstName: req.body.ticketOwnerFirstName, 
+        ticketOwnerLastName: req.body.ticketOwnerLastName
+
+    }, function(err) {
+        if (!err) {
+            console.log("Ticket Was Sucessfully Removed");
+        }
+        else {
+            console.log("Ticket Was Not Removed");
+        }
+    });
+
+});
+
+//Remove User Ticket
+app.post('/removeEvent', function(req, res) {
+
+    console.log(req.body);
+
+    //Remove The Event
+    Event.remove({ 
+        eventName: req.body.eventName
+    }, 
+
+    function(err) {
+        if (!err) {
+            console.log("Event Was Sucessfully Removed");
+        }
+        else {
+            console.log("Event Was Not Removed");
+        }
+    });
+
+    //Update All Tickets To Removed
+    
+
+});
+
 app.post('/sendUserFeedback', function(req, res) {
 
     console.log(req.body.name);

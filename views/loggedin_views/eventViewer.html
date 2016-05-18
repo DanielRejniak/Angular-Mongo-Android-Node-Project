@@ -26,6 +26,12 @@
                         <img ng-click="findEvent($index)" class="activator" ng-src="{{eventInfo.eventImageUrl}}">
                     </div>-->
 
+  <div  class="col s12">
+                <h2 class="center header text_h2">{{eventViewInfo.eventName}}</h2>
+                <hr>
+                <br>
+  </div>   
+
   <div class="row">
     <div class="col s6">
       <a class="waves-effect waves-light btn green" style="width:100%" ng-click="getTicket()"><i class="material-icons left">shop</i>Get Ticket</a>
@@ -36,17 +42,22 @@
       
     </div>
 
-        
-
+      <div class="row">
       <div class="col s12">
-          <div class="card-panel">
-            <span class="blue-text text-darken-2">
-                <h5 class="center-align">Description</h5>
+        <div class="card-panel light-blue">
+          <span class="white-text"><pre>{{eventViewInfo.eventDescription}}</pre>
+          <span class="white-text"><pre>Event Location : {{eventViewInfo.eventLocationCountry}}</pre>
+          <span class="white-text"><pre>Event Date : {{eventViewInfo.eventDate}}</pre>
+          </span>
+        </div>
+      </div>
+    </div>
+ 
+      <div  class="col s12">
+                <h2 class="center header text_h2">Location</h2>
                 <hr>
-                 {{eventViewInfo.eventDescription}}
-            </span>
-          </div>
-      </div>   
+                <br>
+  </div>  
 
       <iframe
   width="600"
