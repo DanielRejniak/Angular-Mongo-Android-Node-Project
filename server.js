@@ -8,6 +8,11 @@ Database Configuration Before Running
 var usePort = 3000;
 var useDb = 'mongodb://localhost/nfcvt';
 
+/***** Set Cryptography Algorithm ****/
+
+var algorithm = 'aes-256-ctr';
+var  password = 'd6F3Efeq';
+
 /*************************************/
 
 //Set The Modules To Be Used
@@ -18,7 +23,10 @@ var mongoose = require('mongoose');
 var sessions = require('client-sessions');
 var sendgrid  = require('sendgrid')('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');
 var url = require('url');
+var crypto = require('crypto');
 //var http = require('http');
+
+//
 
 
 //MongoDB Schema
@@ -601,6 +609,24 @@ app.post('/createUser' , function(req, res) {
     });
     
 });
+//****************************************//
+//*** Encryption / Decryption Modules ****//
+//****************************************//
+
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+ 
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+
 
 //****************************************//
 //********** ANDROID MODULES *************//
@@ -609,6 +635,9 @@ app.post('/createUser' , function(req, res) {
 
 //Android Module For User Sign In
 app.get('/signinUrl', function(req, res) {
+
+
+    //Sample Request : /signinUrl?username=daniel.rejniak@gmail.com&password=admin
 
     //Retrieve The Parameters Passed In The Url
     var username = req.query.username;
@@ -629,11 +658,22 @@ app.get('/signinUrl', function(req, res) {
 
             if(user.username == username && user.password == password) {
 
-                console.log("VERIFIED: User Credentials");
-                console.log("CREATED: User Session");
+                //Create User Session
                 req.session.user = user;
                 console.log(req.session.user);
-                res.json({ verification: true, firstName: req.session.user.firstName, lastName: req.session.user.lastName, username: req.session.user.username});
+
+                //Retrieve First Name & Last Name
+                var firstName = req.session.user.firstName;
+                var lastName = req.session.user.lastName;
+
+                //Combine The User Details
+                var combined = firstName+lastName+username;
+
+                //Encrypt Session Code
+                var sessionKey = encrypt(combined);
+                
+                //Json Respons With Validation & Session Code
+                res.json({ verification: true, sessionKey: sessionKey });
             }
         }    
     })
