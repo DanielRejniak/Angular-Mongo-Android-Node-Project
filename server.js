@@ -38,7 +38,8 @@ var User = mongoose.model('User', new Schema({
     firstName: String,
     lastName: String,
     username: String,
-    password: String
+    password: String,
+    sessionKey: String
 
 }));
 
@@ -591,11 +592,22 @@ app.post('/signin' , function(req, res) {
 app.post('/createUser' , function(req, res) {
     
     //Create User Object To Store Registration Info
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var email = req.body.username;
+
+    //Combine The User Details
+    var combined = firstName+lastName+email;
+
+    //Encrypt Session Code
+    var sessionKey = encrypt(combined);
+
     var user = new User ({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        username: req.body.username,
-        password: req.body.password
+        firstName: firstName,
+        lastName: lastName,
+        username: email,
+        password: req.body.password,
+        sessionKey: sessionKey
     });
 
     //Save To Database
@@ -679,6 +691,29 @@ app.get('/signinUrl', function(req, res) {
     })
 });
 
+//Get User Info Based On sessionKey
+app.get('/sessionRetrieveUrl', function(req, res) {
+
+    //Sample Request : /sessionRetrieveUrl?sessionKey=
+
+    //Retrieve The Parameters Passed In The Url
+    var sessionKey = req.query.sessionKey;
+
+    //Get User Info From Session Key
+    User.findOne({ sessionKey: sessionKey}, function(err, user) {
+
+        //Retrieve First Name & Last Name
+        console.log(user.firstName);
+        console.log(user.lastName);
+        console.log(user.username);
+
+        //Json Respons With Validation & Session Code
+        res.json({ firstName: user.firstName, lastName: user.lastName, email: user.username});
+    });    
+
+
+}); 
+
 //Android Module For Android Register
 app.post('/createUserUrl' , function(req, res) {
     
@@ -748,8 +783,13 @@ app.get('/useTicketUrl' , function(req, res) {
 //Android Module Get All Tickets That Bellng To User
 app.get('/getAllMyTicketsUrl', function(req, res) {
 
+    //Sample Url : /getAllMyTicketsUrl?firstName=Daniel&lastName=Rejniak&email=daniel.rejniak@gmail.com
+
     var firstName = req.query.firstName;
-    Ticket.find({ ticketOwnerFirstName: firstName}, function(err, tickets)  {
+    var lastName = req.query.lastName;
+    var email = req.query.email;
+
+    Ticket.find({ ticketOwnerFirstName: firstName, ticketOwnerLastName: lastName,}, function(err, tickets)  {
        
     res.json(tickets);
 
