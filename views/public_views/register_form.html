@@ -20,14 +20,14 @@
 
         <!-- Firstname Input Field -->
         <div class="input-field col s6 offset-s3">
-            <input type="text" id="firstName" ng-model="firstName">
+            <input type="text" id="firstName" ng-model="firstName" class="validate">
             <label for="text">Firstname</label>
         </div>
 
         <!-- Lastname Input Field -->
         <div class="input-field col s6 offset-s3">
-            <input type="text" id="lastName" ng-model="lastName">
-            <label for="text">Surename</label>
+            <input type="text" id="lastName" ng-model="lastName" class="validate">
+            <label for="text">Lastname</label>
         </div>
 
         <!-- Password Input Field -->
@@ -44,7 +44,7 @@
 
         <!-- Email Input Field -->
         <div class="input-field col s6 offset-s3">
-            <input type="text" id="username" ng-model="username">
+            <input type="email" id="username" ng-model="username" class="validate">
             <label for="email">Email</label>
         </div>
 
@@ -62,11 +62,21 @@
 </div>
 </div>
 
-<div class="fixed-action-btn vertical modal-trigger">
-    <a class="btn-floating btn-large red">
-      <i class="material-icons" onclick="Materialize.toast('Registering is free. To register you need to supply us with your valid personal information and email address', 4000)">help</i>
+<div class="fixed-action-btn vertical">
+    <a class="btn-floating btn-large red" href='#demoModal' modal>
+      <i class="material-icons">help</i>
     </a>
   </div>
+
+<!-- Modal Structure -->
+<div id="demoModal" class="modal">
+    <div class="modal-content">
+        <h4>Why Register ?</h4>
+        <hr>
+        <p>There are several reasons why its important to register.</p>
+        <br>
+    </div>
+</div>
 
 
 </div>

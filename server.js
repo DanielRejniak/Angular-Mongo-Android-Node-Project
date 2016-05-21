@@ -24,10 +24,6 @@ var sessions = require('client-sessions');
 var sendgrid  = require('sendgrid')('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');
 var url = require('url');
 var crypto = require('crypto');
-//var http = require('http');
-
-//
-
 
 //MongoDB Schema
 var Schema = mongoose.Schema;
@@ -39,12 +35,23 @@ var User = mongoose.model('User', new Schema({
     lastName: String,
     username: String,
     password: String,
-    sessionKey: String
+    sessionKey: String,
+    activationKey: String,
+    activation: Boolean,
+
+}));
+
+var EntryKeys = mongoose.model('EntryKeys', new Schema({
+    id: ObjectId,
+    entryKey: String,
+    status: Boolean
 
 }));
 
 var Event = mongoose.model('Event', new Schema({
     id: ObjectId,
+    eventPublicId: String,
+    eventPrivateId: String,
     eventName: String,
     eventImageUrl: String,
     eventDate: String,
@@ -60,29 +67,33 @@ var Event = mongoose.model('Event', new Schema({
     eventLocationArea: String,
     eventCategory: String,
     eventStartTime: String,
-    eventFinishTime: String
+    eventFinishTime: String,
+    eventCreatorSessionKey: String
 
 }));
 
 var Ticket = mongoose.model('Ticket', new Schema({
     id: ObjectId,
     ticketId: String,
+    ticketOwnerEmail: String,
     ticketOwnerFirstName: String,
     ticketOwnerLastName: String,
     ticketForEvent: String,
-    ticketStatus: String
+    ticketStatus: String,
+    ticketRequestEntryCode: String,
+    ticketEventId: String,
+    ticketUserSession: String
 
 }));
 
 var Message = mongoose.model('Message', new Schema({
     id: ObjectId,
-    eventName: String,
-    eventOrganiser: String,
+    about: String,
     message: String,
     firstNameFrom: String,
     lastNameFrom: String,
-    firstNameTo: String,
-    lastNameTo: String
+    senderSessionKey: String,
+    recieverSessionKey: String
 
 }));
 
@@ -112,6 +123,15 @@ app.get('/getUserInfo', function(req, res) {
 
     //console.log(req.session.user.firstName);
     res.json(req.session.user);
+
+});
+
+//Get User Info For Dashboard
+app.get('/destroySession', function(req, res) {
+
+    //console.log(req.session.user.firstName);
+    console.log("Destroying Session");
+    req.session.destroy();
 
 });
 
@@ -160,9 +180,9 @@ app.post('/removeUserTicket', function(req, res) {
 
     Ticket.remove({ 
 
-        ticketId: req.body.ticketId,
-        ticketOwnerFirstName: req.body.ticketOwnerFirstName, 
-        ticketOwnerLastName: req.body.ticketOwnerLastName
+        ticketUserSession: req.session.user.sessionKey,
+        ticketEventId: req.body.ticketEventId
+
 
     }, function(err) {
         if (!err) {
@@ -222,19 +242,20 @@ app.post('/sendUserFeedback', function(req, res) {
 });
 
 //Send User Message
-app.post('/sendUserMessage', function(req, res) {
+app.post('/sendMessage', function(req, res) {
 
     var message = new Message ({
 
-            eventName: req.body.eventName,
-            eventOrganiser: req.body.eventOrganiser,
+            about: req.body.about,
             message: req.body.message,
             firstNameFrom: req.session.user.firstName,
             lastNameFrom: req.session.user.lastName,
-            firstNameTo: req.body.eventOrganiserFirstName,
-            lastNameTo: req.body.eventOrganiserLastName
+            senderSessionKey: req.session.user.sessionKey,
+            recieverSessionKey: req.body.recieverSessionKey
 
         });
+
+    console.log(message);
 
     //Send Message
     message.save(function(err) {
@@ -282,13 +303,12 @@ app.post('/sendUserReply', function(req, res) {
 
     var message = new Message ({
 
-        eventName: req.body.event,
-        eventOrganiser: null,
+        about: req.body.about,
         message: req.body.message,
         firstNameFrom: req.session.user.firstName,
         lastNameFrom: req.session.user.lastName,
-        firstNameTo: req.body.firstNameTo,
-        lastNameTo: req.body.lastNameTo
+        senderSessionKey: req.session.user.sessionKey,
+        recieverSessionKey: req.body.recieverSessionKey
     });
 
     console.log(message);
@@ -305,15 +325,12 @@ app.post('/sendUserReply', function(req, res) {
 
 }); 
 
-//Get All The Tickets That Bellng To User
+//Get All The Tickets That Bellng To Logged In User
 app.get('/getAllMyTickets', function(req, res) {
 
-    Ticket.find({ ticketOwnerFirstName: req.session.user.firstName}, function(err, tickets)  {
-       
-    res.json(tickets);
-
+    Ticket.find({ ticketOwnerFirstName: req.session.user.firstName, ticketOwnerLastName: req.session.user.lastName, ticketUserSession: req.session.user.sessionKey}, function(err, tickets)  {
+        res.json(tickets);
     });
-
 });
 
 //Get Event Info For Dashboard
@@ -329,7 +346,7 @@ app.get('/getPublicEventInfo', function(req, res) {
 //Count Events Of The Currently Logged In User
 app.get('/countMyEvents', function(req, res) {
 
-    Event.count({ eventCreatedByFirstName: req.session.user.firstName}, function(err, count)  { 
+    Event.count({ eventCreatorSessionKey: req.session.user.sessionKey }, function(err, count)  { 
     console.log("Count My Events : " +count);
     res.json(count);
 
@@ -340,7 +357,7 @@ app.get('/countMyEvents', function(req, res) {
 //Count Events Of The Currently Logged In User That Are Active
 app.get('/countMyActiveEvents', function(req, res) {
 
-    Event.count({ eventCreatedByFirstName: req.session.user.firstName, eventActivation: true}, function(err, count)  { 
+    Event.count({ eventCreatorSessionKey: req.session.user.sessionKey, eventActivation: true}, function(err, count)  { 
     console.log("Count Active Events : " +count);
     res.json(count);
 
@@ -363,8 +380,8 @@ app.get('/countMyMessages', function(req, res) {
 //Display Evets Created By Logged In User
 app.post('/getEventGuest', function(req, res) {
 
-    console.log(req.body.eventName.split(' ').join(''));
-    Ticket.find({ ticketForEvent: req.body.eventName.split(' ').join('')}, function(err, tickets)  { 
+    console.log(req.body.eventName);
+    Ticket.find({ ticketForEvent: req.body.eventName}, function(err, tickets)  { 
     res.json(tickets);
 
     console.log(tickets);
@@ -400,14 +417,7 @@ app.post('/removeAdminMessage', function(req, res) {
 //Remove Admin Message
 app.post('/removeUserMessage', function(req, res) {
 
-    Message.remove({ eventName: req.body.eventName, eventOrganiser: req.body.eventOrganiser, message: req.body.message}, function(err) {
-        if (!err) {
-            console.log("Message Was Sucessfully Removed");
-        }
-        else {
-            console.log("Message Was Not Removed");
-        }
-    });
+    Message.remove({ recieverSessionKey: req.session.user.sessionKey, message: req.body.message});
 
 });
 
@@ -434,7 +444,9 @@ app.post('/banUser', function(req, res) {
 //Display Guests For Current Event
 app.get('/displayMyEvents', function(req, res) {
 
-    Event.find({ eventCreatedByFirstName: req.session.user.firstName }, function(err, events)  { 
+    console.log(req.session.user.sessionKey);
+
+    Event.find({ eventCreatorSessionKey: req.session.user.sessionKey }, function(err, events)  { 
     res.json(events);
 
     });
@@ -456,7 +468,7 @@ app.get('/displayAdminMessages', function(req, res) {
 //Display All Messages Belonging To User
 app.get('/displayUserMessages', function(req, res) {
 
-    Message.find({ firstNameTo: req.session.user.firstName, lastNameTo: req.session.user.lastName}, function(err, messages)  { 
+    Message.find({ recieverSessionKey: req.session.user.sessionKey }, function(err, messages)  { 
     res.json(messages);
 
     });
@@ -465,19 +477,29 @@ app.get('/displayUserMessages', function(req, res) {
 
 //Create Event
 app.post('/createTicket', function(req, res) {
+        
+
+        //console.log(req.body.ticketEventPublicId);
+        var userSession = req.session.user.sessionKey;
+        var priv = req.body.ticketEventPrivateId;
+        var entryKeyEnc = encrypt(priv+userSession);
 
         var ticketId = new Ticket ({
             ticketId: req.body.ticketId,
+            ticketEventId: req.body.ticketEventPublicId,
+            ticketOwnerEmail: req.session.user.username,
             ticketOwnerFirstName: req.body.ticketOwnerFirstName,
             ticketOwnerLastName: req.body.ticketOwnerLastName,
             ticketForEvent: req.body.ticketForEvent,
-            ticketStatus: "Not Checked In"
+            ticketStatus: "Not Checked In",
+            ticketRequestEntryCode: null,
+            ticketUserSession: userSession
+            
         });
 
-        console.log(req.body.ticketForEvent);
-
+        
         //Check If Ticket Already Exists In The Database
-        Ticket.findOne({ ticketOwnerFirstName: req.body.ticketOwnerFirstName, ticketOwnerLastName: req.body.ticketOwnerLastName, ticketForEvent: req.body.ticketForEvent}, function(err, ticket)
+        Ticket.findOne({ ticketOwnerFirstName: req.body.ticketOwnerFirstName, ticketOwnerLastName: req.body.ticketOwnerLastName, ticketEventId: req.body.ticketEventPublicId}, function(err, ticket)
         {
             if(ticket != null)
             {
@@ -498,9 +520,26 @@ app.post('/createTicket', function(req, res) {
                     }
                     else 
                     {
-                        
-                    //Count All The Tickets For This Event
-                    Ticket.count({ ticketForEvent: req.body.ticketForEvent }, function(err, count)  { 
+                        //Add The Entry Key
+                         var key = new EntryKeys ({
+
+                            entryKey: entryKeyEnc,
+                            status: false
+                         });
+
+                        key.save(function(err) {
+
+                            if(err) {
+                                console.log("Key Not Created");
+                            }
+                            else
+                            {
+                                console.log("Key Created");
+                            }
+                        });
+
+                        //Count All The Tickets For This Event
+                        Ticket.count({ ticketForEvent: req.body.ticketForEvent }, function(err, count)  { 
                         
                         console.log("Count Attendance For Event : " +count);
                     
@@ -515,16 +554,32 @@ app.post('/createTicket', function(req, res) {
                     }
                 });
             }
-        });
+        }); 
     });    
 
 //Create Event
 app.post('/createEvent', function(req, res) {
 
+    //Create Unique Event Id
+    var random = getRandomInt(1,100000000000000000);
+
+    //Extract User Info
+    var creatorFirstName= req.session.user.firstName;
+    var creatorLastName = req.session.user.lastName;
+
+    //Combine Random Number With User Id & Encrypt
+    var uniqueId = encrypt(random+creatorFirstName+creatorLastName);
+    console.log("Unique : " +uniqueId);
+
+    var privateRand = getRandomInt(1,100000000000000000)
+    var privateId = encrypt(privateRand.toString());
+
     //Create Event Object To Store Event Info
     var event = new Event ({
 
-        eventName: req.body.eventName.split(' ').join(''),
+        eventPublicId: uniqueId,
+        eventPrivateId: privateId,
+        eventName: req.body.eventName,
         eventImageUrl: req.body.eventImageUrl,
         eventDate: req.body.eventDate,
         eventAvailableTickets: req.body.eventAvailableTickets,
@@ -539,7 +594,8 @@ app.post('/createEvent', function(req, res) {
         eventLocationArea: req.body.eventLocationArea,
         eventCategory: req.body.eventCategory,
         eventStartTime: req.body.eventStartTime,
-        eventFinishTime: req.body.eventFinishTime
+        eventFinishTime: req.body.eventFinishTime,
+        eventCreatorSessionKey: req.session.user.sessionKey
 
     });
 
@@ -569,26 +625,44 @@ app.post('/signin' , function(req, res) {
         //If No User Exists
         if(!user) {
 
-            console.log("VERIFIED: Failed");
-            res.json({ success: false, message: 'Authentication failed. Wrong password or Username!!' });
+            console.log("VERIFIED: No Email Exists");
+            res.json({ success: false, message: 'Invalid Email' });
         }
         else {
 
-            if(user.username == req.body.username && user.password == req.body.password) {
+            //Get Encrypted Password Form Db & Decrypt
+            //var decrypted = decrypt(user.password);
 
-                console.log("VERIFIED: User Credentials");
-                console.log("CREATED: User Session");
-                req.session.user = user;
-                console.log(req.session.user);
-                res.json({ success: true, message: 'Authentication successfull. You Are Now Redirected To Dashboard!!'});
+            if(user.username == req.body.username && decrypt(user.password) == req.body.password) {
+
+                //Check If User Activated Thier Account
+                if(user.activation != true) {
+
+                    console.log("VERIFIED: Account Not Activated");
+                    res.json({ success: false, message: 'Activate Account'});
+                }
+                else {
+
+                    req.session.user = user;
+                    console.log("VERIFIED: Credentials Verified");
+                    var welcomeMessage = "Welcome, "+ user.firstName
+                    res.json({ success: true, message: welcomeMessage});
+                } 
+            }
+            else {
+
+                res.json({ success: false, message: 'Wrong Password'});
             }
         }    
     })
 });
     
-    
+//Generate Random Number 
+    function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-//Register
+//Register & Activation Generation
 app.post('/createUser' , function(req, res) {
     
     //Create User Object To Store Registration Info
@@ -596,31 +670,127 @@ app.post('/createUser' , function(req, res) {
     var lastName = req.body.lastName;
     var email = req.body.username;
 
-    //Combine The User Details
-    var combined = firstName+lastName+email;
+    
+    //Check If Email Exists In NFCVT Database
+    User.findOne({ username: email}, function(err, user) {
 
-    //Encrypt Session Code
-    var sessionKey = encrypt(combined);
+        if(user != null)
+        {   
+            //If Email Exists Retrun False Status & Message
+            res.json({ message: 'Email Exists', status: false}); 
+        }
+        else
+        {
+            //If Email Does Not Exists Begin Registration Process
 
-    var user = new User ({
-        firstName: firstName,
-        lastName: lastName,
-        username: email,
-        password: req.body.password,
-        sessionKey: sessionKey
+            //Generate Randome Code For Activation
+            var code = getRandomInt(1,1000000);
+
+            //Combine The User Details For Session Key
+            var combined = firstName+lastName+email;
+
+            //Encrypt Session Key
+            var sessionKey = encrypt(combined);
+
+            //Encrypt Password
+            var password = encrypt(req.body.password);
+
+            //Create MongoDb User Object
+            var user = new User ({
+                firstName: firstName,
+                lastName: lastName,
+                username: email,
+                password: encrypt(req.body.password),
+                sessionKey: sessionKey,
+                activationKey: code,
+                activation: false
+            });
+
+            //Save User To Database
+            user.save(function(err) {
+            
+                //Check Db Status
+                if(err) {
+
+                    res.json({ message: 'Cant Registering', status: false }); 
+                }
+                else {
+
+                    //Send Email With The Code
+                    sendgrid.send({
+                        
+                        to:       req.body.username,
+                        from:     'NFCVT',
+                        subject:  'NFCVT Email Verification',
+                        text:     'Hi ' +req.body.firstName+ ', \n Your activation code \n \n' +user.activationKey+ '\n \n NFCVT Team'
+
+                    }, function(err, json) 
+
+                    {
+                        if(err) 
+                        { 
+                            //If Error Remove User
+                            User.remove({ firstName: req.body.firstName, lastName: req.body.lastName, username: email },function(err) {
+
+                                if(err) {
+
+                                    //If No Error Pass
+                                    res.json({ message: 'Try Again', status: false });    
+                                }
+                                else
+                                {
+                                    //If No Error Pass
+                                    res.json({ message: 'Error', status: true }); 
+                                }
+                            });
+
+                        }
+                        else
+                        {
+                            //If No Error Pass
+                            res.json({ message: 'Registered', status: true }); 
+                        }
+                        
+                    });
+                }
+            
+            });
+        }
     });
 
-    //Save To Database
-    user.save(function(err) {
-        if(err) {
-            console.log("ERROR: Can't Register User");
-        }
-        else {
-            console.log("CREATED: User Is Now Registered");
-        }
-    });
+    
+
+    
     
 });
+
+//Activate The User Account 
+app.post('/activateMyAccount', function(req, res) {
+
+    //Sample Url : /activateMyAccountUrl?code=
+
+    //console.log(req.body.code);
+    var code = req.body.code;
+
+    User.update({ activationKey: code }, {$set: { "activation": true }}, function(err)  { 
+       
+        console.log(err);
+    });
+
+    User.findOne({ activationKey: code, activation: true}, function(err, user) {
+
+        if(user != null)
+        {
+            res.json({ activated: true }); 
+        }
+        else
+        {
+            res.json({ activated: false });
+        }
+    });    
+
+}); 
+
 //****************************************//
 //*** Encryption / Decryption Modules ****//
 //****************************************//
@@ -646,7 +816,7 @@ function decrypt(text){
 
 
 //Android Module For User Sign In
-app.get('/signinUrl', function(req, res) {
+/*app.get('/signinUrl', function(req, res) {
 
 
     //Sample Request : /signinUrl?username=daniel.rejniak@gmail.com&password=admin
@@ -686,6 +856,55 @@ app.get('/signinUrl', function(req, res) {
                 
                 //Json Respons With Validation & Session Code
                 res.json({ verification: true, sessionKey: sessionKey });
+            }
+        }    
+    })
+}); */
+
+//Login
+app.get('/signinUrl' , function(req, res) {
+    
+
+    //Sample Request : /signinUrl?username=daniel.rejniak@gmail.com&password=admin
+
+    //Retrieve The Parameters Passed In The Url
+    var usernameVar = req.query.username;
+    var passwordVar = req.query.password;
+
+    User.findOne({ username: usernameVar }, function(err, user) {
+
+        if (err) throw err;
+
+        //If No User Exists
+        if(!user) {
+
+            console.log("VERIFIED: No Email Exists");
+            res.json({ success: false, message: 'Invalid Email', sessionKey: null});
+        }
+        else {
+
+            //Get Encrypted Password Form Db & Decrypt
+            //var decrypted = decrypt(user.password);
+
+            if(user.username == usernameVar && decrypt(user.password) == passwordVar) {
+
+                //Check If User Activated Thier Account
+                if(user.activation != true) {
+
+                    console.log("VERIFIED: Account Not Activated");
+                    res.json({ success: false, message: 'Activate Account', sessionKey: null});
+                }
+                else {
+
+                    req.session.user = user;
+                    console.log("VERIFIED: Credentials Verified");
+                    var welcomeMessage = "Welcome, "+ user.firstName
+                    res.json({ success: true, message: welcomeMessage, sessionKey: req.session.user.sessionKey});
+                } 
+            }
+            else {
+
+                res.json({ success: false, message: 'Wrong Password', sessionKey: null});
             }
         }    
     })
@@ -738,23 +957,12 @@ app.post('/createUserUrl' , function(req, res) {
 });
 
 //Android Module To Utalise The Ticket From Wallet
-app.get('/useTicketUrl' , function(req, res) {
+/*app.get('/useTicketUrl' , function(req, res) {
     
     //Retrieve The Parameters Passed In The Url
     var firstName = req.query.firstName;
     var lastName = req.query.lastName;
     var eventName = req.query.eventName;
-
-    /*Ticket.remove({ ticketOwnerFirstName: firstName, ticketOwnerLastName: lastName, ticketForEvent: eventName}, function(err) {
-        if (!err) {
-            console.log("Ticket Sucessfully Checked In");
-            res.json({ verification: true, message: 'Authentication Passed. Ticket Checked In!!' });
-        }
-        else {
-            console.log("Ticket Not Checked In");
-            res.json({ verification: false, message: 'Authentication Failed. Ticket Not Checked In!!' });
-        }
-    }); */
 
     //Check In The User
     Ticket.update({ ticketOwnerFirstName: firstName , ticketOwnerLastName: lastName, ticketStatus: "Not Checked In"}, {$set: { "ticketStatus": "Checked In" }}, function(err)  { 
@@ -778,6 +986,47 @@ app.get('/useTicketUrl' , function(req, res) {
     });    
     //useTicketUrl?firstName=Daniel&lastName=Rejniak&eventName=DCUExpoPresentation
     
+}); */
+
+//Android Module To Utalise The Ticket From Wallet
+app.get('/useTicketUrl' , function(req, res) {
+
+    //Sample Url Call : /useTicketUrl?sessionKey=&publicEventKey=
+
+    //Get User Session Key
+    var sessionKey = req.query.sessionKey;
+
+    //Get Event Public Key 
+    var publicEventKey = req.query.publicEventKey;
+
+    //Find The Event Based On Public Key
+    Event.findOne({ eventPublicId: req.query.publicEventKey }, function(err, event) {
+
+        if(!err)
+        {
+            var priv = event.eventPrivateId;
+            var entryKey = encrypt(priv+sessionKey);
+
+            EntryKeys.findOne({ entryKey: entryKey }, function(err, entry) {
+
+                if(!entry)
+                {
+                    res.json({ message: 'Entry Key Not Valid' });
+                }
+                else
+                {
+                    res.json({ message: 'Event & entryKey Valid'});
+                }
+            });
+        }
+        else
+        {
+            res.json({ message: 'No Such Event'});
+        }
+
+        
+    });    
+
 });
 
 //Android Module Get All Tickets That Bellng To User

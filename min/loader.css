@@ -1,0 +1,17 @@
+#pieChart {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -200px 0 0 -200px;
+  
+}
+
+#graph {
+  stroke-dasharray: 630px;
+  stroke-dashoffset: 630px;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}

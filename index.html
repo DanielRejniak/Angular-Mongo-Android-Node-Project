@@ -11,18 +11,28 @@
         <title>NFCVT | Ticketing System</title>
 
 
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
+
 
         <!-- Referance Angular -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script> -->
 
         <!-- Scripts-->
-        <script src="min/plugin-min.js"></script>
-        <script src="min/custom-min.js"></script>
+        <!-- <script src="min/plugin-min.js"></script>
+        <script src="min/custom-min.js"></script> -->
 
         <!-- CSS  -->
         <link href="min/plugin-min.css" type="text/css" rel="stylesheet">
-        <link href="min/custom-min.css" type="text/css" rel="stylesheet" >        
+        <link href="min/custom-min.css" type="text/css" rel="stylesheet" > 
+
+        <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+
+    <!-- JavaScript for: jQuery, angular, materialize, and angular-materialize. All of which are needed. -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.1.8/angular-materialize.min.js"></script>      
 
         <!-- Fonts from Google Fonts -->
         <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
@@ -30,26 +40,37 @@
         <!-- CDN For Jquery -->
         <!--<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>-->
     
-        <!-- Link Cntroller -->
+        <!-- Load Main Cntroller -->
         <script src="controllers/controller.js"></script>
-    
+
         <!-- Add Routing Module -->
         <script src="http://code.angularjs.org/1.2.1/angular-route.min.js"></script>
+
+        <!-- Load Modules -->
+        <script src="controllers/modules/navBarModule.js"></script>
+        <script src="controllers/modules/loginModule.js"></script>
+        <script src="controllers/modules/dashboardModule.js"></script>
+        <script src="controllers/modules/feedbackModule.js"></script>
+        <script src="controllers/modules/controlPannelModule.js"></script>
+        <script src="controllers/modules/ticketWalletModule.js"></script>
+        <script src="controllers/modules/manageEventModule.js"></script>
+        <script src="controllers/modules/registerModule.js"></script>
+        <script src="controllers/modules/eventCreatorModule.js"></script>
+        <script src="controllers/modules/eventViewerModule.js"></script>
+        <script src="controllers/modules/userInboxModule.js"></script>
+        <script src="controllers/modules/adminInboxModule.js"></script>
+        <script src="controllers/modules/configModule.js"></script>
 
         <!-- Adde MAterialize Iccons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        
-
-    
     </head>
     
     <body id="top" class="scrollspy">
 
             <!-- Main View -->
             <div ng-view></div>
-
-            
+             
     </body>   
     
 </html>

@@ -4,13 +4,6 @@
         <div class="container">
             <div class="nav-wrapper">
             <a href="#/" id="logo-container" class="brand-logo">NFCVT</a>
-            <ul class="right hide-on-med-and-down">
-
-                    <li><a class="red-text text-darken-2" href="#/">
-                        <i class="material-icons left">settings_power</i>Logout</a>
-                    </li>
-
-                </ul>
             </div>
         </div>
 
@@ -18,29 +11,29 @@
 </div>
 
 <div class="container">
-<div ng-controller="adminInboxCtrl">
+<div ng-controller="loginCtrl">
 
 <div class="row" style="padding-top: 5%; ">
- 
-    <form class="col s12" id="myLogin">
+
+<form class="col s12">
       <div class="row">
 
         <!-- Email Input Field -->
         <div class="input-field col s8 offset-s2">
-             <input type="text" id="username" ng-model="username">
-             <label for="username">Generated Number Here</label>
+             <input type="text" id="code" ng-model="code">
+             <label for="username">Activation Code Here</label>
         </div>
 
         <!-- Submit Button -->
         <div class="row">
             <div class="input-field col col s8 offset-s2">
-                <button class="btn waves-effect waves-light orange" type="submit" style="display: block; width: 100%;" ng-click="submitLoginInfo()">Request Entry</button>
+                <button class="btn waves-effect waves-light orange" type="submit" style="display: block; width: 100%;" ng-click="activateAcount()">Request Entry</button>
             </div>
         </div>
 
     </form>
-        
-</div>
+    </div>
+
 
 </div>
 </div>

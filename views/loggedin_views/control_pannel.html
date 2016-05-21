@@ -1,29 +1,26 @@
+<div ng-controller="navBarCtrl">
 <!--Navigation-->
  <div class="navbar-fixed ">
     <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
         <div class="container">
             <div class="nav-wrapper">
-            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
-            <ul class="right hide-on-med-and-down">
-
-                    
-                    <li><a class="teal-text text-accent-2" href="#/inbox_message">
-                        <i class="material-icons left">comment</i>Notifications</a>
-                    </li>
-                    <li><a class="red-text text-darken-2" href="#/">
-                        <i class="material-icons left">settings_power</i>Logout</a>
-                    </li>
-
-                </ul>
+            <a href="#/" id="logo-container" class="brand-logo">NFCVT</a>
+                <ul class="right hide-on-med-and-down">
+        <li><a href="#/userInbox"><i class="material-icons">message</i></a></li>
+        <li><a ng-click="destroyUserSession()"><i class="material-icons">power_settings_new</i></a></li>
+      </ul>
             </div>
         </div>
 
     </nav>
 </div>
+</div>
 
 
 <div class="container">
         <div ng-controller="controlPannelCtrl">
+
+          
         <!-- <br>
         <a href="#/dashboard" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Back</a>
         <a href="#/create_event_pannel" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create Event</a>

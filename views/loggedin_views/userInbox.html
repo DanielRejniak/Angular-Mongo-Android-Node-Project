@@ -32,7 +32,7 @@
             <tbody ng-repeat="message in messages track by $index">
                 <tr>
                     <td>{{message.firstNameFrom}}, {{message.lastNameFrom}}</td>
-                    <td>{{message.eventName}}</td>
+                    <td>{{message.about}}</td>
                     <td><a class="btn btn-danger" ng-click="removeUserMessage($index)">Remove</a></td>
                     <td><a class="btn btn-success" ng-click="findUserMessage($index)">View</a></td>
                 </tr>

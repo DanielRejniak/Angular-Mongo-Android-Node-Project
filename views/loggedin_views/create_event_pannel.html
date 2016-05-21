@@ -1,37 +1,42 @@
+<div ng-controller="navBarCtrl">
 <!--Navigation-->
  <div class="navbar-fixed ">
     <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
         <div class="container">
             <div class="nav-wrapper">
             <a href="#/" id="logo-container" class="brand-logo">NFCVT</a>
-            <ul class="right hide-on-med-and-down">
-
-                    <li><a class="red-text text-darken-2" href="#/">
-                        <i class="material-icons left">settings_power</i>Logout</a>
-                    </li>
-
-                </ul>
+                <ul class="right hide-on-med-and-down">
+        <li><a href="#/userInbox"><i class="material-icons">message</i></a></li>
+        <li><a ng-click="destroyUserSession()"><i class="material-icons">power_settings_new</i></a></li>
+      </ul>
             </div>
         </div>
 
     </nav>
 </div>
+</div>
 
 <div class="container">
 <!-- Event Creator Controller -->
 <div ng-controller="eventCreatorCtrl">
+
+    
     
     <!-- Registration Form -->
     <form class="col s12" id="myRegister">
 
+        <div  class="col s12">
+        <h2 class="center header text_h2">Event Info</h2>
+    </div>  
+
         <div class="row">
             <div class="input-field col s12">
                 <input type="text" id="eventName" ng-model="eventName">
-                 <label for="eventName">Event Naem</label>
+                 <label for="eventName">Event Name</label>
             </div>
         </div>
 
-         <div class="row">
+        <div class="row">
             <div class="input-field col s6">
               <input id="eventLocationCountry" ng-model="eventLocationCountry" type="text">
               <label for="eventLocationCountry">Event Country</label>
@@ -42,46 +47,126 @@
             </div>
         </div>
 
-         <div class="row">
-            <div class="input-field col s6">
-              <input id="eventStartTime" ng-model="eventStartTime" type="text">
-              <label for="eventStartTime">Event Start Time</label>
-            </div>
-            <div class="input-field col s6">
-                <input id="eventFinishTime" ng-model="eventFinishTime" type="text">
-                <label for="eventFinishTime">Event Finish Time</label>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="input-field col s6">
-              <input id="eventCategory" ng-model="eventCategory" type="text">
-              <label for="eventCategory">Event Category</label>
-            </div>
-            <div class="input-field col s6">
-                <input id="eventDate" ng-model="eventDate" type="text">
-                <label for="eventDate">Event Date</label>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="input-field col s6">
-              <input id="eventAvailableTickets" ng-model="eventAvailableTickets" type="text">
-              <label for="eventAvailableTickets">Amount Of Tickets</label>
-            </div>
-            <div class="input-field col s6">
-                <input id="eventImageUrl" ng-model="eventImageUrl" type="text">
-                <label for="eventImageUrl">Image URL</label>
-            </div>
-        </div>
-
         <div class="row">
             <div class="input-field col s12">
                 <textarea id="eventDescription" ng-model="eventDescription" class="materialize-textarea"></textarea>
                 <label for="eventDescription">Event Description</label>
             </div>
         </div>
-        
+
+        <div class="row">
+            
+            <div class="input-field col s12">
+                <select class="browser-default" ng-model="eventCategory">
+                    <option value="" disabled selected>Choose Event Category</option>
+                    <option value="Sport">Sport</option>
+                    <option value="Expo">Expo</option>
+                    <option value="Presentation">Presentation</option>
+                    <option value="Bussines">Bussines</option>
+                    <option value="Music">Music</option>
+                    <option value="Food">Food</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            </div>
+
+        <div  class="col s12">
+        <h2 class="center header text_h2">Event Settings</h2>
+        <hr>
+    </div>  
+
+        <div class="row">
+        <div class="input-field col s12">
+            <p>Ticket Amount</p>
+              <p class="range-field">
+                <input type="range" id="tickets" min="0" max="100" ng-model="eventAvailableTickets"/>
+             </p>
+        </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+              <select class="browser-default" ng-model="eventStartTime">
+                <option value="" disabled selected>Event Start Time</option>
+                    <option value="00:00">00:00</option>
+                    <option value="01:00">01:00</option>
+                    <option value="02:00">02:00</option>
+                    <option value="03:00">03:00</option>
+                    <option value="04:00">04:00</option>
+                    <option value="05:00">05:00</option>
+                    <option value="06:00">06:00</option>
+                    <option value="07:00">07:00</option>
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="06:00">14:00</option>
+                    <option value="07:00">15:00</option>
+                    <option value="08:00">16:00</option>
+                    <option value="09:00">17:00</option>
+                    <option value="10:00">18:00</option>
+                    <option value="11:00">19:00</option>
+                    <option value="12:00">20:00</option>
+                    <option value="13:00">21:00</option>
+                    <option value="09:00">22:00</option>
+                    <option value="10:00">23:00</option>
+                </select>
+            </div>
+            <div class="input-field col s6">
+                <select class="browser-default" ng-model="eventFinishTime">
+                    <option value="" disabled selected>Event Finish Time</option>
+                    <option value="00:00">00:00</option>
+                    <option value="01:00">01:00</option>
+                    <option value="02:00">02:00</option>
+                    <option value="03:00">03:00</option>
+                    <option value="04:00">04:00</option>
+                    <option value="05:00">05:00</option>
+                    <option value="06:00">06:00</option>
+                    <option value="07:00">07:00</option>
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="06:00">14:00</option>
+                    <option value="07:00">15:00</option>
+                    <option value="08:00">16:00</option>
+                    <option value="09:00">17:00</option>
+                    <option value="10:00">18:00</option>
+                    <option value="11:00">19:00</option>
+                    <option value="12:00">20:00</option>
+                    <option value="13:00">21:00</option>
+                    <option value="09:00">22:00</option>
+                    <option value="10:00">23:00</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="input-field col s12">
+                <input id="date" type="text" ng-model="eventDate">
+                <label class="active" for="date">Date</label>
+            </div>
+
+        </div>
+
+        <div class="row">
+            
+            <div class="input-field col s12">
+                <input id="eventImageUrl" ng-model="eventImageUrl" type="text">
+                <label for="eventImageUrl">Image URL</label>
+            </div>
+        </div>
+
+        <div  class="col s12">
+            <h2 class="center header text_h2">Publish</h2>
+            <hr>
+        </div> 
+
         <div class="row">
             <div class="input-field col s12">
                  <button class="btn waves-effect waves-light green" type="submit" style="display: block; width: 100%;" ng-click="createEvent()">Make Event Live</button>

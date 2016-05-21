@@ -26,7 +26,7 @@
         <div class="card-panel teal">
             <span class="white-text">
             <strong>From : </strong>{{currentMessage.firstNameFrom}}, {{currentMessage.lastNameFrom}}<br>
-            <strong>About : </strong> {{currentMessage.eventName}}<hr>
+            <strong>About : </strong> {{currentMessage.about}}<hr>
             <strong>Message</strong><br><br>
             {{currentMessage.message}}
           </span>
@@ -39,7 +39,7 @@
   <label for="textarea1">Reply Message Here</label>
 </div>
 
-<button type="submit" class="btn btn-success" ng-click="sendMessage()" style="width: 100%"><span class="glyphicon glyphicon-save-file"></span>Send</button>
+<button type="submit" class="btn btn-success" ng-click="sendReplyMessage()" style="width: 100%"><span class="glyphicon glyphicon-save-file"></span>Send</button>
 
 </div>
 </div>
