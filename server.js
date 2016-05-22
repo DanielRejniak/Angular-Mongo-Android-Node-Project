@@ -991,12 +991,11 @@ app.post('/createUserUrl' , function(req, res) {
 //Android Module To Utalise The Ticket From Wallet
 app.get('/useTicketUrl' , function(req, res) {
 
-    //Sample Url Call : /useTicketUrl?firstName=&lastName=&eventName=&ticketEventId=&userSessionKey=
+    //Sample Url Call : /useTicketUrl?firstName=&lastName=&ticketEventId=&userSessionKey=
 
     //Url Params
     var firstName = req.query.firstName;
     var lastName = req.query.lastName;
-    var eventName = req.query.eventName;
     var ticketEventId = req.query.ticketEventId;
     var userSessionKey = req.query.userSessionKey;
 
