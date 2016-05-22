@@ -3,7 +3,7 @@
 Set The Correct Port Number &
 Database Configuration Before Running 
 
-********* Localhost Profile *********/
+********* Settings *********/
 
 var usePort = 3000;
 var useDb = 'mongodb://localhost/nfcvt';
@@ -991,59 +991,98 @@ app.post('/createUserUrl' , function(req, res) {
 //Android Module To Utalise The Ticket From Wallet
 app.get('/useTicketUrl' , function(req, res) {
 
-    //Sample Url Call : /useTicketUrl?sessionKey=&publicEventKey=
+    //Sample Url Call : /useTicketUrl?firstName=&lastName=&eventName=&ticketEventId=&userSessionKey=
 
-    //Get User Session Key
-    var sessionKey = req.query.sessionKey;
+    //Url Params
+    var firstName = req.query.firstName;
+    var lastName = req.query.lastName;
+    var eventName = req.query.eventName;
+    var ticketEventId = req.query.ticketEventId;
+    var userSessionKey = req.query.userSessionKey;
 
-    //Get Event Public Key 
-    var publicEventKey = req.query.publicEventKey;
+    //Extract The Event Info Based On The Event Public Id
+    Event.findOne({ eventPublicId: ticketEventId }, function(err, event) {
 
-    //Find The Event Based On Public Key
-    Event.findOne({ eventPublicId: req.query.publicEventKey }, function(err, event) {
-
+        //Id Event found
         if(!err)
         {
+            //Extract The Private Id Of The Event
             var priv = event.eventPrivateId;
-            var entryKey = encrypt(priv+sessionKey);
 
+            //Combine The Private Event Key With User Session Key
+            var entryKey = encrypt(priv+userSessionKey);
+
+            //Extract The Coresponding Entry Key
             EntryKeys.findOne({ entryKey: entryKey }, function(err, entry) {
 
                 if(!entry)
                 {
-                    res.json({ message: 'Entry Key Not Valid' });
+                    //Authentication Failed
+                    res.json({ verification: false, message: 'Validation Failed' });
                 }
                 else
                 {
-                    res.json({ message: 'Event & entryKey Valid'});
+                    //Check Id Entry Key Is Not Used
+
+                    if(entry.status == false)
+                    {   
+                        //If The Key Is Not Used Check In User
+                        //Check In The User
+                        Ticket.update({ ticketUserSession: userSessionKey, ticketStatus: "Not Checked In", ticketEventId: ticketEventId }, {$set: { "ticketStatus": "Checked In" }}, function(err)  { 
+                            
+                            if (!err) {
+                                console.log("Ticket Sucessfully Checked In");
+
+                                //Count All Checked In Users & Update Count
+                                Ticket.count({ ticketEventId: ticketEventId,  ticketStatus: "Checked In"}, function(err, count)  { 
+                    
+                                    //Update The Evnet Information With The New Ticket
+                                    Event.update({ eventPublicId: ticketEventId}, {$set: { "eventCheckedInCount": count }}, function(err, tickets)  { 
+
+                                        res.json({ verification: true, message: 'Ticket Checked' });
+            
+                                    });
+                                });
+                            }
+                            else {
+                                console.log("Ticket Not Checked In");
+                                res.json({ verification: false, message: 'Session Key / Status Fail' });
+                            }
+                        });
+
+                        //Disable Entry Key After Uuser Chacked In
+                        EntryKeys.update({ entryKey: entryKey }, {$set: { "status": "true" }});
+
+                    }
+                    else
+                    {
+                        res.json({ verification: false, message: 'Ticket Used' });
+                    }
                 }
+
+                //No Event With Such Id Exists      
             });
         }
         else
         {
-            res.json({ message: 'No Such Event'});
+            res.json({ verification: false, message: 'No Event For EventId' });
         }
-
-        
-    });    
-
-});
+    });
+});                
 
 //Android Module Get All Tickets That Bellng To User
 app.get('/getAllMyTicketsUrl', function(req, res) {
 
-    //Sample Url : /getAllMyTicketsUrl?firstName=Daniel&lastName=Rejniak&email=daniel.rejniak@gmail.com
+    //Sample Url : /getAllMyTicketsUrl?sessionKey=
 
-    var firstName = req.query.firstName;
-    var lastName = req.query.lastName;
-    var email = req.query.email;
+    //Retrieve The Url Variable
+    var sessionKey = req.query.sessionKey;
 
-    Ticket.find({ ticketOwnerFirstName: firstName, ticketOwnerLastName: lastName,}, function(err, tickets)  {
-       
-    res.json(tickets);
+    //Find Tickets Belonging To User
+    Ticket.find({ ticketUserSession: sessionKey}, function(err, tickets)  {
 
-    //Sample Url To Retrieve User Ticekts
-    //getAllMyTicketsUrl?firstName=Daniel    
+        //Json Resonse       
+        res.json(tickets);
 
     });
 
