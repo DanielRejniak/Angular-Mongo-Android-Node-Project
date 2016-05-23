@@ -4,10 +4,13 @@
     <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
         <div class="container">
             <div class="nav-wrapper">
-            <a href="#/" id="logo-container" class="brand-logo">NFCVT</a>
+            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
                 <ul class="right hide-on-med-and-down">
-        <li><a href="#/userInbox"><i class="material-icons">message</i></a></li>
+                <li><a ng-click="settings()"><i class="material-icons">settings</i></a></li>
+                <li><a ng-click="virtualWallet()"><i class="material-icons">shopping_cart</i></a></li>
+        <li><a ng-click="userInbox()"><i class="material-icons">message</i></a></li>
         <li><a ng-click="destroyUserSession()"><i class="material-icons">power_settings_new</i></a></li>
+
       </ul>
             </div>
         </div>
@@ -15,6 +18,7 @@
     </nav>
 </div>
 </div>
+
 
 
 <div class="container">
@@ -31,62 +35,40 @@
         <div class="row">
 
           <div class="col s4">
-            <div class="card-panel light-blue darken-3">
-              <span class="white-text">
-              <h5>Created Events</h5>
+              <h2 class="center header text_h2">{{test}}</h2>
               <hr>
-              <h5>{{test}}</h5>
-              </span>
-            </div>
+              <h3 class="center header text_h2">Created</h3>
+              
           </div>
 
           <div class="col s4">
-            <div class="card-panel light-blue darken-3">
-              <span class="white-text">
-              <h5>Active Events</h5>
-              <hr>
-              <h5>{{test1}}</h5>
-              </span>
-            </div>
+                <h2 class="center header text_h2">{{test1}}</h2>
+                <hr>
+                <h3 class="center header text_h2">Active</h3>
           </div>
 
-           <div href="#/inbox_message" class="col s4">
-            <div class="card-panel light-blue darken-3">
-              <span class="white-text">
-              <h5>Notifications</h5>
-              <hr>
-              <h5>{{test2}}</h5>
-              </span>
-            </div>
+           <div class="col s4">
+            <h2 class="center header text_h2">{{test2}}</h2>
+                <hr>
+                <h3 class="center header text_h2">Messages</h3>
           </div>
 
         </div>
 
-        <hr>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Tickets Sold</th>
-                    <th>Checked In</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody ng-repeat="eventInfo in events track by $index">
-                <tr>
-                    <td>{{eventInfo.eventName}}</td>
-                    <td>{{eventInfo.eventLocationCountry}}, {{eventInfo.eventLocationArea}}</td>
-                    <td><strong>{{eventInfo.eventActivation}}</strong></td>
-                    <td>26/05/2016</td>
-                    <td>{{eventInfo.eventAttendance}}/{{eventInfo.eventAvailableTickets}}</td>
-                    <td>{{eventInfo.eventCheckedInCount}}/{{eventInfo.eventAvailableTickets}}</td>
-                    <td class="right-align"><a class="btn btn-success" ng-click="manageEvent($index)">Manage</a></td>
-                </tr>
-            </tbody>
-        </table>
+        
+
+        <ul class="collection" ng-repeat="eventInfo in events track by $index">
+    <li class="collection-item avatar">
+      <img ng-src="{{eventInfo.eventImageUrl}}" alt="" class="circle">
+      <span class="title">{{eventInfo.eventName}}</span>
+      <p>{{eventInfo.eventDate}} <br>
+         {{eventInfo.eventLocationCountry}}, {{eventInfo.eventLocationArea}}
+      </p>
+      <a ng-click="manageEvent($index)" class="secondary-content"><i class="material-icons">settings</i></a>
+    </li>
+    <ul>
+
+
 
 
     </div>

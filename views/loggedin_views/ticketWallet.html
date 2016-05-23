@@ -1,20 +1,22 @@
+<div ng-controller="navBarCtrl">
 <!--Navigation-->
  <div class="navbar-fixed ">
     <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
         <div class="container">
             <div class="nav-wrapper">
             <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
-            <ul class="right hide-on-med-and-down">
+                <ul class="right hide-on-med-and-down">
+                <li><a ng-click="settings()"><i class="material-icons">settings</i></a></li>
+                <li><a ng-click="virtualWallet()"><i class="material-icons">shopping_cart</i></a></li>
+        <li><a ng-click="userInbox()"><i class="material-icons">message</i></a></li>
+        <li><a ng-click="destroyUserSession()"><i class="material-icons">power_settings_new</i></a></li>
 
-                    <li><a class="red-text text-darken-2" href="#/">
-                        <i class="material-icons left">settings_power</i>Logout</a>
-                    </li>
-
-                </ul>
+      </ul>
             </div>
         </div>
 
     </nav>
+</div>
 </div>
 
 <div class="container">

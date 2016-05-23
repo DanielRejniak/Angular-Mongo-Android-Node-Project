@@ -58,5 +58,7 @@ app.controller('eventViewerCtrl', function($scope, $location, $rootScope, $http)
 
         var $toastContent = $('<span>Message Sent</span>');
         Materialize.toast($toastContent, 3000);
+
+        $location.path('/dashboard');
       };
 });

@@ -90,6 +90,14 @@ app.controller('manageEventCtrl', function($scope, $location, $rootScope, $http)
       console.log($scope.code);
    };
 
+   //Manual Entry Form
+   $scope.contactUser = function(ticket) {
+
+      $rootScope.adminMessage = ticket;
+      console.log(ticket);
+      $location.path('/contactUser');
+   };
+
    //Update The Event Information
    $scope.updateEventInfo = function() {
 

@@ -4,10 +4,13 @@
     <nav id="nav_f" class="default_color blue-grey darken-2" role="navigation">
         <div class="container">
             <div class="nav-wrapper">
-            <a href="#/" id="logo-container" class="brand-logo">NFCVT</a>
+            <a href="#/dashboard" id="logo-container" class="brand-logo">NFCVT</a>
                 <ul class="right hide-on-med-and-down">
-        <li><a href="#/userInbox"><i class="material-icons">message</i></a></li>
+                <li><a ng-click="settings()"><i class="material-icons">settings</i></a></li>
+                <li><a ng-click="virtualWallet()"><i class="material-icons">shopping_cart</i></a></li>
+        <li><a ng-click="userInbox()"><i class="material-icons">message</i></a></li>
         <li><a ng-click="destroyUserSession()"><i class="material-icons">power_settings_new</i></a></li>
+
       </ul>
             </div>
         </div>
@@ -62,21 +65,7 @@
             </ul>
         </div>
 
-        <div class="fixed-action-btn vertical click-to-toggle">
-            <a class="btn-floating btn-large red">
-                <i class="material-icons">menu</i>
-        </a>
-
-        <ul>
-      <li><a class="btn-floating red" href="#/control_pannel"><i class="material-icons">settings</i></a></li>
-      <li><a class="btn-floating yellow darken-1" href="#/userInbox"><i class="material-icons">announcement</i></a></li>
-      <li><a class="btn-floating green" href="#/ticketWallet"><i class="material-icons">shopping_basket</i></a></li>
-      <li><a class="btn-floating green tooltipped" href="#/dashboard" data-delay="50" data-tooltip="I am tooltip"><i class="material-icons">home</i></a></li>
-    </ul>
-
-        </div>
-         
-         
+     
     
   </div>
 

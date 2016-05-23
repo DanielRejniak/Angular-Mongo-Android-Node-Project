@@ -263,6 +263,24 @@ app.config(function($routeProvider) {
        },
        templateUrl: 'views/loggedin_views/eventViewer.html'
    })
+
+   .when('/contactUser', 
+   {
+       
+       resolve: 
+       {
+           "check": function($location, $rootScope) 
+           {
+               
+               //Confirm If LoggedIn Flag Is Set Before Redirecting To Dashboard
+               if(!$rootScope.verificationPass) 
+               {
+                   $location.path('/')
+               }
+           }
+       },
+       templateUrl: 'views/loggedin_views/contactUser.html'
+   })
    
    .otherwise(
    {

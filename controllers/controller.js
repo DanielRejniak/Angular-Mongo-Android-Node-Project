@@ -22,5 +22,6 @@ var app = angular.module('mainApp',
     'adminInboxModule',
     'userInboxModule',
     'configModule',
+    'contactUserModule'
   ]
 );

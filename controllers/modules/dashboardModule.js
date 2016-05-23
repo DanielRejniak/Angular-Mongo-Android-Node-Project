@@ -21,8 +21,6 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
           //Place The View To Scope
           $scope.eventView = $scope.result[event];
 
-          console.log($scope.eventView);
-
           //Create Object Of The View
           eventView = {
             eventName: $scope.eventView.eventName,
@@ -38,8 +36,6 @@ app.controller('dashboardCtrl', function($scope, $location, $rootScope, $http) {
             eventPrivateId: $scope.eventView.eventPrivateId,
             eventCreatorSessionKey: $scope.eventView.eventCreatorSessionKey
           };
-
-          console.log(eventView);
 
           //Put The Event Info Into Global Scope So Its Visible By Event View Page
           $rootScope.eventViewInfo = eventView;

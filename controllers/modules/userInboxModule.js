@@ -43,26 +43,6 @@ app.controller('userInboxCtrl', function($scope, $location, $rootScope, $http) {
 
     }
 
-    /*$scope.casualMessage = function()
-    {
-        console.log($scope.messageViewerMessage);
-
-        //console.log("Message : " + $scope.messageViewerMessage + " Event " + $rootScope.currentMessage.eventName);
-
-        messageBody = {
-
-          message: $scope.messageViewerMessage,
-          recieverSessionKey: 
-        }
-
-        $scope.userReply = messageBody;
-        $http.post('/sendCasualMessage', $scope.userReply);
-
-        //Message Content $scope.messageViewerMessage
-        //Message For Event $rootScope.currentMessage.eventName 
-
-    }*/
-
     $scope.removeUserMessage = function(message)
     {
         console.log("Remove");
@@ -70,7 +50,7 @@ app.controller('userInboxCtrl', function($scope, $location, $rootScope, $http) {
 
         $http.post('/removeUserMessage', $scope.messages[message]);
 
-        var $toastContent = $('<span>Ticket Removed</span>');
+        var $toastContent = $('<span>Message Removed</span>');
         Materialize.toast($toastContent, 3000);
     
     }

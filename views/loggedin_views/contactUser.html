@@ -6,11 +6,8 @@
             <div class="nav-wrapper">
             <a href="#/" id="logo-container" class="brand-logo">NFCVT</a>
                 <ul class="right hide-on-med-and-down">
-                <li><a ng-click="settings()"><i class="material-icons">settings</i></a></li>
-                <li><a ng-click="virtualWallet()"><i class="material-icons">shopping_cart</i></a></li>
-        <li><a ng-click="userInbox()"><i class="material-icons">message</i></a></li>
+        <li><a href="#/userInbox"><i class="material-icons">message</i></a></li>
         <li><a ng-click="destroyUserSession()"><i class="material-icons">power_settings_new</i></a></li>
-
       </ul>
             </div>
         </div>
@@ -20,9 +17,8 @@
 </div>
 
 
-
 <div class="container">
-<div ng-controller="eventViewerCtrl">
+<div ng-controller="contactUserCtrl">
 
 <br>
 <div class="row">
@@ -34,7 +30,7 @@
     </div>
 </div>
     <div class="input-field col s12">
-          <textarea id="eventMessage" ng-model="eventMessage" class="materialize-textarea"></textarea>
+          <textarea id="eventMessage" ng-model="userMessage" class="materialize-textarea"></textarea>
           <label for="textarea1">Message</label>
     </div>
 
