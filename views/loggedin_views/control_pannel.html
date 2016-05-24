@@ -62,7 +62,8 @@
       <img ng-src="{{eventInfo.eventImageUrl}}" alt="" class="circle">
       <span class="title">{{eventInfo.eventName}}</span>
       <p>{{eventInfo.eventDate}} <br>
-         {{eventInfo.eventLocationCountry}}, {{eventInfo.eventLocationArea}}
+         {{eventInfo.eventLocationCountry}}, {{eventInfo.eventLocationArea}} <br>
+         Amount Of Tickets : {{eventInfo.eventAvailableTickets}}
       </p>
       <a ng-click="manageEvent($index)" class="secondary-content"><i class="material-icons">settings</i></a>
     </li>

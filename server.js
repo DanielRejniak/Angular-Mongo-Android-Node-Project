@@ -118,6 +118,8 @@ app.use(sessions({
 //************* WEB MODULES **************//
 //****************************************//
 
+
+
 //Get User Info For Dashboard
 app.get('/getUserInfo', function(req, res) {
 
@@ -332,7 +334,7 @@ app.post('/sendUserMessage', function(req, res) {
 });
 
 //Send Admin Message
-app.post('/sendAdminMessage', function(req, res) {
+/*app.post('/sendAdminMessage', function(req, res) {
 
     var message = new Message ({
 
@@ -356,9 +358,9 @@ app.post('/sendAdminMessage', function(req, res) {
         }
     });
 
-}); 
+}); */
 
-//Send User Replu
+//Send User Reply
 app.post('/sendUserReply', function(req, res) {
 
     console.log(req.body);
@@ -803,12 +805,7 @@ app.post('/createUser' , function(req, res) {
             
             });
         }
-    });
-
-    
-
-    
-    
+    });  
 });
 
 //Activate The User Account 
@@ -861,52 +858,6 @@ function decrypt(text){
 //********** ANDROID MODULES *************//
 //****************************************//
 
-
-//Android Module For User Sign In
-/*app.get('/signinUrl', function(req, res) {
-
-
-    //Sample Request : /signinUrl?username=daniel.rejniak@gmail.com&password=admin
-
-    //Retrieve The Parameters Passed In The Url
-    var username = req.query.username;
-    var password = req.query.password;
-
-
-    User.findOne({ username: username}, function(err, user) {
-
-        if (err) throw err;
-
-        //If No User Exists
-        if(!user) {
-
-            console.log("VERIFIED: Failed");
-            res.json({ verification: false, message: 'Authentication failed. Wrong password or Username!!' });
-        }
-        else {
-
-            if(user.username == username && user.password == password) {
-
-                //Create User Session
-                req.session.user = user;
-                console.log(req.session.user);
-
-                //Retrieve First Name & Last Name
-                var firstName = req.session.user.firstName;
-                var lastName = req.session.user.lastName;
-
-                //Combine The User Details
-                var combined = firstName+lastName+username;
-
-                //Encrypt Session Code
-                var sessionKey = encrypt(combined);
-                
-                //Json Respons With Validation & Session Code
-                res.json({ verification: true, sessionKey: sessionKey });
-            }
-        }    
-    })
-}); */
 
 //Login
 app.get('/signinUrl' , function(req, res) {
@@ -1128,6 +1079,104 @@ app.get('/useTicketUrl' , function(req, res) {
             res.json({ verification: false, message: 'No Event For EventId' });
         }
     });
+});
+
+//Register & Activation Generation
+app.post('/createUserUrl' , function(req, res) {
+    
+    //Create User Object To Store Registration Info
+    var firstName = rreq.query.firstName;
+    var lastName = req.query.lastName;
+    var email = req.query.username;
+    var password = req.query.password;
+
+    
+    //Check If Email Exists In NFCVT Database
+    User.findOne({ username: email}, function(err, user) {
+
+        if(user != null)
+        {   
+            //If Email Exists Retrun False Status & Message
+            res.json({ message: 'Email Exists', status: false}); 
+        }
+        else
+        {
+            //If Email Does Not Exists Begin Registration Process
+
+            //Generate Randome Code For Activation
+            var code = getRandomInt(1,1000000);
+
+            //Combine The User Details For Session Key
+            var combined = firstName+lastName+email;
+
+            //Encrypt Session Key
+            var sessionKey = encrypt(combined);
+
+            //Encrypt Password
+            var password = encrypt(req.body.password);
+
+            //Create MongoDb User Object
+            var user = new User ({
+                firstName: firstName,
+                lastName: lastName,
+                username: email,
+                password: encrypt(req.body.password),
+                sessionKey: sessionKey,
+                activationKey: code,
+                activation: false
+            });
+
+            //Save User To Database
+            user.save(function(err) {
+            
+                //Check Db Status
+                if(err) {
+
+                    res.json({ message: 'Cant Registering', status: false }); 
+                }
+                else {
+
+                    //Send Email With The Code
+                    sendgrid.send({
+                        
+                        to:       req.body.username,
+                        from:     'NFCVT',
+                        subject:  'NFCVT Email Verification',
+                        text:     'Hi ' +req.body.firstName+ ', \n Your activation code \n \n' +user.activationKey+ '\n \n NFCVT Team'
+
+                    }, function(err, json) 
+
+                    {
+                        if(err) 
+                        { 
+                            //If Error Remove User
+                            User.remove({ firstName: req.body.firstName, lastName: req.body.lastName, username: email },function(err) {
+
+                                if(err) {
+
+                                    //If No Error Pass
+                                    res.json({ message: 'Try Again', status: false });    
+                                }
+                                else
+                                {
+                                    //If No Error Pass
+                                    res.json({ message: 'Error', status: true }); 
+                                }
+                            });
+
+                        }
+                        else
+                        {
+                            //If No Error Pass
+                            res.json({ message: 'Registered', status: true }); 
+                        }
+                        
+                    });
+                }
+            
+            });
+        }
+    });  
 });                
 
 //Android Module Get All Tickets That Bellng To User
