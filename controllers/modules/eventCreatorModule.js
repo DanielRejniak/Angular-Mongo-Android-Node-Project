@@ -8,7 +8,8 @@ app.controller('eventCreatorCtrl', function($scope, $location, $rootScope, $http
    $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 2, // Creates a dropdown of 15 years to control year
-        min: true //Noting Before Todays Date
+        min: true, //Noting Before Todays Date
+        format: "dd/mm/yyyy"
 
     });  
     

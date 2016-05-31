@@ -24,6 +24,7 @@ var sessions = require('client-sessions');
 var sendgrid  = require('sendgrid')('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');
 var url = require('url');
 var crypto = require('crypto');
+var colors = require('colors');
 
 //MongoDB Schema
 var Schema = mongoose.Schema;
@@ -108,8 +109,8 @@ app.use(bodyParser.json());
 app.use(sessions({
     cookieName: 'session',
     secret: 'daefdsfxdsfxsdxfdsfxd',
-    duration: 30 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000,
+    duration: 30 * 60 * 100000,
+    activeDuration: 5 * 60 * 100000,
 
 
 }));
@@ -132,7 +133,7 @@ app.get('/getUserInfo', function(req, res) {
 app.get('/destroySession', function(req, res) {
 
     //console.log(req.session.user.firstName);
-    console.log("Destroying Session");
+    console.log("Log :" + colors.green("Destroying Session"));
     req.session.destroy();
 
 });
@@ -163,11 +164,11 @@ app.post('/updateEvent', function(req, res) {
             //res.json(tickets);
             if(!err)
             {
-                console.log("Event Has Been Modified");
+                console.log("Log :" + colors.green("Event Updated"));
             }
             else
             {
-                console.log("Event Has Not Been Modified");
+                console.log("Log :" + colors.red("Failed To Update"));
             }
             
         }
@@ -187,7 +188,7 @@ app.post('/removeUserTicket', function(req, res) {
     }, function(err) {
         if (!err) {
 
-            console.log("Ticket Removed");
+            console.log("Log :" + colors.green("Removing Ticket"));
 
             //Remove The Key Asociated With THe Ticket
             //Extract The Event Info Based On The Event Public Id
@@ -210,18 +211,18 @@ app.post('/removeUserTicket', function(req, res) {
                         if(err) {
 
                             //If No Error Pass
-                            console.log("Entry Key Not Removed");  
+                            console.log("Log :" + colors.red("Failed To Remove Entrykey")); 
                         }
                         else
                         {
                             //If No Error Pass
-                            console.log("Entry Key Removed"); 
+                            console.log("Log :" + colors.green("Removing Entrykey"));
                         }
                     });
 
                 }
                 else {
-                    console.log("Ticket Was Not Removed");
+                    console.log("Log :" + colors.red("Failed To Remove Ticket"));
                 }
             });
         }
@@ -242,10 +243,10 @@ app.post('/removeEvent', function(req, res) {
 
     function(err) {
         if (!err) {
-            console.log("Event Was Sucessfully Removed");
+            console.log("Log :" + colors.green("Event Removed"));
         }
         else {
-            console.log("Event Was Not Removed");
+            console.log("Log :" + colors.green("Faield To Remove The Event"));
         }
     });
 
@@ -256,10 +257,6 @@ app.post('/removeEvent', function(req, res) {
 
 //Send User Feedbakc To My Email Form The Main Page
 app.post('/sendUserFeedback', function(req, res) {
-
-    console.log(req.body.name);
-    console.log(req.body.email)
-    console.log(req.body.message);
 
     sendgrid.send({
         
@@ -272,7 +269,7 @@ app.post('/sendUserFeedback', function(req, res) {
 
     {
         if (err) { return console.error(err); }
-        console.log(json);
+        console.log("Log :" + colors.green("User Feedback Sent"));
     });
 
 });
@@ -291,15 +288,13 @@ app.post('/sendMessage', function(req, res) {
 
         });
 
-    console.log(message);
-
     //Send Message
     message.save(function(err) {
         if(err) {
-            console.log("ERROR: Failed To Send Message");
+            console.log("Log :" + colors.red("Failed To Send Message"));
         }
         else {
-            console.log("CREATED: Message Sent");
+            console.log("Log :" + colors.green("Message Sent"));
         }
     });
 
@@ -319,51 +314,20 @@ app.post('/sendUserMessage', function(req, res) {
 
         });
 
-    console.log(message);
-
     //Send Message
     message.save(function(err) {
         if(err) {
-            console.log("ERROR: Failed To Send Message");
+            console.log("Log :" + colors.red("Failed To Send Message"));
         }
         else {
-            console.log("CREATED: Message Sent");
+            console.log("Log :" + colors.green("Message Sent"));
         }
     });
 
 });
 
-//Send Admin Message
-/*app.post('/sendAdminMessage', function(req, res) {
-
-    var message = new Message ({
-
-            eventName: req.body.eventName,
-            eventOrganiser: null,
-            message: req.body.message,
-            firstNameFrom: req.session.user.firstName,
-            lastNameFrom: req.session.user.lastName,
-            firstNameTo: req.body.firstNameTo,
-            lastNameTo: req.body.lastNameTo
-
-        });
-
-    //Send Message
-    message.save(function(err) {
-        if(err) {
-            console.log("ERROR: Failed To Send Message");
-        }
-        else {
-            console.log("CREATED: Message Sent");
-        }
-    });
-
-}); */
-
 //Send User Reply
 app.post('/sendUserReply', function(req, res) {
-
-    console.log(req.body);
 
     var message = new Message ({
 
@@ -375,15 +339,13 @@ app.post('/sendUserReply', function(req, res) {
         recieverSessionKey: req.body.recieverSessionKey
     });
 
-    console.log(message);
-
     //Send Message
     message.save(function(err) {
         if(err) {
-            console.log("ERROR: Failed To Send Message");
+            console.log("Log :" + colors.red("Failed To Send Reply"));
         }
         else {
-            console.log("CREATED: Message Sent");
+            console.log("Log :" + colors.green("Reply Sent"));
         }
     });
 
@@ -453,7 +415,7 @@ app.post('/activateEvent', function(req, res) {
 
     Event.update({ eventName: req.body.eventName}, {$set: { "eventActivation": true }}, function(err, tickets)  { 
     //res.json(tickets);
-    console.log("Event Activated");
+    console.log("Log :" + colors.green("Event Activated"));
     });
 
 });
@@ -469,10 +431,10 @@ app.post('/removeUserMessage', function(req, res) {
 
     function(err) {
         if (!err) {
-            console.log("Message Removed");
+            console.log("Log :" + colors.green("Message Removed"));
         }
         else {
-            console.log("Message Not Removed");
+            console.log("Log :" + colors.red("Failed To Remove Message"));
         }
     });
 
@@ -483,7 +445,7 @@ app.post('/deactivateEvent', function(req, res) {
 
     Event.update({ eventName: req.body.eventName}, {$set: { "eventActivation": false }}, function(err, tickets)  { 
     //res.json(tickets);
-    console.log("Event Deactivated");
+    console.log("Log :" + colors.green("Event Deactivated"));
     });
 
 });
@@ -492,9 +454,7 @@ app.post('/deactivateEvent', function(req, res) {
 app.post('/banUser', function(req, res) {
 
     Ticket.update({ ticketId: req.body.ticketId}, {$set: { "ticketStatus": "Banned" }}, function(err, tickets)  { 
-    //res.json(tickets);
-    //console.log("banUser");
-    //console.log(req.body.ticketId);
+        console.log("Log :" + colors.green("User Banned"));
     });
 });    
 
@@ -558,20 +518,20 @@ app.post('/createTicket', function(req, res) {
         {
             if(ticket != null)
             {
-                console.log("Ticekt Exists");
+                console.log("Log :" + colors.red("Ticket Already Exists"));
                 res.json({ created: false, exists: true });
 
             }
             else
             {
-                console.log("Ticket Created");
+                console.log("Log :" + colors.green("New Ticket Created"));
                 res.json({ created: true, exists: false });
 
                 //Save To Database
                 ticketId.save(function(err) {
         
                     if(err) {
-                        console.log("Failed To Create Ticket");
+                        console.log("Log :" + colors.red("Failed To Create Ticket"));
                     }
                     else 
                     {
@@ -585,11 +545,12 @@ app.post('/createTicket', function(req, res) {
                         key.save(function(err) {
 
                             if(err) {
-                                console.log("Key Not Created");
+                                console.log("Log :" + colors.red("Entry Key Not Created"));
+
                             }
                             else
                             {
-                                console.log("Key Created");
+                                console.log("Log :" + colors.green("New Entry Key Created"));
                             }
                         });
 
@@ -649,14 +610,16 @@ app.post('/createEvent', function(req, res) {
 
     });
 
+    console.log(event);
+
 
     //Save To Database
     event.save(function(err) {
         if(err) {
-            console.log("Failed To Create Event");
+            console.log("Log :" + colors.red("Failed To Create Event"));
         }
         else {
-            console.log("Event Added To DB");
+            console.log("Log :" + colors.green("New Event Created"));
         }
     });
 
@@ -674,7 +637,7 @@ app.post('/signin' , function(req, res) {
         //If No User Exists
         if(!user) {
 
-            console.log("No Email Exists");
+            console.log("Log :" + colors.red("No Such Email Exists"));
             res.json({ success: false, message: 'Invalid Email' });
         }
         else {
@@ -687,13 +650,13 @@ app.post('/signin' , function(req, res) {
                 //Check If User Activated Thier Account
                 if(user.activation != true) {
 
-                    console.log("Account Not Activated");
+                    console.log("Log :" + colors.red("Account Not Activated"));
                     res.json({ success: false, message: 'Activate Account'});
                 }
                 else {
 
                     req.session.user = user;
-                    console.log("Credentials Verified");
+                    console.log("Log :" + colors.green("User Authorised"));
                     var welcomeMessage = "Welcome, "+ user.firstName
                     res.json({ success: true, message: welcomeMessage});
                 } 
@@ -701,6 +664,7 @@ app.post('/signin' , function(req, res) {
             else {
 
                 res.json({ success: false, message: 'Wrong Password'});
+                console.log("Log :" + colors.red("Wrong Password")); 
             }
         }    
     })
@@ -726,7 +690,8 @@ app.post('/createUser' , function(req, res) {
         if(user != null)
         {   
             //If Email Exists Retrun False Status & Message
-            res.json({ message: 'Email Exists', status: false}); 
+            res.json({ message: 'Email Exists', status: false});
+            console.log("Log :" + colors.green("Email Already Existst")); 
         }
         else
         {
@@ -762,6 +727,7 @@ app.post('/createUser' , function(req, res) {
                 if(err) {
 
                     res.json({ message: 'Cant Registering', status: false }); 
+                    console.log("Log :" + colors.red("Unable To Register User"));
                 }
                 else {
 
@@ -784,12 +750,14 @@ app.post('/createUser' , function(req, res) {
                                 if(err) {
 
                                     //If No Error Pass
-                                    res.json({ message: 'Try Again', status: false });    
+                                    res.json({ message: 'Try Again', status: false });
+                                    console.log("Log :" + colors.red("User Data Removed, Try Again"));    
                                 }
                                 else
                                 {
                                     //If No Error Pass
-                                    res.json({ message: 'Error', status: true }); 
+                                    res.json({ message: 'Error', status: true });
+                                    console.log("Log :" + colors.green("Failed To Send Reply")); 
                                 }
                             });
 
@@ -797,7 +765,8 @@ app.post('/createUser' , function(req, res) {
                         else
                         {
                             //If No Error Pass
-                            res.json({ message: 'Registered', status: true }); 
+                            res.json({ message: 'Registered', status: true });
+                            console.log("Log :" + colors.green("User Registered")); 
                         }
                         
                     });
@@ -825,11 +794,13 @@ app.post('/activateMyAccount', function(req, res) {
 
         if(user != null)
         {
-            res.json({ activated: true }); 
+            res.json({ activated: true });
+            console.log("Log :" + colors.green("Acount Activated")); 
         }
         else
         {
             res.json({ activated: false });
+            console.log("Log :" + colors.red("Acount Failed To Activate")); 
         }
     });    
 
@@ -877,7 +848,7 @@ app.get('/signinUrl' , function(req, res) {
         //If No User Exists
         if(!user) {
 
-            console.log("No Email Exists");
+            console.log("Log :" + colors.red("No User Email Exists")); 
             res.json({ success: false, message: 'Invalid Email', sessionKey: null});
         }
         else {
@@ -890,13 +861,13 @@ app.get('/signinUrl' , function(req, res) {
                 //Check If User Activated Thier Account
                 if(user.activation != true) {
 
-                    console.log("Account Not Activated");
+                    console.log("Log :" + colors.red("Account Not Activated")); 
                     res.json({ success: false, message: 'Activate Account', sessionKey: null});
                 }
                 else {
 
                     req.session.user = user;
-                    console.log("Credentials Verified");
+                    console.log("Log :" + colors.green("Credentials Authorised")); 
                     var welcomeMessage = "Welcome, "+ user.firstName
                     res.json({ success: true, message: welcomeMessage, sessionKey: req.session.user.sessionKey});
                 } 
@@ -904,6 +875,7 @@ app.get('/signinUrl' , function(req, res) {
             else {
 
                 res.json({ success: false, message: 'Wrong Password', sessionKey: null});
+                console.log("Log :" + colors.red("Wrong Password")); 
             }
         }    
     })
@@ -1012,6 +984,7 @@ app.get('/useTicketUrl' , function(req, res) {
                 {
                     //Authentication Failed
                     res.json({ verification: false, message: 'Validation Failed' });
+                    console.log("Log :" + colors.red("Validation Failed")); 
                 }
                 else
                 {
@@ -1026,6 +999,7 @@ app.get('/useTicketUrl' , function(req, res) {
                             if(!ticket)
                             {
                                 res.json({ verification: false, message: 'Ticket Dosent Exist' });
+                                console.log("Log :" + colors.red("No Ticket Exists For User")); 
                             }
                             else
                             {
@@ -1033,6 +1007,7 @@ app.get('/useTicketUrl' , function(req, res) {
                                 if(ticket.ticketStatus == "Banned" || ticket.ticketStatus == "Canceled")
                                 {
                                     res.json({ verification: false, message: 'Ticket Banned' });
+                                    console.log("Log :" + colors.red("Ticket Banned")); 
                                 }
                                 else
                                 {
@@ -1040,7 +1015,7 @@ app.get('/useTicketUrl' , function(req, res) {
                                     Ticket.update({ ticketUserSession: userSessionKey, ticketStatus: "Not Checked In", ticketEventId: ticketEventId }, {$set: { "ticketStatus": "Checked In" }}, function(err)  { 
                             
                                         if (!err) {
-                                            console.log("Ticket Sucessfully Checked In");
+                                            console.log("Log :" + colors.red("Ticket Checked In")); 
 
                                             //Count All Checked In Users & Update Count
                                             Ticket.count({ ticketEventId: ticketEventId,  ticketStatus: "Checked In"}, function(err, count)  { 
@@ -1055,6 +1030,7 @@ app.get('/useTicketUrl' , function(req, res) {
                                         else {
                                             console.log("Ticket Not Checked In");
                                             res.json({ verification: false, message: 'Session Key / Status Fail' });
+                                            console.log("Log :" + colors.green("Ticket Not Checked In")); 
                                         }
                                     });
 
@@ -1062,6 +1038,7 @@ app.get('/useTicketUrl' , function(req, res) {
                                     EntryKeys.update({ entryKey: entryKey}, {$set: { "status": "true" }}, function(err, entryx)  { 
                             
                                         console.log("Entry Key Used");
+                                        console.log("Log :" + colors.red("Entry Key Used")); 
                                     });   
                                 }
                             }
@@ -1070,6 +1047,7 @@ app.get('/useTicketUrl' , function(req, res) {
                     else
                     {
                         res.json({ verification: false, message: 'Ticket Used' });
+                        console.log("Log :" + colors.green("Ticket Used")); 
                     }
                 } 
             });
@@ -1220,4 +1198,13 @@ app.get('/viewEventUrl', function(req, res) {
 app.listen(usePort);
 
 //Information Message 
-console.log("Server Running, Using Port: " + usePort);
+console.log("\n==========================================");
+console.log("------------- " +colors.blue("NFCVT SERVER") + " ---------------");
+console.log("==========================================\n");
+
+console.log("Server Status : " + colors.green("Running"));
+console.log("Server Port : " + colors.green(usePort));
+
+console.log("\n==========================================");
+console.log("------------- " +colors.blue("SERVER LOG") + " ---------------");
+console.log("==========================================\n");

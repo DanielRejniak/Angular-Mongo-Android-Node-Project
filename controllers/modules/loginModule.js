@@ -3,6 +3,8 @@ var app = angular.module('loginModule', ['ngRoute']);
 //Login Controller
 app.controller('loginCtrl', function($scope, $location, $rootScope, $http) {
 
+	$scope.message = "Hello";
+
 	//Login Credentails Submision
 	$scope.submitLoginInfo = function() {
 		 

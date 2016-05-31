@@ -1,11 +1,12 @@
 // Karma configuration
-// Generated on Sun May 22 2016 03:07:17 GMT+0100 (IST)
+// Generated on Mon May 30 2016 14:57:59 GMT+0100 (IST)
 
 module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
+
 
 
     // frameworks to use
@@ -15,14 +16,16 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '/controllers/*.js',
-      '/tests/*.js'
+    
+    'node_modules/angular/angular.js',
+    'node_modules/angular-mocks/angular-mocks.js',
+      'controllers/controller.js',
+      'test/test.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-      'test'
     ],
 
 
@@ -48,7 +51,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -66,6 +69,8 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
+
+    urlRoot: '_karma_'
   })
 }
