@@ -5,23 +5,27 @@
 
 **Starup On Localhost**
 
-1) Start Mongo Database Insatance 
+1) Change The Port & Database Path
 
-'''
+The two variables requiring change are located in server.js located inside the main directory of angualr_app.
+
+2) Start Mongo Database Insatance 
+
+```
 sudo mongod
-'''
+```
 
-2) Start Mongo Database
+3) Start Mongo Database
 
-'''
+```
 sudo mongo
-'''
+```
 
-3) Start Node Server
+4) Start Node Server
 
-'''
+```
 node server
-'''
+```
 
 **Startup On cloud**
 
@@ -36,9 +40,9 @@ Prior to staring the node server, ensure databse is runing. This procedure will 
 
 3) Start Node Server
 
-'''
+```
 node server
-'''
+```
 
 
 
